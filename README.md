@@ -40,4 +40,4 @@ por meio de métricas objetivas coletadas com Prometheus e Grafana.
 
 ## Autor
 
-Desenvolvido como Trabalho de Conclusão de Curso — Ciência da Computação.
+Desenvolvido como Trabalho de Conclusão de Curso — Sistemas de informação.
