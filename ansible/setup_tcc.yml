@@ -1,0 +1,163 @@
+---
+- name: Setup Ambiente Experimental TCC - Canary vs Blue-Green
+  hosts: vps
+  become: true
+  vars:
+    user_name: "root"
+
+  tasks:
+
+    - name: Atualizar repositórios e pacotes
+      apt:
+        update_cache: yes
+        upgrade: dist
+
+    - name: Instalar dependências básicas
+      apt:
+        name:
+          - curl
+          - git
+          - unzip
+          - wget
+          - python3-pip
+          - apt-transport-https
+          - ca-certificates
+          - gnupg
+        state: present
+
+    - name: Desativar SWAP (exigência Kubernetes)
+      shell: |
+        swapoff -a
+        sed -i '/ swap / s/^\(.*\)$/#\1/g' /etc/fstab
+
+    - name: Instalar Docker
+      shell: curl -fsSL https://get.docker.com | sh
+      args:
+        creates: /usr/bin/docker
+
+    - name: Adicionar root ao grupo Docker
+      user:
+        name: root
+        groups: docker
+        append: yes
+
+
+    - name: Instalar K3s
+      shell: curl -sfL https://get.k3s.io | sh -
+      args:
+        creates: /usr/local/bin/k3s
+
+    - name: Aguardar K3s ficar pronto
+      shell: kubectl wait --for=condition=Ready node --all --timeout=60s
+      retries: 5
+      delay: 10
+
+    - name: Configurar diretório kubeconfig
+      file:
+        path: "/root/.kube"
+        state: directory
+        mode: '0700'
+
+    - name: Copiar kubeconfig do K3s
+      copy:
+        src: /etc/rancher/k3s/k3s.yaml
+        dest: /root/.kube/config
+        remote_src: yes
+        owner: root
+        mode: '0600'
+
+    - name: Instalar Helm
+      shell: curl https://raw.githubusercontent.com/helm/helm/main/scripts/get-helm-3 | bash
+      args:
+        creates: /usr/local/bin/helm
+
+    - name: Adicionar repositórios Helm
+      shell: |
+        helm repo add argo https://argoproj.github.io/argo-helm
+        helm repo add chaos-mesh https://charts.chaos-mesh.org
+        helm repo add prometheus-community https://prometheus-community.github.io/helm-charts
+        helm repo update
+
+    - name: Criar namespaces do experimento
+      shell: >
+        kubectl create namespace {{ item }}
+        --dry-run=client -o yaml | kubectl apply -f -
+      loop:
+        - argocd
+        - argo-rollouts
+        - chaos-testing
+        - monitoring
+        - app-tcc
+
+    - name: Instalar ArgoCD
+      shell: >
+        helm upgrade --install argocd argo/argo-cd
+        -n argocd
+        --set server.service.type=NodePort
+        --wait
+
+    - name: Instalar Argo Rollouts
+      shell: >
+        kubectl apply -n argo-rollouts -f
+        https://github.com/argoproj/argo-rollouts/releases/latest/download/install.yaml
+
+    - name: Instalar plugin CLI do Argo Rollouts
+      shell: |
+        curl -LO https://github.com/argoproj/argo-rollouts/releases/latest/download/kubectl-argo-rollouts-linux-amd64
+        chmod +x kubectl-argo-rollouts-linux-amd64
+        mv kubectl-argo-rollouts-linux-amd64 /usr/local/bin/kubectl-argo-rollouts
+      args:
+        creates: /usr/local/bin/kubectl-argo-rollouts
+
+    - name: Instalar Chaos Mesh
+      shell: >
+        helm upgrade --install chaos-mesh chaos-mesh/chaos-mesh
+        -n chaos-testing
+        --set dashboard.create=true
+        --set chaosDaemon.runtime=containerd
+        --set chaosDaemon.socketPath=/run/k3s/containerd/containerd.sock
+        --wait
+
+    - name: Instalar Prometheus e Grafana
+      shell: >
+        helm upgrade --install prometheus
+        prometheus-community/kube-prometheus-stack
+        -n monitoring
+        --set grafana.service.type=NodePort
+        --wait
+
+    - name: Instalar k6
+      shell: |
+        gpg --no-default-keyring \
+          --keyring /usr/share/keyrings/k6-archive-keyring.gpg \
+          --keyserver hkp://keyserver.ubuntu.com:80 \
+          --recv-keys C5AD17C747E3415A3642D57D77C6C491D6AC1D69
+        echo "deb [signed-by=/usr/share/keyrings/k6-archive-keyring.gpg] \
+          https://dl.k6.io/deb stable main" | tee /etc/apt/sources.list.d/k6.list
+        apt update && apt install k6 -y
+      args:
+        creates: /usr/bin/k6
+
+    - name: Instalar AWS CLI
+      shell: |
+        curl "https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip" -o "awscliv2.zip"
+        unzip -o awscliv2.zip
+        ./aws/install --update
+      args:
+        creates: /usr/local/bin/aws
+
+    - name: Verificar instalações
+      shell: |
+        echo "=== K3s ===" && kubectl get nodes
+        echo "=== Helm ===" && helm version --short
+        echo "=== ArgoCD ===" && kubectl get pods -n argocd
+        echo "=== Argo Rollouts ===" && kubectl get pods -n argo-rollouts
+        echo "=== Chaos Mesh ===" && kubectl get pods -n chaos-testing
+        echo "=== Monitoring ===" && kubectl get pods -n monitoring
+        echo "=== k6 ===" && k6 version
+        echo "=== AWS ===" && aws --version
+      register: verificacao
+
+    - name: Exibir resultado da verificação
+      debug:
+        var: verificacao.stdout_lines
