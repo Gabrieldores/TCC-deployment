@@ -1,0 +1,19 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: tcc-api-ingress
+  namespace: app-tcc
+  annotations:
+    kubernetes.io/ingress.class: traefik
+spec:
+  rules:
+    - host: tcc-api.158.220.111.79.nip.io
+      http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: tcc-api
+                port:
+                  number: 80

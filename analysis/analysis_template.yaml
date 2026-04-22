@@ -1,0 +1,49 @@
+apiVersion: argoproj.io/v1alpha1
+kind: AnalysisTemplate
+metadata:
+  name: tcc-api-success-rate
+  namespace: app-tcc
+spec:
+  args:
+    - name: service-name
+  metrics:
+    # ── Métrica 1: Taxa de sucesso de requisições ────────────────────────────
+    - name: success-rate
+      interval: 30s
+      failureLimit: 2
+      provider:
+        prometheus:
+          address: http://prometheus-kube-prometheus-prometheus.monitoring.svc:9090
+          query: |
+            sum(rate(http_requests_total{path!="/metrics",status=~"2.."}[1m]))
+            /
+            sum(rate(http_requests_total{path!="/metrics"}[1m]))
+      successCondition: result[0] >= 0.95
+      failureCondition: result[0] < 0.90
+
+    # ── Métrica 2: Latência p95 ───────────────────────────────────────────────
+    - name: latency-p95
+      interval: 30s
+      failureLimit: 2
+      provider:
+        prometheus:
+          address: http://prometheus-kube-prometheus-prometheus.monitoring.svc:9090
+          query: |
+            histogram_quantile(0.95,
+              sum(rate(http_request_duration_ms_bucket{path!="/metrics"}[1m]))
+              by (le)
+            )
+      successCondition: result[0] <= 1000
+      failureCondition: result[0] > 2000
+
+    # ── Métrica 3: Taxa de erros ──────────────────────────────────────────────
+    - name: error-rate
+      interval: 30s
+      failureLimit: 2
+      provider:
+        prometheus:
+          address: http://prometheus-kube-prometheus-prometheus.monitoring.svc:9090
+          query: |
+            sum(rate(app_errors_total[1m]))
+      successCondition: result[0] <= 0.05
+      failureCondition: result[0] > 0.10

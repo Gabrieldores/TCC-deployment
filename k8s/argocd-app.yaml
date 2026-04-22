@@ -1,0 +1,24 @@
+# ============================================================
+# ArgoCD Application — aponta para o repositório Git
+# Aplique com: kubectl apply -f argocd-app.yaml -n argocd
+# ============================================================
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: tcc-deployment
+  namespace: argocd
+spec:
+  project: default
+  source:
+    repoURL: https://github.com/Gabrieldores/TCC-deployment
+    targetRevision: HEAD
+    path: k8s
+  destination:
+    server: https://kubernetes.default.svc
+    namespace: app-tcc
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
+    syncOptions:
+      - CreateNamespace=true

@@ -1,0 +1,66 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Rollout
+metadata:
+  name: tcc-api-bluegreen
+  namespace: app-tcc
+spec:
+  replicas: 4
+  selector:
+    matchLabels:
+      app: tcc-api
+  template:
+    metadata:
+      labels:
+        app: tcc-api
+    spec:
+      containers:
+        - name: tcc-api
+          image: gabrieldores/tcc-api:v1
+          ports:
+            - containerPort: 3000
+          env:
+            - name: APP_VERSION
+              value: "v1.0.0"
+            - name: APP_COLOR
+              value: "blue"
+            - name: ERROR_RATE
+              value: "0"
+            - name: SLOW_MS
+              value: "0"
+          readinessProbe:
+            httpGet:
+              path: /ready
+              port: 3000
+            initialDelaySeconds: 5
+            periodSeconds: 10
+          livenessProbe:
+            httpGet:
+              path: /health
+              port: 3000
+            initialDelaySeconds: 10
+            periodSeconds: 15
+          resources:
+            requests:
+              memory: "64Mi"
+              cpu: "100m"
+            limits:
+              memory: "128Mi"
+              cpu: "200m"
+  strategy:
+    blueGreen:
+      activeService: tcc-api-active
+      previewService: tcc-api-preview
+      autoPromotionEnabled: false
+      prePromotionAnalysis:
+        templates:
+          - templateName: tcc-api-success-rate
+        args:
+          - name: service-name
+            value: tcc-api-preview
+      postPromotionAnalysis:
+        templates:
+          - templateName: tcc-api-success-rate
+        args:
+          - name: service-name
+            value: tcc-api-active
+      scaleDownDelaySeconds: 30
