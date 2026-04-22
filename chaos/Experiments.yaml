@@ -1,0 +1,91 @@
+# ============================================================
+# PodChaos — Elimina pods aleatórios durante o deploy
+# ============================================================
+apiVersion: chaos-mesh.org/v1alpha1
+kind: PodChaos
+metadata:
+  name: tcc-pod-chaos
+  namespace: chaos-testing
+spec:
+  action: pod-kill
+  mode: one
+  selector:
+    namespaces:
+      - app-tcc
+    labelSelectors:
+      app: tcc-api
+  scheduler:
+    cron: "@every 60s"
+  duration: "30s"
+
+---
+# ============================================================
+# NetworkChaos — Injeta latência na rede
+# ============================================================
+apiVersion: chaos-mesh.org/v1alpha1
+kind: NetworkChaos
+metadata:
+  name: tcc-network-chaos
+  namespace: chaos-testing
+spec:
+  action: delay
+  mode: all
+  selector:
+    namespaces:
+      - app-tcc
+    labelSelectors:
+      app: tcc-api
+  delay:
+    latency: "500ms"
+    correlation: "25"
+    jitter: "100ms"
+  duration: "60s"
+
+---
+# ============================================================
+# HTTPChaos — Transforma respostas 200 em 500
+# ============================================================
+apiVersion: chaos-mesh.org/v1alpha1
+kind: HTTPChaos
+metadata:
+  name: tcc-http-chaos
+  namespace: chaos-testing
+spec:
+  mode: all
+  selector:
+    namespaces:
+      - app-tcc
+    labelSelectors:
+      app: tcc-api
+  target: Response
+  port: 3000
+  path: "/unstable"
+  abort: false
+  replace:
+    code: 500
+  duration: "60s"
+
+---
+# ============================================================
+# StressChaos — Consome CPU e memória artificialmente
+# ============================================================
+apiVersion: chaos-mesh.org/v1alpha1
+kind: StressChaos
+metadata:
+  name: tcc-stress-chaos
+  namespace: chaos-testing
+spec:
+  mode: all
+  selector:
+    namespaces:
+      - app-tcc
+    labelSelectors:
+      app: tcc-api
+  stressors:
+    cpu:
+      workers: 2
+      load: 80
+    memory:
+      workers: 2
+      size: "256MB"
+  duration: "60s"
