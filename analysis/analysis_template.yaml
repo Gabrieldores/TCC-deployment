@@ -4,8 +4,6 @@ metadata:
   name: tcc-api-success-rate
   namespace: app-tcc
 spec:
-  args:
-    - name: service-name
   metrics:
     # ── Métrica 1: Taxa de sucesso de requisições ────────────────────────────
     - name: success-rate
