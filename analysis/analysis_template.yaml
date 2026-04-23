@@ -8,6 +8,7 @@ spec:
     # ── Métrica 1: Taxa de sucesso de requisições ────────────────────────────
     - name: success-rate
       interval: 30s
+      count: 5
       failureLimit: 2
       provider:
         prometheus:
@@ -22,6 +23,7 @@ spec:
     # ── Métrica 2: Latência p95 ───────────────────────────────────────────────
     - name: latency-p95
       interval: 30s
+      count: 5
       failureLimit: 2
       provider:
         prometheus:
@@ -37,6 +39,7 @@ spec:
     # ── Métrica 3: Taxa de erros ──────────────────────────────────────────────
     - name: error-rate
       interval: 30s
+      count: 5
       failureLimit: 2
       provider:
         prometheus:
