@@ -15,18 +15,18 @@ spec:
     spec:
       containers:
         - name: tcc-api
-          image: gabrieldores/tcc-api:v1
+          image: gabrieldores/tcc-api:v2
           ports:
             - containerPort: 3000
           env:
             - name: APP_VERSION
-              value: "v1.0.0"
+              value: "v2.0.0"
             - name: APP_COLOR
-              value: "blue"
+              value: "green"
             - name: ERROR_RATE
-              value: "0"
+              value: "0.05"
             - name: SLOW_MS
-              value: "0"
+              value: "800"
           readinessProbe:
             httpGet:
               path: /ready
@@ -48,19 +48,12 @@ spec:
               cpu: "200m"
   strategy:
     canary:
-      analysis:
-        templates:
-          - templateName: tcc-api-success-rate
-        startingStep: 1
-        args:
-          - name: service-name
-            value: tcc-api
       steps:
         - setWeight: 20
-        - pause: {duration: 30s}
+        - pause: { duration: 30s }
         - analysis:
             templates:
               - templateName: tcc-api-success-rate
         - setWeight: 50
-        - pause: {duration: 30s}
+        - pause: { duration: 30s }
         - setWeight: 100
