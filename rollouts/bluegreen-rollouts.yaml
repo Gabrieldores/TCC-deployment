@@ -15,18 +15,18 @@ spec:
     spec:
       containers:
         - name: tcc-api
-          image: gabrieldores/tcc-api:v1
+          image: gabrieldores/tcc-api:v2
           ports:
             - containerPort: 3000
           env:
             - name: APP_VERSION
-              value: "v1.0.0"
+              value: "v2.0.0"
             - name: APP_COLOR
-              value: "blue"
+              value: "green"
             - name: ERROR_RATE
-              value: "0"
+              value: "0.05"
             - name: SLOW_MS
-              value: "0"
+              value: "800"
           readinessProbe:
             httpGet:
               path: /ready
@@ -54,13 +54,7 @@ spec:
       prePromotionAnalysis:
         templates:
           - templateName: tcc-api-success-rate
-        args:
-          - name: service-name
-            value: tcc-api-preview
       postPromotionAnalysis:
         templates:
           - templateName: tcc-api-success-rate
-        args:
-          - name: service-name
-            value: tcc-api-active
       scaleDownDelaySeconds: 30
