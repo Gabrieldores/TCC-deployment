@@ -71,13 +71,19 @@ export default function () {
 
 // ── Resumo final ──────────────────────────────────────────────────────────────
 export function handleSummary(data) {
+  var successRate  = data.metrics.tcc_success_rate  && data.metrics.tcc_success_rate.values  ? data.metrics.tcc_success_rate.values.rate         : null;
+  var p95          = data.metrics.tcc_response_time && data.metrics.tcc_response_time.values ? data.metrics.tcc_response_time.values['p(95)']     : null;
+  var p99          = data.metrics.tcc_response_time && data.metrics.tcc_response_time.values ? data.metrics.tcc_response_time.values['p(99)']     : null;
+  var errorsTotal  = data.metrics.tcc_errors_total  && data.metrics.tcc_errors_total.values  ? data.metrics.tcc_errors_total.values.count         : null;
+  var reqsTotal    = data.metrics.http_reqs         && data.metrics.http_reqs.values         ? data.metrics.http_reqs.values.count                : null;
+
   return {
     'stdout': JSON.stringify({
-      success_rate:  data.metrics.tcc_success_rate?.values?.rate,
-      p95_ms:        data.metrics.tcc_response_time?.values?.['p(95)'],
-      p99_ms:        data.metrics.tcc_response_time?.values?.['p(99)'],
-      errors_total:  data.metrics.tcc_errors_total?.values?.count,
-      requests_total:data.metrics.http_reqs?.values?.count,
+      success_rate:   successRate,
+      p95_ms:         p95,
+      p99_ms:         p99,
+      errors_total:   errorsTotal,
+      requests_total: reqsTotal,
     }, null, 2),
     'summary.json': JSON.stringify(data, null, 2),
   };
