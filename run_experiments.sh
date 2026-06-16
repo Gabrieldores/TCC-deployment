@@ -1,11 +1,13 @@
 #!/bin/bash
 # =============================================================================
-# run_experiments.sh — Automação das 10 rodadas experimentais do TCC
+# run_experiments.sh — Automação das rodadas experimentais do TCC
 # Canary vs. Blue-Green sob Chaos Engineering
 #
 # USO:
 #   chmod +x run_experiments.sh
 #   ./run_experiments.sh
+#
+# REQUISITOS: kubectl, argocd CLI, k6, python3
 # =============================================================================
 
 set -euo pipefail
@@ -15,13 +17,13 @@ set -euo pipefail
 # =============================================================================
 NAMESPACE="app-tcc"
 ROLLOUT_NAME=""                             # definido dinamicamente por rodada
-APP_NAME="tcc-deployment"                   # Nome correto da app no ArgoCD
+APP_NAME="tcc-deployment"                   # Nome correto no ArgoCD
 IMAGE_V1="gabrieldores/tcc-api:v1"
 IMAGE_V2="gabrieldores/tcc-api:v2"
 CONTAINER_NAME="tcc-api"
 K6_SCRIPT="./scripts/load-test.js"
-CHAOS_DIR="./chaos"                    # diretório com Experiments.yaml
-CHAOS_FILE="Experiments.yaml"              # arquivo único com todos os cenários
+CHAOS_DIR="./chaos"                         # diretório com Experiments.yaml
+CHAOS_FILE="Experiments.yaml"               # arquivo único com todos os cenários
 RESULTS_DIR="./resultados"
 REPORT_FILE="./resultados/relatorio-final.md"
 COOLDOWN_SECONDS=120                        # pausa entre rodadas
@@ -37,20 +39,12 @@ BLUE='\033[0;34m'
 NC='\033[0m'
 
 # =============================================================================
-# DEFINIÇÃO DAS 10 RODADAS
-# Format: "ESTRATEGIA|CENARIO|ARQUIVO_CHAOS"
+# DEFINIÇÃO DAS RODADAS
+# Para o teste rápido, deixamos apenas 1 rodada.
+# Depois, basta adicionar as outras 9 aqui de volta.
 # =============================================================================
 declare -a RODADAS=(
   "canary|PodChaos|PodChaos"
-  "blue-green|PodChaos|PodChaos"
-  "canary|NetworkChaos|NetworkChaos"
-  "blue-green|NetworkChaos|NetworkChaos"
-  "canary|HTTPChaos|HTTPChaos"
-  "blue-green|HTTPChaos|HTTPChaos"
-  "canary|StressChaos|StressChaos"
-  "blue-green|StressChaos|StressChaos"
-  "canary|Mix-Pod-Network|PodChaos NetworkChaos"
-  "blue-green|Mix-Pod-Network|PodChaos NetworkChaos"
 )
 
 # =============================================================================
@@ -115,20 +109,15 @@ wait_rollback_complete() {
 }
 
 reset_cluster() {
-  log "Limpando o cluster e resetando para a v1..."
+  log "Resetando cluster para v1..."
   
-  # 1. Aborta qualquer rollout que tenha travado
   kubectl argo rollouts abort "$ROLLOUT_NAME" -n "$NAMESPACE" 2>/dev/null || true
-  
-  # 2. Força o ArgoCD a puxar a versão oficial (v1) do Git
   kubectl patch application "$APP_NAME" -n argocd --type merge --patch '{"operation": {"sync": {"prune": true}}}' 2>/dev/null || true
-  
-  # 3. Mata todos os pods para subir o ambiente estéril e limpo
   kubectl delete pods --all -n "$NAMESPACE" --force --grace-period=0 2>/dev/null || true
   
-  log "Aguardando 45s para os pods da v1 estabilizarem..."
+  log "Aguardando 45s para o ambiente da v1 estabilizar..."
   sleep 45
-  log_ok "Cluster esterilizado e resetado para v1"
+  log_ok "Cluster resetado e esterilizado na v1"
 }
 
 apply_chaos() {
@@ -218,6 +207,7 @@ run_experiment() {
   local estrategia="$2"
   local cenario="$3"
   local chaos_file="$4"
+  local total_rodadas=${#RODADAS[@]}
 
   if [[ "$estrategia" == "canary" ]]; then
     ROLLOUT_NAME="tcc-api-canary"
@@ -231,7 +221,7 @@ run_experiment() {
   local log_file="$rodada_dir/execution.log"
   local results_file="$rodada_dir/summary.txt"
 
-  log_section "RODADA $rodada_num/10 — $estrategia | $cenario"
+  log_section "RODADA $rodada_num/$total_rodadas — $estrategia | $cenario"
 
   {
     echo "=== RODADA $rodada_num ==="
@@ -258,9 +248,9 @@ run_experiment() {
   sleep "$BASELINE_WAIT"
 
   # ----------------------------------------------------------
-  # FASE 2 — INÍCIO DO DEPLOY DA VERSÃO 2
+  # FASE 2 e 3 — DEPLOY v2 E INJEÇÃO DE CAOS SIMULTÂNEA
   # ----------------------------------------------------------
-  log_section "FASE 2 — DEPLOY v2 com $estrategia (Rodada $rodada_num)"
+  log_section "FASE 2/3 — DEPLOY v2 E CAOS: $cenario (Rodada $rodada_num)"
 
   K6_SUMMARY_PATH="$rodada_dir/summary.json" \
   k6 run \
@@ -270,31 +260,27 @@ run_experiment() {
   K6_PID=$!
   log "k6 rodando em background (PID: $K6_PID)"
 
-  sleep 10  # aguardar k6 estabilizar antes do rollout
+  sleep 5  # aguardar k6 estabilizar o tráfego
 
-  log "Acionando gatilho do Argo Rollouts para atualizar para a v2..."
-  # Este é o comando que altera a versão e inicia o deploy da v2
+  log "1. Acionando gatilho do Argo Rollouts para atualizar para a v2..."
   kubectl argo rollouts set image "$ROLLOUT_NAME" \
     "$CONTAINER_NAME"="$IMAGE_V2" -n "$NAMESPACE" \
     2>&1 | tee -a "$log_file"
 
   echo "Deploy iniciado: $(record_timestamp)" >> "$results_file"
 
-  wait_rollout_stable
-  log_ok "Rollout iniciado e pausado na v2"
-
-  # ----------------------------------------------------------
-  # FASE 3 — INJEÇÃO DE CAOS
-  # ----------------------------------------------------------
-  log_section "FASE 3 — INJEÇÃO DE CAOS: $cenario (Rodada $rodada_num)"
-
+  log "2. Injetando CAOS imediatamente após o gatilho do deploy..."
   CHAOS_START=$(record_timestamp)
   apply_chaos "$chaos_file"
 
   log_ok "Caos aplicado: $cenario ($chaos_file) às $CHAOS_START"
   echo "Caos iniciado: $CHAOS_START" >> "$results_file"
 
-  log "Aguardando $CHAOS_WAIT segundos com caos ativo..."
+  log "Aguardando o Argo Rollouts reagir ao caos..."
+  sleep 10
+  wait_rollout_stable
+
+  log "Aguardando $CHAOS_WAIT segundos com caos ativo e deploy rolando..."
   sleep "$CHAOS_WAIT"
 
   # ----------------------------------------------------------
@@ -402,68 +388,4 @@ except:
   echo "Fim da rodada: $(record_timestamp)" >> "$results_file"
   cat "$results_file"
 
-  log_ok "Rodada $rodada_num concluída. Resultados em: $rodada_dir"
-
-  reset_cluster
-
-  log "Cooldown de ${COOLDOWN_SECONDS}s antes da próxima rodada..."
-  sleep "$COOLDOWN_SECONDS"
-}
-
-# =============================================================================
-# GERAÇÃO DO RELATÓRIO MARKDOWN LOCAL (Removida desta mensagem para não ficar gigante, o seu original está perfeito, mantive a chamada dele no MAIN)
-# =============================================================================
-generate_report() {
-  log_section "GERANDO RELATÓRIO MARKDOWN"
-  mkdir -p "$RESULTS_DIR"
-  echo "# Relatório de Experimentos — Canary vs. Blue-Green" > "$REPORT_FILE"
-  echo "_Relatório gerado em $(date '+%d/%m/%Y às %H:%M:%S')_" >> "$REPORT_FILE"
-}
-
-# =============================================================================
-# MAIN
-# =============================================================================
-
-main() {
-  echo ""
-  echo -e "${BLUE}╔══════════════════════════════════════════════════════╗${NC}"
-  echo -e "${BLUE}║   TCC — Canary vs Blue-Green: 10 Rodadas             ║${NC}"
-  echo -e "${BLUE}║   Autor: Gabriel Lucas Pereira das Dores             ║${NC}"
-  echo -e "${BLUE}╚══════════════════════════════════════════════════════╝${NC}"
-  echo ""
-
-  preflight_check
-
-  echo ""
-  log_warn "Iniciando sequência de 10 experimentos. Não interrompa o processo."
-  log_warn "Pressione Ctrl+C para abortar. Os resultados parciais serão preservados."
-  echo ""
-  sleep 5
-
-  local total=${#RODADAS[@]}
-  local rodada_num=1
-
-  for rodada in "${RODADAS[@]}"; do
-    ESTRATEGIA=$(echo "$rodada" | cut -d'|' -f1)
-    CENARIO=$(echo "$rodada" | cut -d'|' -f2)
-    CHAOS_FILE=$(echo "$rodada" | cut -d'|' -f3)
-
-    run_experiment "$rodada_num" "$ESTRATEGIA" "$CENARIO" "$CHAOS_FILE"
-
-    rodada_num=$((rodada_num + 1))
-  done
-
-  # Gerar relatório Markdown local
-  generate_report
-
-  # Resumo final
-  log_section "EXPERIMENTOS CONCLUÍDOS"
-  echo ""
-  echo "Resultados salvos em: $RESULTS_DIR"
-  echo ""
-  log_ok "Todos os 10 experimentos finalizados!"
-}
-
-trap 'log_err "Experimento interrompido. Limpando..."; cleanup_chaos "${CHAOS_FILE:-}" 2>/dev/null; reset_cluster 2>/dev/null; exit 1' INT TERM
-
-main "$@"
+  log_ok "Rodada $rodada_num concluída. Resultados
