@@ -1,0 +1,174 @@
+LAST SEEN   TYPE      REASON                    OBJECT                                           MESSAGE
+10m         Normal    Scheduled                 pod/tcc-api-bluegreen-787bdcb856-f8jbt           Successfully assigned app-tcc/tcc-api-bluegreen-787bdcb856-f8jbt to vmi3069651
+57s         Normal    Scheduled                 pod/tcc-api-canary-787bdcb856-v9s66              Successfully assigned app-tcc/tcc-api-canary-787bdcb856-v9s66 to vmi3069651
+18m         Normal    Scheduled                 pod/tcc-api-bluegreen-86c5dc54d7-ghhx6           Successfully assigned app-tcc/tcc-api-bluegreen-86c5dc54d7-ghhx6 to vmi3069651
+30m         Normal    Scheduled                 pod/tcc-api-bluegreen-787bdcb856-zfxpg           Successfully assigned app-tcc/tcc-api-bluegreen-787bdcb856-zfxpg to vmi3069651
+30m         Normal    Scheduled                 pod/tcc-api-bluegreen-787bdcb856-4b4sh           Successfully assigned app-tcc/tcc-api-bluegreen-787bdcb856-4b4sh to vmi3069651
+30m         Normal    Scheduled                 pod/tcc-api-bluegreen-787bdcb856-xwfz6           Successfully assigned app-tcc/tcc-api-bluegreen-787bdcb856-xwfz6 to vmi3069651
+18m         Normal    Scheduled                 pod/tcc-api-canary-787bdcb856-26ngf              Successfully assigned app-tcc/tcc-api-canary-787bdcb856-26ngf to vmi3069651
+38m         Normal    Scheduled                 pod/tcc-api-canary-787bdcb856-xdlmf              Successfully assigned app-tcc/tcc-api-canary-787bdcb856-xdlmf to vmi3069651
+10m         Normal    Scheduled                 pod/tcc-api-bluegreen-787bdcb856-r927n           Successfully assigned app-tcc/tcc-api-bluegreen-787bdcb856-r927n to vmi3069651
+10m         Normal    Scheduled                 pod/tcc-api-bluegreen-787bdcb856-mphsd           Successfully assigned app-tcc/tcc-api-bluegreen-787bdcb856-mphsd to vmi3069651
+30m         Normal    Scheduled                 pod/tcc-api-bluegreen-787bdcb856-jlmq8           Successfully assigned app-tcc/tcc-api-bluegreen-787bdcb856-jlmq8 to vmi3069651
+10m         Normal    Scheduled                 pod/tcc-api-canary-b669fbb57-gw924               Successfully assigned app-tcc/tcc-api-canary-b669fbb57-gw924 to vmi3069651
+31s         Normal    Scheduled                 pod/tcc-api-canary-86c5dc54d7-qpjhd              Successfully assigned app-tcc/tcc-api-canary-86c5dc54d7-qpjhd to vmi3069651
+10m         Normal    Scheduled                 pod/tcc-api-bluegreen-787bdcb856-6hbwq           Successfully assigned app-tcc/tcc-api-bluegreen-787bdcb856-6hbwq to vmi3069651
+30m         Normal    Scheduled                 pod/tcc-api-canary-86c5dc54d7-7s5rb              Successfully assigned app-tcc/tcc-api-canary-86c5dc54d7-7s5rb to vmi3069651
+10m         Normal    Scheduled                 pod/tcc-api-canary-86c5dc54d7-bpr5p              Successfully assigned app-tcc/tcc-api-canary-86c5dc54d7-bpr5p to vmi3069651
+38m         Normal    RolloutNotCompleted       rollout/tcc-api-canary                           Rollout not completed, started update to revision 8 (787bdcb856)
+38m         Normal    NewReplicaSetCreated      rollout/tcc-api-canary                           Created ReplicaSet tcc-api-canary-787bdcb856 (revision 8)
+38m         Normal    RolloutUpdated            rollout/tcc-api-canary                           Rollout updated to revision 8
+38m         Normal    SuccessfulCreate          replicaset/tcc-api-canary-787bdcb856             Created pod: tcc-api-canary-787bdcb856-xdlmf
+38m         Normal    ScalingReplicaSet         rollout/tcc-api-canary                           Scaled up ReplicaSet tcc-api-canary-787bdcb856 (revision 8) from 0 to 1
+38m         Normal    Pulled                    pod/tcc-api-canary-787bdcb856-xdlmf              Container image "gabrieldores/tcc-api:v1" already present on machine
+38m         Normal    Created                   pod/tcc-api-canary-787bdcb856-xdlmf              Created container: tcc-api
+38m         Normal    Started                   pod/tcc-api-canary-787bdcb856-xdlmf              Started container tcc-api
+37m         Normal    AnalysisRunRunning        rollout/tcc-api-canary                           Step Analysis Run 'tcc-api-canary-787bdcb856-8-2' Status New: 'Running' Previous: ''
+37m         Warning   MetricError               analysisrun/tcc-api-canary-787bdcb856-8-2        Metric 'error-rate' Completed. Result: Error
+37m         Normal    MetricSuccessful          analysisrun/tcc-api-canary-787bdcb856-8-2        Metric 'latency-p95' Completed. Result: Successful
+37m         Warning   AnalysisRunError          analysisrun/tcc-api-canary-787bdcb856-8-2        Analysis Completed. Result: Error
+37m         Normal    MetricSuccessful          analysisrun/tcc-api-canary-787bdcb856-8-2        Metric 'success-rate' Completed. Result: Successful
+37m         Warning   AnalysisRunError          rollout/tcc-api-canary                           Step Analysis Run 'tcc-api-canary-787bdcb856-8-2' Status New: 'Error' Previous: 'Running'
+37m         Warning   RolloutAborted            rollout/tcc-api-canary                           Rollout aborted update to revision 8: Step-based analysis phase error/failed: Metric "error-rate" assessed Error due to consecutiveErrors (5) > consecutiveErrorLimit (4): "Error Message: reflect: slice index out of range"
+37m         Normal    Killing                   pod/tcc-api-canary-787bdcb856-xdlmf              Stopping container tcc-api
+37m         Normal    ScalingReplicaSet         rollout/tcc-api-canary                           Scaled down ReplicaSet tcc-api-canary-787bdcb856 (revision 8) from 1 to 0
+37m         Normal    SuccessfulDelete          replicaset/tcc-api-canary-787bdcb856             Deleted pod: tcc-api-canary-787bdcb856-xdlmf
+30m         Normal    NewReplicaSetCreated      rollout/tcc-api-bluegreen                        Created ReplicaSet tcc-api-bluegreen-787bdcb856 (revision 4)
+30m         Normal    SkipSteps                 rollout/tcc-api-canary                           Rollback to stable ReplicaSets
+30m         Normal    RolloutUpdated            rollout/tcc-api-canary                           Rollout updated to revision 9
+30m         Normal    RolloutUpdated            rollout/tcc-api-bluegreen                        Rollout updated to revision 4
+30m         Normal    SuccessfulCreate          replicaset/tcc-api-bluegreen-787bdcb856          Created pod: tcc-api-bluegreen-787bdcb856-4b4sh
+30m         Normal    ScalingReplicaSet         rollout/tcc-api-bluegreen                        Scaled up ReplicaSet tcc-api-bluegreen-787bdcb856 (revision 4) from 0 to 4
+30m         Normal    RolloutNotCompleted       rollout/tcc-api-bluegreen                        Rollout not completed, started update to revision 4 (787bdcb856)
+30m         Normal    SuccessfulCreate          replicaset/tcc-api-bluegreen-787bdcb856          Created pod: tcc-api-bluegreen-787bdcb856-zfxpg
+30m         Normal    SuccessfulCreate          replicaset/tcc-api-bluegreen-787bdcb856          Created pod: tcc-api-bluegreen-787bdcb856-jlmq8
+30m         Normal    SuccessfulCreate          replicaset/tcc-api-bluegreen-787bdcb856          Created pod: tcc-api-bluegreen-787bdcb856-xwfz6
+30m         Normal    Created                   pod/tcc-api-bluegreen-787bdcb856-4b4sh           Created container: tcc-api
+30m         Normal    Created                   pod/tcc-api-bluegreen-787bdcb856-zfxpg           Created container: tcc-api
+30m         Normal    Created                   pod/tcc-api-bluegreen-787bdcb856-xwfz6           Created container: tcc-api
+30m         Normal    Pulled                    pod/tcc-api-bluegreen-787bdcb856-4b4sh           Container image "gabrieldores/tcc-api:v1" already present on machine
+30m         Normal    Created                   pod/tcc-api-bluegreen-787bdcb856-jlmq8           Created container: tcc-api
+30m         Normal    Pulled                    pod/tcc-api-bluegreen-787bdcb856-jlmq8           Container image "gabrieldores/tcc-api:v1" already present on machine
+30m         Normal    Pulled                    pod/tcc-api-bluegreen-787bdcb856-zfxpg           Container image "gabrieldores/tcc-api:v1" already present on machine
+30m         Normal    Pulled                    pod/tcc-api-bluegreen-787bdcb856-xwfz6           Container image "gabrieldores/tcc-api:v1" already present on machine
+30m         Normal    Started                   pod/tcc-api-bluegreen-787bdcb856-jlmq8           Started container tcc-api
+30m         Normal    Started                   pod/tcc-api-bluegreen-787bdcb856-4b4sh           Started container tcc-api
+30m         Normal    Started                   pod/tcc-api-bluegreen-787bdcb856-xwfz6           Started container tcc-api
+30m         Normal    Started                   pod/tcc-api-bluegreen-787bdcb856-zfxpg           Started container tcc-api
+30m         Normal    AnalysisRunRunning        rollout/tcc-api-bluegreen                        PrePromotion Analysis Run 'tcc-api-bluegreen-787bdcb856-4-pre' Status New: 'Running' Previous: ''
+30m         Normal    Killing                   pod/tcc-api-canary-86c5dc54d7-wzxq2              Stopping container tcc-api
+30m         Normal    SuccessfulCreate          replicaset/tcc-api-canary-86c5dc54d7             Created pod: tcc-api-canary-86c5dc54d7-7s5rb
+30m         Normal    Pulled                    pod/tcc-api-canary-86c5dc54d7-7s5rb              Container image "gabrieldores/tcc-api:v1" already present on machine
+30m         Normal    Created                   pod/tcc-api-canary-86c5dc54d7-7s5rb              Created container: tcc-api
+30m         Normal    Started                   pod/tcc-api-canary-86c5dc54d7-7s5rb              Started container tcc-api
+30m         Normal    MetricSuccessful          analysisrun/tcc-api-bluegreen-787bdcb856-4-pre   Metric 'success-rate' Completed. Result: Successful
+30m         Normal    MetricSuccessful          analysisrun/tcc-api-bluegreen-787bdcb856-4-pre   Metric 'latency-p95' Completed. Result: Successful
+30m         Warning   AnalysisRunError          rollout/tcc-api-bluegreen                        PrePromotion Analysis Run 'tcc-api-bluegreen-787bdcb856-4-pre' Status New: 'Error' Previous: 'Running'
+30m         Warning   AnalysisRunError          analysisrun/tcc-api-bluegreen-787bdcb856-4-pre   Analysis Completed. Result: Error
+30m         Warning   MetricError               analysisrun/tcc-api-bluegreen-787bdcb856-4-pre   Metric 'error-rate' Completed. Result: Error
+30m         Warning   RolloutAborted            rollout/tcc-api-bluegreen                        Rollout aborted update to revision 4: Blue/green pre-promotion analysis phase error/failed: Metric "error-rate" assessed Error due to consecutiveErrors (5) > consecutiveErrorLimit (4): "Error Message: reflect: slice index out of range"
+29m         Normal    SuccessfulDelete          replicaset/tcc-api-bluegreen-787bdcb856          Deleted pod: tcc-api-bluegreen-787bdcb856-zfxpg
+29m         Normal    ScalingReplicaSet         rollout/tcc-api-bluegreen                        Scaled down ReplicaSet tcc-api-bluegreen-787bdcb856 (revision 4) from 4 to 0
+29m         Normal    SuccessfulDelete          replicaset/tcc-api-bluegreen-787bdcb856          Deleted pod: tcc-api-bluegreen-787bdcb856-4b4sh
+29m         Normal    Killing                   pod/tcc-api-bluegreen-787bdcb856-jlmq8           Stopping container tcc-api
+29m         Normal    Killing                   pod/tcc-api-bluegreen-787bdcb856-xwfz6           Stopping container tcc-api
+29m         Normal    Killing                   pod/tcc-api-bluegreen-787bdcb856-zfxpg           Stopping container tcc-api
+29m         Normal    Killing                   pod/tcc-api-bluegreen-787bdcb856-4b4sh           Stopping container tcc-api
+29m         Normal    SuccessfulDelete          replicaset/tcc-api-bluegreen-787bdcb856          Deleted pod: tcc-api-bluegreen-787bdcb856-xwfz6
+29m         Normal    SuccessfulDelete          replicaset/tcc-api-bluegreen-787bdcb856          Deleted pod: tcc-api-bluegreen-787bdcb856-jlmq8
+24m         Normal    RolloutUpdated            rollout/tcc-api-bluegreen                        Rollout updated to revision 5
+18m         Normal    RolloutNotCompleted       rollout/tcc-api-canary                           Rollout not completed, started update to revision 10 (787bdcb856)
+18m         Normal    RolloutUpdated            rollout/tcc-api-canary                           Rollout updated to revision 10
+18m         Normal    ScalingReplicaSet         rollout/tcc-api-canary                           Scaled up ReplicaSet tcc-api-canary-787bdcb856 (revision 10) from 0 to 1
+18m         Normal    SuccessfulCreate          replicaset/tcc-api-canary-787bdcb856             Created pod: tcc-api-canary-787bdcb856-26ngf
+18m         Normal    Started                   pod/tcc-api-canary-787bdcb856-26ngf              Started container tcc-api
+18m         Normal    Created                   pod/tcc-api-canary-787bdcb856-26ngf              Created container: tcc-api
+18m         Normal    Pulled                    pod/tcc-api-canary-787bdcb856-26ngf              Container image "gabrieldores/tcc-api:v1" already present on machine
+18m         Normal    SuccessfulCreate          replicaset/tcc-api-bluegreen-86c5dc54d7          Created pod: tcc-api-bluegreen-86c5dc54d7-ghhx6
+18m         Normal    Killing                   pod/tcc-api-bluegreen-86c5dc54d7-ld76c           Stopping container tcc-api
+18m         Normal    Pulled                    pod/tcc-api-bluegreen-86c5dc54d7-ghhx6           Container image "gabrieldores/tcc-api:v1" already present on machine
+18m         Normal    Created                   pod/tcc-api-bluegreen-86c5dc54d7-ghhx6           Created container: tcc-api
+18m         Normal    Started                   pod/tcc-api-bluegreen-86c5dc54d7-ghhx6           Started container tcc-api
+17m         Normal    AnalysisRunRunning        rollout/tcc-api-canary                           Step Analysis Run 'tcc-api-canary-787bdcb856-10-2' Status New: 'Running' Previous: ''
+17m         Normal    MetricInconclusive        analysisrun/tcc-api-canary-787bdcb856-10-2       Metric 'error-rate' Completed. Result: Inconclusive
+17m         Normal    MetricSuccessful          analysisrun/tcc-api-canary-787bdcb856-10-2       Metric 'success-rate' Completed. Result: Successful
+17m         Normal    MetricSuccessful          analysisrun/tcc-api-canary-787bdcb856-10-2       Metric 'latency-p95' Completed. Result: Successful
+17m         Normal    AnalysisRunInconclusive   analysisrun/tcc-api-canary-787bdcb856-10-2       Analysis Completed. Result: Inconclusive
+17m         Normal    RolloutPaused             rollout/tcc-api-canary                           Rollout is paused (InconclusiveAnalysisRun)
+17m         Normal    AnalysisRunInconclusive   rollout/tcc-api-canary                           Step Analysis Run 'tcc-api-canary-787bdcb856-10-2' Status New: 'Inconclusive' Previous: 'Running'
+10m         Normal    NewReplicaSetCreated      rollout/tcc-api-canary                           Created ReplicaSet tcc-api-canary-b669fbb57 (revision 11)
+10m         Normal    ScalingReplicaSet         rollout/tcc-api-bluegreen                        Scaled up ReplicaSet tcc-api-bluegreen-787bdcb856 (revision 6) from 0 to 4
+10m         Normal    RolloutUpdated            rollout/tcc-api-bluegreen                        Rollout updated to revision 6
+10m         Normal    RolloutNotCompleted       rollout/tcc-api-bluegreen                        Rollout not completed, started update to revision 6 (787bdcb856)
+10m         Normal    SwitchService             rollout/tcc-api-bluegreen                        Switched selector for service 'tcc-api-preview' from '86c5dc54d7' to '787bdcb856'
+10m         Normal    RolloutUpdated            rollout/tcc-api-canary                           Rollout updated to revision 11
+10m         Normal    SuccessfulCreate          replicaset/tcc-api-bluegreen-787bdcb856          Created pod: tcc-api-bluegreen-787bdcb856-f8jbt
+10m         Normal    ScalingReplicaSet         rollout/tcc-api-canary                           Scaled down ReplicaSet tcc-api-canary-787bdcb856 (revision 10) from 1 to 0
+10m         Normal    RolloutResumed            rollout/tcc-api-canary                           Rollout is resumed
+10m         Normal    SuccessfulCreate          replicaset/tcc-api-bluegreen-787bdcb856          Created pod: tcc-api-bluegreen-787bdcb856-r927n
+10m         Normal    SuccessfulCreate          replicaset/tcc-api-bluegreen-787bdcb856          Created pod: tcc-api-bluegreen-787bdcb856-mphsd
+10m         Normal    SuccessfulCreate          replicaset/tcc-api-bluegreen-787bdcb856          Created pod: tcc-api-bluegreen-787bdcb856-6hbwq
+10m         Normal    Killing                   pod/tcc-api-canary-787bdcb856-26ngf              Stopping container tcc-api
+10m         Normal    SuccessfulDelete          replicaset/tcc-api-canary-787bdcb856             Deleted pod: tcc-api-canary-787bdcb856-26ngf
+10m         Normal    Started                   pod/tcc-api-bluegreen-787bdcb856-6hbwq           Started container tcc-api
+10m         Normal    Created                   pod/tcc-api-bluegreen-787bdcb856-6hbwq           Created container: tcc-api
+10m         Normal    Started                   pod/tcc-api-bluegreen-787bdcb856-f8jbt           Started container tcc-api
+10m         Normal    Created                   pod/tcc-api-bluegreen-787bdcb856-mphsd           Created container: tcc-api
+10m         Normal    Pulled                    pod/tcc-api-bluegreen-787bdcb856-r927n           Container image "gabrieldores/tcc-api:v1" already present on machine
+10m         Normal    Pulled                    pod/tcc-api-bluegreen-787bdcb856-mphsd           Container image "gabrieldores/tcc-api:v1" already present on machine
+10m         Normal    Created                   pod/tcc-api-bluegreen-787bdcb856-f8jbt           Created container: tcc-api
+10m         Normal    Pulled                    pod/tcc-api-bluegreen-787bdcb856-f8jbt           Container image "gabrieldores/tcc-api:v1" already present on machine
+10m         Normal    Pulled                    pod/tcc-api-bluegreen-787bdcb856-6hbwq           Container image "gabrieldores/tcc-api:v1" already present on machine
+10m         Normal    Created                   pod/tcc-api-bluegreen-787bdcb856-r927n           Created container: tcc-api
+10m         Normal    Started                   pod/tcc-api-bluegreen-787bdcb856-r927n           Started container tcc-api
+10m         Normal    Started                   pod/tcc-api-bluegreen-787bdcb856-mphsd           Started container tcc-api
+10m         Normal    SuccessfulCreate          replicaset/tcc-api-canary-b669fbb57              Created pod: tcc-api-canary-b669fbb57-gw924
+10m         Normal    ScalingReplicaSet         rollout/tcc-api-canary                           Scaled up ReplicaSet tcc-api-canary-b669fbb57 (revision 11) from 0 to 1
+10m         Normal    Started                   pod/tcc-api-canary-b669fbb57-gw924               Started container tcc-api
+10m         Normal    Created                   pod/tcc-api-canary-b669fbb57-gw924               Created container: tcc-api
+10m         Normal    Pulled                    pod/tcc-api-canary-b669fbb57-gw924               Container image "gabrieldores/tcc-api:v1" already present on machine
+10m         Normal    RolloutStepCompleted      rollout/tcc-api-canary                           Rollout step 1/6 completed (setWeight: 20)
+10m         Normal    AnalysisRunRunning        rollout/tcc-api-bluegreen                        PrePromotion Analysis Run 'tcc-api-bluegreen-787bdcb856-6-pre' Status New: 'Running' Previous: ''
+10m         Normal    RolloutPaused             rollout/tcc-api-canary                           Rollout is paused (CanaryPauseStep)
+10m         Normal    Killing                   pod/tcc-api-canary-86c5dc54d7-xs5fn              Stopping container tcc-api
+10m         Normal    SuccessfulCreate          replicaset/tcc-api-canary-86c5dc54d7             Created pod: tcc-api-canary-86c5dc54d7-bpr5p
+10m         Normal    Created                   pod/tcc-api-canary-86c5dc54d7-bpr5p              Created container: tcc-api
+10m         Normal    Started                   pod/tcc-api-canary-86c5dc54d7-bpr5p              Started container tcc-api
+10m         Normal    Pulled                    pod/tcc-api-canary-86c5dc54d7-bpr5p              Container image "gabrieldores/tcc-api:v1" already present on machine
+9m48s       Normal    RolloutStepCompleted      rollout/tcc-api-canary                           Rollout step 2/6 completed (pause: 30s)
+8m21s       Warning   AnalysisRunFailed         rollout/tcc-api-bluegreen                        PrePromotion Analysis Run 'tcc-api-bluegreen-787bdcb856-6-pre' Status New: 'Failed' Previous: 'Running'
+8m21s       Warning   AnalysisRunFailed         analysisrun/tcc-api-bluegreen-787bdcb856-6-pre   Analysis Completed. Result: Failed
+8m21s       Warning   MetricFailed              analysisrun/tcc-api-bluegreen-787bdcb856-6-pre   Metric 'error-rate' Completed. Result: Failed
+8m21s       Normal    MetricSuccessful          analysisrun/tcc-api-bluegreen-787bdcb856-6-pre   Metric 'latency-p95' Completed. Result: Successful
+8m21s       Normal    MetricSuccessful          analysisrun/tcc-api-bluegreen-787bdcb856-6-pre   Metric 'success-rate' Completed. Result: Successful
+8m20s       Warning   RolloutAborted            rollout/tcc-api-bluegreen                        Rollout aborted update to revision 6: Blue/green pre-promotion analysis phase error/failed: Metric "error-rate" assessed Failed due to failed (3) > failureLimit (2)
+8m17s       Warning   AnalysisRunFailed         analysisrun/tcc-api-canary-b669fbb57-11-2        Analysis Completed. Result: Failed
+8m17s       Normal    MetricSuccessful          analysisrun/tcc-api-canary-b669fbb57-11-2        Metric 'latency-p95' Completed. Result: Successful
+8m17s       Normal    MetricSuccessful          analysisrun/tcc-api-canary-b669fbb57-11-2        Metric 'success-rate' Completed. Result: Successful
+8m17s       Warning   MetricFailed              analysisrun/tcc-api-canary-b669fbb57-11-2        Metric 'error-rate' Completed. Result: Failed
+8m16s       Warning   AnalysisRunFailed         rollout/tcc-api-canary                           Step Analysis Run 'tcc-api-canary-b669fbb57-11-2' Status New: 'Failed' Previous: 'Running'
+8m16s       Warning   RolloutAborted            rollout/tcc-api-canary                           Rollout aborted update to revision 11: Step-based analysis phase error/failed: Metric "error-rate" assessed Failed due to failed (3) > failureLimit (2)
+8m15s       Normal    SuccessfulDelete          replicaset/tcc-api-canary-b669fbb57              Deleted pod: tcc-api-canary-b669fbb57-gw924
+8m15s       Normal    Killing                   pod/tcc-api-canary-b669fbb57-gw924               Stopping container tcc-api
+8m15s       Normal    ScalingReplicaSet         rollout/tcc-api-canary                           Scaled down ReplicaSet tcc-api-canary-b669fbb57 (revision 11) from 1 to 0
+7m50s       Normal    Killing                   pod/tcc-api-bluegreen-787bdcb856-mphsd           Stopping container tcc-api
+7m50s       Normal    Killing                   pod/tcc-api-bluegreen-787bdcb856-f8jbt           Stopping container tcc-api
+7m50s       Normal    Killing                   pod/tcc-api-bluegreen-787bdcb856-6hbwq           Stopping container tcc-api
+7m50s       Normal    ScalingReplicaSet         rollout/tcc-api-bluegreen                        Scaled down ReplicaSet tcc-api-bluegreen-787bdcb856 (revision 6) from 4 to 0
+7m50s       Normal    Killing                   pod/tcc-api-bluegreen-787bdcb856-r927n           Stopping container tcc-api
+7m50s       Normal    SuccessfulDelete          replicaset/tcc-api-bluegreen-787bdcb856          Deleted pod: tcc-api-bluegreen-787bdcb856-6hbwq
+7m50s       Normal    SuccessfulDelete          replicaset/tcc-api-bluegreen-787bdcb856          Deleted pod: tcc-api-bluegreen-787bdcb856-f8jbt
+7m50s       Normal    SuccessfulDelete          replicaset/tcc-api-bluegreen-787bdcb856          Deleted pod: tcc-api-bluegreen-787bdcb856-mphsd
+7m50s       Normal    SuccessfulDelete          replicaset/tcc-api-bluegreen-787bdcb856          Deleted pod: tcc-api-bluegreen-787bdcb856-r927n
+3m59s       Normal    SwitchService             rollout/tcc-api-bluegreen                        Switched selector for service 'tcc-api-preview' from '787bdcb856' to '86c5dc54d7'
+3m59s       Normal    RolloutUpdated            rollout/tcc-api-bluegreen                        Rollout updated to revision 7
+60s         Normal    RolloutUpdated            rollout/tcc-api-canary                           Rollout updated to revision 12
+57s         Normal    SuccessfulCreate          replicaset/tcc-api-canary-787bdcb856             Created pod: tcc-api-canary-787bdcb856-v9s66
+56s         Normal    Created                   pod/tcc-api-canary-787bdcb856-v9s66              Created container: tcc-api
+56s         Normal    Pulled                    pod/tcc-api-canary-787bdcb856-v9s66              Container image "gabrieldores/tcc-api:v1" already present on machine
+56s         Normal    Started                   pod/tcc-api-canary-787bdcb856-v9s66              Started container tcc-api
+32s         Normal    Killing                   pod/tcc-api-canary-86c5dc54d7-74d5r              Stopping container tcc-api
+32s         Normal    SuccessfulCreate          replicaset/tcc-api-canary-86c5dc54d7             Created pod: tcc-api-canary-86c5dc54d7-qpjhd
+31s         Normal    Pulled                    pod/tcc-api-canary-86c5dc54d7-qpjhd              Container image "gabrieldores/tcc-api:v1" already present on machine
+31s         Normal    Created                   pod/tcc-api-canary-86c5dc54d7-qpjhd              Created container: tcc-api
+31s         Normal    Started                   pod/tcc-api-canary-86c5dc54d7-qpjhd              Started container tcc-api

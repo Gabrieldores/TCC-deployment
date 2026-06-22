@@ -1,0 +1,15 @@
+LAST SEEN   TYPE     REASON                 OBJECT                                 MESSAGE
+62s         Normal   Scheduled              pod/tcc-api-canary-787bdcb856-xdlmf    Successfully assigned app-tcc/tcc-api-canary-787bdcb856-xdlmf to vmi3069651
+64s         Normal   RolloutUpdated         rollout/tcc-api-canary                 Rollout updated to revision 8
+64s         Normal   RolloutNotCompleted    rollout/tcc-api-canary                 Rollout not completed, started update to revision 8 (787bdcb856)
+64s         Normal   NewReplicaSetCreated   rollout/tcc-api-canary                 Created ReplicaSet tcc-api-canary-787bdcb856 (revision 8)
+63s         Normal   ScalingReplicaSet      rollout/tcc-api-canary                 Scaled up ReplicaSet tcc-api-canary-787bdcb856 (revision 8) from 0 to 1
+63s         Normal   SuccessfulCreate       replicaset/tcc-api-canary-787bdcb856   Created pod: tcc-api-canary-787bdcb856-xdlmf
+62s         Normal   Started                pod/tcc-api-canary-787bdcb856-xdlmf    Started container tcc-api
+62s         Normal   Created                pod/tcc-api-canary-787bdcb856-xdlmf    Created container: tcc-api
+62s         Normal   Pulled                 pod/tcc-api-canary-787bdcb856-xdlmf    Container image "gabrieldores/tcc-api:v1" already present on machine
+49s         Normal   RolloutStepCompleted   rollout/tcc-api-canary                 Rollout step 1/6 completed (setWeight: 20)
+48s         Normal   RolloutPaused          rollout/tcc-api-canary                 Rollout is paused (CanaryPauseStep)
+18s         Normal   RolloutStepCompleted   rollout/tcc-api-canary                 Rollout step 2/6 completed (pause: 30s)
+18s         Normal   RolloutResumed         rollout/tcc-api-canary                 Rollout is resumed
+16s         Normal   AnalysisRunRunning     rollout/tcc-api-canary                 Step Analysis Run 'tcc-api-canary-787bdcb856-8-2' Status New: 'Running' Previous: ''

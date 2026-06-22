@@ -1,0 +1,127 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Rollout
+metadata:
+  annotations:
+    argocd.argoproj.io/tracking-id: tcc-rollouts:argoproj.io/Rollout:app-tcc/tcc-api-canary
+    kubectl.kubernetes.io/last-applied-configuration: |
+      {"apiVersion":"argoproj.io/v1alpha1","kind":"Rollout","metadata":{"annotations":{"argocd.argoproj.io/tracking-id":"tcc-rollouts:argoproj.io/Rollout:app-tcc/tcc-api-canary"},"name":"tcc-api-canary","namespace":"app-tcc"},"spec":{"replicas":4,"selector":{"matchLabels":{"app":"tcc-api"}},"strategy":{"canary":{"steps":[{"setWeight":20},{"pause":{"duration":"30s"}},{"analysis":{"templates":[{"templateName":"tcc-api-success-rate"}]}},{"setWeight":50},{"pause":{"duration":"30s"}},{"setWeight":100}]}},"template":{"metadata":{"labels":{"app":"tcc-api"}},"spec":{"containers":[{"env":[{"name":"APP_VERSION","value":"v1.0.0"},{"name":"APP_COLOR","value":"bluen"},{"name":"ERROR_RATE","value":"0"},{"name":"SLOW_MS","value":"0"}],"image":"gabrieldores/tcc-api:v1","livenessProbe":{"httpGet":{"path":"/health","port":3000},"initialDelaySeconds":10,"periodSeconds":15},"name":"tcc-api","ports":[{"containerPort":3000}],"readinessProbe":{"httpGet":{"path":"/ready","port":3000},"initialDelaySeconds":5,"periodSeconds":10},"resources":{"limits":{"cpu":"200m","memory":"128Mi"},"requests":{"cpu":"100m","memory":"64Mi"}}}]}}}}
+    rollout.argoproj.io/revision: "11"
+  creationTimestamp: "2026-06-16T00:42:11Z"
+  generation: 12
+  name: tcc-api-canary
+  namespace: app-tcc
+  resourceVersion: "10109740"
+  uid: d9e1b49e-89d3-42e8-a20f-50e9d85abcc4
+spec:
+  replicas: 4
+  selector:
+    matchLabels:
+      app: tcc-api
+  strategy:
+    canary:
+      steps:
+      - setWeight: 20
+      - pause:
+          duration: 30s
+      - analysis:
+          templates:
+          - templateName: tcc-api-success-rate
+      - setWeight: 50
+      - pause:
+          duration: 30s
+      - setWeight: 100
+  template:
+    metadata:
+      labels:
+        app: tcc-api
+    spec:
+      containers:
+      - env:
+        - name: APP_VERSION
+          value: v1.0.0
+        - name: APP_COLOR
+          value: bluen
+        - name: ERROR_RATE
+          value: "0"
+        - name: SLOW_MS
+          value: "0"
+        image: gabrieldores/tcc-api:v1
+        livenessProbe:
+          httpGet:
+            path: /health
+            port: 3000
+          initialDelaySeconds: 10
+          periodSeconds: 15
+        name: tcc-api
+        ports:
+        - containerPort: 3000
+          protocol: TCP
+        readinessProbe:
+          httpGet:
+            path: /ready
+            port: 3000
+          initialDelaySeconds: 5
+          periodSeconds: 10
+        resources:
+          limits:
+            cpu: 200m
+            memory: 128Mi
+          requests:
+            cpu: 100m
+            memory: 64Mi
+status:
+  HPAReplicas: 4
+  abort: true
+  abortedAt: "2026-06-22T21:25:05Z"
+  availableReplicas: 4
+  blueGreen: {}
+  canary:
+    currentStepAnalysisRunStatus:
+      message: Metric "error-rate" assessed Failed due to failed (3) > failureLimit
+        (2)
+      name: tcc-api-canary-b669fbb57-11-2
+      status: Failed
+  conditions:
+  - lastTransitionTime: "2026-06-22T21:03:06Z"
+    lastUpdateTime: "2026-06-22T21:03:06Z"
+    message: Rollout has minimum availability
+    reason: AvailableReason
+    status: "True"
+    type: Available
+  - lastTransitionTime: "2026-06-22T21:14:35Z"
+    lastUpdateTime: "2026-06-22T21:14:35Z"
+    message: Rollout is not healthy
+    reason: RolloutHealthy
+    status: "False"
+    type: Healthy
+  - lastTransitionTime: "2026-06-22T21:14:35Z"
+    lastUpdateTime: "2026-06-22T21:14:35Z"
+    message: RolloutCompleted
+    reason: RolloutCompleted
+    status: "False"
+    type: Completed
+  - lastTransitionTime: "2026-06-22T21:23:33Z"
+    lastUpdateTime: "2026-06-22T21:23:33Z"
+    message: Rollout is paused
+    reason: RolloutPaused
+    status: "False"
+    type: Paused
+  - lastTransitionTime: "2026-06-22T21:25:05Z"
+    lastUpdateTime: "2026-06-22T21:25:05Z"
+    message: 'Rollout aborted update to revision 11: Step-based analysis phase error/failed:
+      Metric "error-rate" assessed Failed due to failed (3) > failureLimit (2)'
+    reason: RolloutAborted
+    status: "False"
+    type: Progressing
+  currentPodHash: b669fbb57
+  currentStepHash: 799df774d7
+  currentStepIndex: 0
+  message: 'RolloutAborted: Rollout aborted update to revision 11: Step-based analysis
+    phase error/failed: Metric "error-rate" assessed Failed due to failed (3) > failureLimit
+    (2)'
+  observedGeneration: "12"
+  phase: Degraded
+  readyReplicas: 4
+  replicas: 4
+  selector: app=tcc-api
+  stableRS: 86c5dc54d7
