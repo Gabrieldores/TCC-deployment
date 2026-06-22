@@ -1,0 +1,717 @@
+============================================================
+ TCC — Canary vs Blue-Green
+ Relatório Final de Experimentos
+============================================================
+
+Gerado em: Mon Jun 22 23:05:39 CEST 2026
+Base URL: http://tcc-api.158.220.111.79.nip.io
+
+============================================================
+ BASELINE
+============================================================
+Resumo k6:
+{
+    "metrics": {
+        "data_received": {
+            "count": 6482382,
+            "rate": 35974.28069317643
+        },
+        "vus_max": {
+            "min": 100,
+            "max": 100,
+            "value": 100
+        },
+        "checks": {
+            "passes": 41580,
+            "fails": 0,
+            "value": 1
+        },
+        "http_req_duration": {
+            "p(95)": 501.8141475,
+            "avg": 30.07351034112558,
+            "min": 0.941493,
+            "med": 3.8627735000000003,
+            "max": 589.610963,
+            "p(90)": 8.818672300000005,
+            "thresholds": {
+                "p(95)<1000": false
+            }
+        },
+        "http_req_failed": {
+            "passes": 0,
+            "fails": 20790,
+            "thresholds": {
+                "rate<0.05": false
+            },
+            "value": 0
+        },
+        "http_req_blocked": {
+            "p(95)": 0.024296099999999984,
+            "avg": 0.02310474088504085,
+            "min": 0.003446,
+            "med": 0.011332,
+            "max": 29.639271,
+            "p(90)": 0.015540800000000018
+        },
+        "http_req_sending": {
+            "med": 0.035566,
+            "max": 20.493312,
+            "p(90)": 0.06630400000000002,
+            "p(95)": 0.10786504999999988,
+            "avg": 0.055510086002886413,
+            "min": 0.007094
+        },
+        "data_sent": {
+            "count": 1896032,
+            "rate": 10522.117852857898
+        },
+        "http_reqs": {
+            "count": 20790,
+            "rate": 115.37507286845144
+        },
+        "vus": {
+            "max": 99,
+            "value": 2,
+            "min": 1
+        },
+        "tcc_response_time": {
+            "med": 3.8627735000000003,
+            "max": 589.610963,
+            "p(90)": 8.818672300000005,
+            "p(95)": 501.8141475,
+            "avg": 30.07351034112558,
+            "min": 0.941493,
+            "thresholds": {
+                "p(95)<1000": false,
+                "p(99)<2000": false
+            }
+        },
+        "http_req_connecting": {
+            "max": 3.471364,
+            "p(90)": 0,
+            "p(95)": 0,
+            "avg": 0.0035402205387205393,
+            "min": 0,
+            "med": 0
+        },
+        "tcc_success_rate": {
+            "passes": 20790,
+            "fails": 0,
+            "thresholds": {
+                "rate>0.95": false
+            },
+            "value": 1
+        },
+        "http_req_waiting": {
+            "avg": 29.844538850553306,
+            "min": 0.882363,
+            "med": 3.646856,
+            "max": 589.506127,
+            "p(90)": 8.488352400000002,
+            "p(95)": 501.6403965
+        },
+        "http_req_receiving": {
+            "p(90)": 0.248143,
+            "p(95)": 0.4026055499999993,
+            "avg": 0.17346140456950532,
+            "min": 0.017313,
+            "med": 0.134726,
+            "max": 25.37332
+        },
+        "iterations": {
+            "count": 20790,
+            "rate": 115.37507286845144
+        },
+        "http_req_duration{expected_response:true}": {
+            "p(90)": 8.818672300000005,
+            "p(95)": 501.8141475,
+            "avg": 30.07351034112558,
+            "min": 0.941493,
+            "med": 3.8627735000000003,
+            "max": 589.610963
+        },
+        "http_req_tls_handshaking": {
+            "med": 0,
+            "max": 0,
+            "p(90)": 0,
+            "p(95)": 0,
+            "avg": 0,
+            "min": 0
+        },
+        "iteration_duration": {
+            "med": 367.1307635,
+            "max": 1153.57425,
+            "p(90)": 580.1609145000001,
+            "p(95)": 621.7441242499997,
+            "avg": 381.19784212862123,
+            "min": 102.889423
+        }
+    },
+    "root_group": {
+        "groups": {},
+        "checks": {
+            "status 2xx": {
+                "name": "status 2xx",
+                "path": "::status 2xx",
+                "id": "5bf9cd1e387741ed8e40bbdbca9b6c92",
+                "passes": 20790,
+                "fails": 0
+            },
+            "response < 1000ms": {
+                "name": "response < 1000ms",
+                "path": "::response < 1000ms",
+                "id": "cba313e59fa960a53baf38a0ef887915",
+                "passes": 20790,
+                "fails": 0
+            }
+        },
+        "name": "",
+        "path": "",
+        "id": "d41d8cd98f00b204e9800998ecf8427e"
+    }
+}
+
+============================================================
+ CANARY
+============================================================
+Resumo k6:
+{
+    "root_group": {
+        "id": "d41d8cd98f00b204e9800998ecf8427e",
+        "groups": {},
+        "checks": {
+            "status 2xx": {
+                "name": "status 2xx",
+                "path": "::status 2xx",
+                "id": "5bf9cd1e387741ed8e40bbdbca9b6c92",
+                "passes": 20513,
+                "fails": 5
+            },
+            "response < 1000ms": {
+                "path": "::response < 1000ms",
+                "id": "cba313e59fa960a53baf38a0ef887915",
+                "passes": 20518,
+                "fails": 0,
+                "name": "response < 1000ms"
+            }
+        },
+        "name": "",
+        "path": ""
+    },
+    "metrics": {
+        "http_req_receiving": {
+            "avg": 0.1698245121844236,
+            "min": 0.014708,
+            "med": 0.1319455,
+            "max": 25.103703,
+            "p(90)": 0.2328867,
+            "p(95)": 0.3666906499999982
+        },
+        "http_req_failed": {
+            "passes": 5,
+            "fails": 20513,
+            "thresholds": {
+                "rate<0.05": false
+            },
+            "value": 0.00024368846866166293
+        },
+        "data_received": {
+            "count": 6384041,
+            "rate": 35441.975872482035
+        },
+        "http_req_tls_handshaking": {
+            "min": 0,
+            "med": 0,
+            "max": 0,
+            "p(90)": 0,
+            "p(95)": 0,
+            "avg": 0
+        },
+        "vus_max": {
+            "value": 100,
+            "min": 100,
+            "max": 100
+        },
+        "http_reqs": {
+            "count": 20518,
+            "rate": 113.90880179992367
+        },
+        "tcc_errors_total": {
+            "count": 5,
+            "rate": 0.02775826147770827
+        },
+        "tcc_response_time": {
+            "avg": 34.54165429154864,
+            "min": 0.861494,
+            "med": 3.730598,
+            "max": 828.284887,
+            "p(90)": 8.108075799999998,
+            "p(95)": 502.6206523,
+            "thresholds": {
+                "p(95)<1000": false,
+                "p(99)<2000": false
+            }
+        },
+        "data_sent": {
+            "count": 1870754,
+            "rate": 10385.775738493732
+        },
+        "http_req_waiting": {
+            "max": 828.043598,
+            "p(90)": 7.850316299999999,
+            "p(95)": 502.45609344999997,
+            "avg": 34.31910248279573,
+            "min": 0.797264,
+            "med": 3.527625
+        },
+        "iterations": {
+            "count": 20518,
+            "rate": 113.90880179992367
+        },
+        "vus": {
+            "value": 2,
+            "min": 1,
+            "max": 99
+        },
+        "http_req_blocked": {
+            "p(95)": 0.024807649999999976,
+            "avg": 0.020645342431036065,
+            "min": 0.002815,
+            "med": 0.011276000000000001,
+            "max": 18.081274,
+            "p(90)": 0.015532699999999995
+        },
+        "http_req_sending": {
+            "min": 0.007354,
+            "med": 0.035016,
+            "max": 20.504978,
+            "p(90)": 0.06452299999999998,
+            "p(95)": 0.10116299999999978,
+            "avg": 0.05272729656886633
+        },
+        "iteration_duration": {
+            "avg": 386.40911339911423,
+            "min": 103.43623,
+            "med": 373.509996,
+            "max": 1399.104196,
+            "p(90)": 583.5363941,
+            "p(95)": 671.122331
+        },
+        "http_req_duration": {
+            "med": 3.730598,
+            "max": 828.284887,
+            "p(90)": 8.108075799999998,
+            "p(95)": 502.6206523,
+            "avg": 34.54165429154863,
+            "min": 0.861494,
+            "thresholds": {
+                "p(95)<1000": false
+            }
+        },
+        "tcc_success_rate": {
+            "passes": 20513,
+            "fails": 5,
+            "thresholds": {
+                "rate>0.95": false
+            },
+            "value": 0.9997563115313384
+        },
+        "checks": {
+            "passes": 41031,
+            "fails": 5,
+            "value": 0.9998781557656692
+        },
+        "http_req_duration{expected_response:true}": {
+            "p(95)": 502.62355279999997,
+            "avg": 34.549089899429376,
+            "min": 0.861494,
+            "med": 3.73141,
+            "max": 828.284887,
+            "p(90)": 8.109403799999999
+        },
+        "http_req_connecting": {
+            "avg": 0.003302586411930988,
+            "min": 0,
+            "med": 0,
+            "max": 2.369894,
+            "p(90)": 0,
+            "p(95)": 0
+        }
+    }
+}
+
+Status Argo Rollouts:
+Status:
+  HPA Replicas:        5
+  Available Replicas:  5
+  Blue Green:
+  Canary:
+    Current Step Analysis Run Status:
+      Name:    tcc-api-canary-787bdcb856-8-2
+      Status:  Running
+  Conditions:
+    Last Transition Time:  2026-06-21T00:16:33Z
+    Last Update Time:      2026-06-21T00:16:33Z
+    Message:               Rollout has minimum availability
+    Reason:                AvailableReason
+    Status:                True
+    Type:                  Available
+    Last Transition Time:  2026-06-22T20:54:50Z
+    Last Update Time:      2026-06-22T20:54:50Z
+    Message:               Rollout is not healthy
+    Reason:                RolloutHealthy
+    Status:                False
+    Type:                  Healthy
+    Last Transition Time:  2026-06-22T20:54:50Z
+    Last Update Time:      2026-06-22T20:54:50Z
+    Message:               RolloutCompleted
+    Reason:                RolloutCompleted
+    Status:                False
+    Type:                  Completed
+    Last Transition Time:  2026-06-22T20:55:36Z
+    Last Update Time:      2026-06-22T20:55:36Z
+    Message:               ReplicaSet "tcc-api-canary-787bdcb856" is progressing.
+    Reason:                ReplicaSetUpdated
+    Status:                True
+    Type:                  Progressing
+    Last Transition Time:  2026-06-22T20:55:36Z
+    Last Update Time:      2026-06-22T20:55:36Z
+    Message:               Rollout is paused
+    Reason:                RolloutPaused
+    Status:                False
+    Type:                  Paused
+  Current Pod Hash:        787bdcb856
+  Current Step Hash:       799df774d7
+  Current Step Index:      2
+  Message:                 more replicas need to be updated
+  Observed Generation:     9
+  Phase:                   Progressing
+  Ready Replicas:          5
+  Replicas:                5
+  Selector:                app=tcc-api
+  Stable RS:               86c5dc54d7
+  Updated Replicas:        1
+--
+  Type    Reason                Age                From                 Message
+  ----    ------                ----               ----                 -------
+  Normal  RolloutUpdated        63s                rollouts-controller  Rollout updated to revision 8
+  Normal  NewReplicaSetCreated  63s                rollouts-controller  Created ReplicaSet tcc-api-canary-787bdcb856 (revision 8)
+  Normal  RolloutNotCompleted   63s                rollouts-controller  Rollout not completed, started update to revision 8 (787bdcb856)
+  Normal  ScalingReplicaSet     62s                rollouts-controller  Scaled up ReplicaSet tcc-api-canary-787bdcb856 (revision 8) from 0 to 1
+--
+  Normal  AnalysisRunRunning    15s                rollouts-controller  Step Analysis Run 'tcc-api-canary-787bdcb856-8-2' Status New: 'Running' Previous: ''
+
+============================================================
+ BLUE-GREEN
+============================================================
+Resumo k6:
+{
+    "root_group": {
+        "name": "",
+        "path": "",
+        "id": "d41d8cd98f00b204e9800998ecf8427e",
+        "groups": {},
+        "checks": {
+            "status 2xx": {
+                "name": "status 2xx",
+                "path": "::status 2xx",
+                "id": "5bf9cd1e387741ed8e40bbdbca9b6c92",
+                "passes": 20085,
+                "fails": 15
+            },
+            "response < 1000ms": {
+                "name": "response < 1000ms",
+                "path": "::response < 1000ms",
+                "id": "cba313e59fa960a53baf38a0ef887915",
+                "passes": 20100,
+                "fails": 0
+            }
+        }
+    },
+    "metrics": {
+        "checks": {
+            "passes": 40185,
+            "fails": 15,
+            "value": 0.9996268656716418
+        },
+        "http_req_duration": {
+            "min": 0.918801,
+            "med": 4.201396,
+            "max": 910.765328,
+            "p(90)": 12.792694900000047,
+            "p(95)": 503.5276437,
+            "avg": 42.864968984626685,
+            "thresholds": {
+                "p(95)<1000": false
+            }
+        },
+        "http_req_connecting": {
+            "min": 0,
+            "med": 0,
+            "max": 3.622026,
+            "p(90)": 0,
+            "p(95)": 0,
+            "avg": 0.0037641146766169147
+        },
+        "http_req_tls_handshaking": {
+            "p(90)": 0,
+            "p(95)": 0,
+            "avg": 0,
+            "min": 0,
+            "med": 0,
+            "max": 0
+        },
+        "http_req_receiving": {
+            "avg": 0.18210021313432792,
+            "min": 0.017392,
+            "med": 0.13283250000000002,
+            "max": 27.710341,
+            "p(90)": 0.2548020000000002,
+            "p(95)": 0.4289304999999998
+        },
+        "tcc_response_time": {
+            "med": 4.201396,
+            "max": 910.765328,
+            "p(90)": 12.792694900000047,
+            "p(95)": 503.5276437,
+            "avg": 42.864968984626685,
+            "min": 0.918801,
+            "thresholds": {
+                "p(95)<1000": false,
+                "p(99)<2000": false
+            }
+        },
+        "vus": {
+            "value": 2,
+            "min": 1,
+            "max": 99
+        },
+        "http_reqs": {
+            "count": 20100,
+            "rate": 111.15954516899761
+        },
+        "iterations": {
+            "count": 20100,
+            "rate": 111.15954516899761
+        },
+        "data_received": {
+            "count": 6254141,
+            "rate": 34587.43626779999
+        },
+        "http_req_failed": {
+            "passes": 15,
+            "fails": 20085,
+            "thresholds": {
+                "rate<0.05": false
+            },
+            "value": 0.0007462686567164179
+        },
+        "iteration_duration": {
+            "med": 374.1064205,
+            "max": 1433.818394,
+            "p(90)": 588.0562187000002,
+            "p(95)": 762.2603086999999,
+            "avg": 394.340932248459,
+            "min": 102.89338
+        },
+        "tcc_success_rate": {
+            "passes": 20085,
+            "fails": 15,
+            "thresholds": {
+                "rate>0.95": false
+            },
+            "value": 0.9992537313432835
+        },
+        "http_req_sending": {
+            "min": 0.006613,
+            "med": 0.034518999999999994,
+            "max": 19.547368,
+            "p(90)": 0.06749690000000003,
+            "p(95)": 0.11321859999999988,
+            "avg": 0.05778608691542298
+        },
+        "data_sent": {
+            "rate": 10140.670531345379,
+            "count": 1833648
+        },
+        "vus_max": {
+            "value": 100,
+            "min": 100,
+            "max": 100
+        },
+        "tcc_errors_total": {
+            "count": 15,
+            "rate": 0.08295488445447582
+        },
+        "http_req_duration{expected_response:true}": {
+            "avg": 42.89248211809792,
+            "min": 0.918801,
+            "med": 4.201466,
+            "max": 910.765328,
+            "p(90)": 12.803404400000048,
+            "p(95)": 503.52895920000003
+        },
+        "http_req_blocked": {
+            "max": 17.256802,
+            "p(90)": 0.015829100000000002,
+            "p(95)": 0.025668,
+            "avg": 0.02364036228855708,
+            "min": 0.003387,
+            "med": 0.011161
+        },
+        "http_req_waiting": {
+            "p(95)": 503.32991549999997,
+            "avg": 42.62508268457744,
+            "min": 0.803867,
+            "med": 3.984516,
+            "max": 910.573601,
+            "p(90)": 12.302524500000041
+        }
+    }
+}
+
+Status Argo Rollouts:
+Status:
+  HPA Replicas:        4
+  Abort:               true
+  Aborted At:          2026-06-22T21:03:20Z
+  Available Replicas:  4
+  Blue Green:
+--
+    Pre Promotion Analysis Run Status:
+      Message:         Metric "error-rate" assessed Error due to consecutiveErrors (5) > consecutiveErrorLimit (4): "Error Message: reflect: slice index out of range"
+      Name:            tcc-api-bluegreen-787bdcb856-4-pre
+      Status:          Error
+    Preview Selector:  787bdcb856
+  Canary:
+  Conditions:
+    Last Transition Time:  2026-06-21T00:08:51Z
+    Last Update Time:      2026-06-21T00:08:51Z
+    Message:               Rollout has minimum availability
+    Reason:                AvailableReason
+    Status:                True
+    Type:                  Available
+    Last Transition Time:  2026-06-22T21:02:25Z
+    Last Update Time:      2026-06-22T21:02:25Z
+    Message:               Rollout is not healthy
+    Reason:                RolloutHealthy
+    Status:                False
+    Type:                  Healthy
+    Last Transition Time:  2026-06-22T21:02:25Z
+    Last Update Time:      2026-06-22T21:02:25Z
+    Message:               RolloutCompleted
+    Reason:                RolloutCompleted
+    Status:                False
+    Type:                  Completed
+    Last Transition Time:  2026-06-22T21:03:20Z
+    Last Update Time:      2026-06-22T21:03:20Z
+    Message:               Rollout aborted update to revision 4: Blue/green pre-promotion analysis phase error/failed: Metric "error-rate" assessed Error due to consecutiveErrors (5) > consecutiveErrorLimit (4): "Error Message: reflect: slice index out of range"
+    Reason:                RolloutAborted
+    Status:                False
+    Type:                  Progressing
+  Current Pod Hash:        787bdcb856
+  Message:                 RolloutAborted: Rollout aborted update to revision 4: Blue/green pre-promotion analysis phase error/failed: Metric "error-rate" assessed Error due to consecutiveErrors (5) > consecutiveErrorLimit (4): "Error Message: reflect: slice index out of range"
+  Observed Generation:     4
+  Phase:                   Degraded
+  Ready Replicas:          4
+  Replicas:                8
+  Selector:                app=tcc-api,rollouts-pod-template-hash=86c5dc54d7
+  Stable RS:               86c5dc54d7
+  Updated Replicas:        4
+--
+  Type     Reason                Age   From                 Message
+  ----     ------                ----  ----                 -------
+  Normal   RolloutUpdated        59s   rollouts-controller  Rollout updated to revision 4
+  Normal   NewReplicaSetCreated  59s   rollouts-controller  Created ReplicaSet tcc-api-bluegreen-787bdcb856 (revision 4)
+  Normal   SwitchService         58s   rollouts-controller  Switched selector for service 'tcc-api-preview' from '86c5dc54d7' to '787bdcb856'
+  Normal   RolloutNotCompleted   58s   rollouts-controller  Rollout not completed, started update to revision 4 (787bdcb856)
+--
+  Normal   AnalysisRunRunning    43s   rollouts-controller  PrePromotion Analysis Run 'tcc-api-bluegreen-787bdcb856-4-pre' Status New: 'Running' Previous: ''
+  Warning  AnalysisRunError      4s    rollouts-controller  PrePromotion Analysis Run 'tcc-api-bluegreen-787bdcb856-4-pre' Status New: 'Error' Previous: 'Running'
+  Warning  RolloutAborted        3s    rollouts-controller  Rollout aborted update to revision 4: Blue/green pre-promotion analysis phase error/failed: Metric "error-rate" assessed Error due to consecutiveErrors (5) > consecutiveErrorLimit (4): "Error Message: reflect: slice index out of range"
+
+============================================================
+ ARQUIVOS GERADOS
+============================================================
+./results/baseline.json
+./results/baseline_k6.json
+./results/baseline_k6_output.txt
+./results/baseline_summary.json
+./results/bluegreen-deploy.json
+./results/bluegreen_k6.json
+./results/bluegreen_k6_output.txt
+./results/bluegreen_summary.json
+./results/canary-deploy.json
+./results/canary_k6.json
+./results/canary_k6_output.txt
+./results/canary_summary.json
+./results/prometheus-errors-by-path.json
+./results/prometheus-errors.json
+./results/prometheus-latency-p95.json
+./results/prometheus-latency-p99.json
+./results/prometheus-success-rate.json
+./results/prometheus_baseline_antes/active_requests.json
+./results/prometheus_baseline_antes/errors_per_second.json
+./results/prometheus_baseline_antes/errors_total.json
+./results/prometheus_baseline_antes/latency_p95.json
+./results/prometheus_baseline_antes/latency_p99.json
+./results/prometheus_baseline_antes/requests_by_path.json
+./results/prometheus_baseline_antes/success_rate.json
+./results/prometheus_baseline_depois/active_requests.json
+./results/prometheus_baseline_depois/errors_per_second.json
+./results/prometheus_baseline_depois/errors_total.json
+./results/prometheus_baseline_depois/latency_p95.json
+./results/prometheus_baseline_depois/latency_p99.json
+./results/prometheus_baseline_depois/requests_by_path.json
+./results/prometheus_baseline_depois/success_rate.json
+./results/prometheus_bluegreen_apos_rollback/active_requests.json
+./results/prometheus_bluegreen_apos_rollback/errors_per_second.json
+./results/prometheus_bluegreen_apos_rollback/errors_total.json
+./results/prometheus_bluegreen_apos_rollback/latency_p95.json
+./results/prometheus_bluegreen_apos_rollback/latency_p99.json
+./results/prometheus_bluegreen_apos_rollback/requests_by_path.json
+./results/prometheus_bluegreen_apos_rollback/success_rate.json
+./results/prometheus_bluegreen_durante_caos/active_requests.json
+./results/prometheus_bluegreen_durante_caos/errors_per_second.json
+./results/prometheus_bluegreen_durante_caos/errors_total.json
+./results/prometheus_bluegreen_durante_caos/latency_p95.json
+./results/prometheus_bluegreen_durante_caos/latency_p99.json
+./results/prometheus_bluegreen_durante_caos/requests_by_path.json
+./results/prometheus_bluegreen_durante_caos/success_rate.json
+./results/prometheus_canary_apos_rollback/active_requests.json
+./results/prometheus_canary_apos_rollback/errors_per_second.json
+./results/prometheus_canary_apos_rollback/errors_total.json
+./results/prometheus_canary_apos_rollback/latency_p95.json
+./results/prometheus_canary_apos_rollback/latency_p99.json
+./results/prometheus_canary_apos_rollback/requests_by_path.json
+./results/prometheus_canary_apos_rollback/success_rate.json
+./results/prometheus_canary_durante_caos/active_requests.json
+./results/prometheus_canary_durante_caos/errors_per_second.json
+./results/prometheus_canary_durante_caos/errors_total.json
+./results/prometheus_canary_durante_caos/latency_p95.json
+./results/prometheus_canary_durante_caos/latency_p99.json
+./results/prometheus_canary_durante_caos/requests_by_path.json
+./results/prometheus_canary_durante_caos/success_rate.json
+./results/relatorio_final_20260622_224838.txt
+./results/rollout_bluegreen_antes/analysisrun.yaml
+./results/rollout_bluegreen_antes/events.txt
+./results/rollout_bluegreen_antes/pods.txt
+./results/rollout_bluegreen_antes/rollout_describe.txt
+./results/rollout_bluegreen_antes/rollout_status.yaml
+./results/rollout_bluegreen_rollback/analysisrun.yaml
+./results/rollout_bluegreen_rollback/events.txt
+./results/rollout_bluegreen_rollback/pods.txt
+./results/rollout_bluegreen_rollback/rollout_describe.txt
+./results/rollout_bluegreen_rollback/rollout_status.yaml
+./results/rollout_canary_antes/analysisrun.yaml
+./results/rollout_canary_antes/events.txt
+./results/rollout_canary_antes/pods.txt
+./results/rollout_canary_antes/rollout_describe.txt
+./results/rollout_canary_antes/rollout_status.yaml
+./results/rollout_canary_rollback/analysisrun.yaml
+./results/rollout_canary_rollback/events.txt
+./results/rollout_canary_rollback/pods.txt
+./results/rollout_canary_rollback/rollout_describe.txt
+./results/rollout_canary_rollback/rollout_status.yaml
+./results/summary-canary.json
+./results/summary-json-blue-green.json

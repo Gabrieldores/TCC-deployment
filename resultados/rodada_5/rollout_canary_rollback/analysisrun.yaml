@@ -1,0 +1,1597 @@
+apiVersion: v1
+items:
+- apiVersion: argoproj.io/v1alpha1
+  kind: AnalysisRun
+  metadata:
+    annotations:
+      rollout.argoproj.io/revision: "2"
+    creationTimestamp: "2026-06-21T00:16:03Z"
+    generation: 12
+    labels:
+      app: tcc-api
+      rollout-type: PrePromotion
+      rollouts-pod-template-hash: 776d9bb8df
+    name: tcc-api-bluegreen-776d9bb8df-2-pre
+    namespace: app-tcc
+    ownerReferences:
+    - apiVersion: argoproj.io/v1alpha1
+      blockOwnerDeletion: true
+      controller: true
+      kind: Rollout
+      name: tcc-api-bluegreen
+      uid: 4d2667d5-e5d7-4e67-adf6-20c48933333b
+    resourceVersion: "9895864"
+    uid: ef2805af-636a-4fd9-a6c1-300f1669807c
+  spec:
+    metrics:
+    - count: 5
+      failureCondition: result[0] < 0.90
+      failureLimit: 2
+      interval: 30s
+      name: success-rate
+      provider:
+        prometheus:
+          address: http://prometheus-kube-prometheus-prometheus.monitoring.svc:9090
+          authentication:
+            oauth2: {}
+            sigv4: {}
+          query: |
+            sum(rate(http_requests_total{path!="/metrics",status=~"2.."}[1m]))
+            /
+            sum(rate(http_requests_total{path!="/metrics"}[1m]))
+      successCondition: result[0] >= 0.95
+    - count: 5
+      failureCondition: result[0] > 2000
+      failureLimit: 2
+      interval: 30s
+      name: latency-p95
+      provider:
+        prometheus:
+          address: http://prometheus-kube-prometheus-prometheus.monitoring.svc:9090
+          authentication:
+            oauth2: {}
+            sigv4: {}
+          query: |
+            histogram_quantile(0.95,
+              sum(rate(http_request_duration_ms_bucket{path!="/metrics"}[1m]))
+              by (le)
+            )
+      successCondition: result[0] <= 1000
+    - count: 5
+      failureCondition: result[0] > 0.10
+      failureLimit: 2
+      interval: 30s
+      name: error-rate
+      provider:
+        prometheus:
+          address: http://prometheus-kube-prometheus-prometheus.monitoring.svc:9090
+          authentication:
+            oauth2: {}
+            sigv4: {}
+          query: |
+            sum(rate(app_errors_total[1m]))
+      successCondition: result[0] <= 0.05
+  status:
+    completedAt: "2026-06-21T00:18:13Z"
+    dryRunSummary: {}
+    message: Metric "error-rate" assessed Failed due to failed (3) > failureLimit
+      (2)
+    metricResults:
+    - count: 4
+      error: 4
+      failed: 3
+      measurements:
+      - finishedAt: "2026-06-21T00:16:03Z"
+        message: 'reflect: slice index out of range'
+        phase: Error
+        startedAt: "2026-06-21T00:16:03Z"
+      - finishedAt: "2026-06-21T00:16:13Z"
+        message: 'reflect: slice index out of range'
+        phase: Error
+        startedAt: "2026-06-21T00:16:13Z"
+      - finishedAt: "2026-06-21T00:16:23Z"
+        message: 'reflect: slice index out of range'
+        phase: Error
+        startedAt: "2026-06-21T00:16:23Z"
+      - finishedAt: "2026-06-21T00:16:33Z"
+        message: 'reflect: slice index out of range'
+        phase: Error
+        startedAt: "2026-06-21T00:16:33Z"
+      - finishedAt: "2026-06-21T00:16:43Z"
+        phase: Successful
+        startedAt: "2026-06-21T00:16:43Z"
+        value: '[0]'
+      - finishedAt: "2026-06-21T00:17:13Z"
+        phase: Failed
+        startedAt: "2026-06-21T00:17:13Z"
+        value: '[0.13988853425368813]'
+      - finishedAt: "2026-06-21T00:17:43Z"
+        phase: Failed
+        startedAt: "2026-06-21T00:17:43Z"
+        value: '[0.31206262347774016]'
+      - finishedAt: "2026-06-21T00:18:13Z"
+        phase: Failed
+        startedAt: "2026-06-21T00:18:13Z"
+        value: '[1.1750032074337602]'
+      metadata:
+        ResolvedPrometheusQuery: |
+          sum(rate(app_errors_total[1m]))
+      name: error-rate
+      phase: Failed
+      successful: 1
+    - consecutiveSuccess: 5
+      count: 5
+      measurements:
+      - finishedAt: "2026-06-21T00:16:03Z"
+        phase: Successful
+        startedAt: "2026-06-21T00:16:03Z"
+        value: '[1]'
+      - finishedAt: "2026-06-21T00:16:33Z"
+        phase: Successful
+        startedAt: "2026-06-21T00:16:33Z"
+        value: '[1]'
+      - finishedAt: "2026-06-21T00:17:03Z"
+        phase: Successful
+        startedAt: "2026-06-21T00:17:03Z"
+        value: '[0.9988161089547518]'
+      - finishedAt: "2026-06-21T00:17:33Z"
+        phase: Successful
+        startedAt: "2026-06-21T00:17:33Z"
+        value: '[0.9982217800640408]'
+      - finishedAt: "2026-06-21T00:18:03Z"
+        phase: Successful
+        startedAt: "2026-06-21T00:18:03Z"
+        value: '[0.9962762053404632]'
+      metadata:
+        ResolvedPrometheusQuery: |
+          sum(rate(http_requests_total{path!="/metrics",status=~"2.."}[1m]))
+          /
+          sum(rate(http_requests_total{path!="/metrics"}[1m]))
+      name: success-rate
+      phase: Successful
+      successful: 5
+    - consecutiveSuccess: 5
+      count: 5
+      measurements:
+      - finishedAt: "2026-06-21T00:16:03Z"
+        phase: Successful
+        startedAt: "2026-06-21T00:16:03Z"
+        value: '[9.799324781650302]'
+      - finishedAt: "2026-06-21T00:16:33Z"
+        phase: Successful
+        startedAt: "2026-06-21T00:16:33Z"
+        value: '[32.50507445197083]'
+      - finishedAt: "2026-06-21T00:17:03Z"
+        phase: Successful
+        startedAt: "2026-06-21T00:17:03Z"
+        value: '[848.077367818928]'
+      - finishedAt: "2026-06-21T00:17:33Z"
+        phase: Successful
+        startedAt: "2026-06-21T00:17:33Z"
+        value: '[856.6926606044402]'
+      - finishedAt: "2026-06-21T00:18:03Z"
+        phase: Successful
+        startedAt: "2026-06-21T00:18:03Z"
+        value: '[864.0680126901217]'
+      metadata:
+        ResolvedPrometheusQuery: |
+          histogram_quantile(0.95,
+            sum(rate(http_request_duration_ms_bucket{path!="/metrics"}[1m]))
+            by (le)
+          )
+      name: latency-p95
+      phase: Successful
+      successful: 5
+    phase: Failed
+    runSummary:
+      count: 3
+      failed: 1
+      successful: 2
+    startedAt: "2026-06-21T00:16:03Z"
+- apiVersion: argoproj.io/v1alpha1
+  kind: AnalysisRun
+  metadata:
+    annotations:
+      rollout.argoproj.io/revision: "4"
+    creationTimestamp: "2026-06-22T21:02:39Z"
+    generation: 7
+    labels:
+      app: tcc-api
+      rollout-type: PrePromotion
+      rollouts-pod-template-hash: 787bdcb856
+    name: tcc-api-bluegreen-787bdcb856-4-pre
+    namespace: app-tcc
+    ownerReferences:
+    - apiVersion: argoproj.io/v1alpha1
+      blockOwnerDeletion: true
+      controller: true
+      kind: Rollout
+      name: tcc-api-bluegreen
+      uid: 4d2667d5-e5d7-4e67-adf6-20c48933333b
+    resourceVersion: "10107550"
+    uid: c9f59d48-f958-4201-af24-8dcd70724fea
+  spec:
+    metrics:
+    - count: 5
+      failureCondition: result[0] < 0.90
+      failureLimit: 2
+      interval: 30s
+      name: success-rate
+      provider:
+        prometheus:
+          address: http://prometheus-kube-prometheus-prometheus.monitoring.svc:9090
+          authentication:
+            oauth2: {}
+            sigv4: {}
+          query: |
+            sum(rate(http_requests_total{path!="/metrics",status=~"2.."}[1m]))
+            /
+            sum(rate(http_requests_total{path!="/metrics"}[1m]))
+      successCondition: result[0] >= 0.95
+    - count: 5
+      failureCondition: result[0] > 2000
+      failureLimit: 2
+      interval: 30s
+      name: latency-p95
+      provider:
+        prometheus:
+          address: http://prometheus-kube-prometheus-prometheus.monitoring.svc:9090
+          authentication:
+            oauth2: {}
+            sigv4: {}
+          query: |
+            histogram_quantile(0.95,
+              sum(rate(http_request_duration_ms_bucket{path!="/metrics"}[1m]))
+              by (le)
+            )
+      successCondition: result[0] <= 1000
+    - count: 5
+      failureCondition: result[0] > 0.10
+      failureLimit: 2
+      interval: 30s
+      name: error-rate
+      provider:
+        prometheus:
+          address: http://prometheus-kube-prometheus-prometheus.monitoring.svc:9090
+          authentication:
+            oauth2: {}
+            sigv4: {}
+          query: |
+            sum(rate(app_errors_total[1m]))
+      successCondition: result[0] <= 0.05
+  status:
+    completedAt: "2026-06-22T21:03:19Z"
+    dryRunSummary: {}
+    message: 'Metric "error-rate" assessed Error due to consecutiveErrors (5) > consecutiveErrorLimit
+      (4): "Error Message: reflect: slice index out of range"'
+    metricResults:
+    - consecutiveError: 5
+      error: 5
+      measurements:
+      - finishedAt: "2026-06-22T21:02:39Z"
+        message: 'reflect: slice index out of range'
+        phase: Error
+        startedAt: "2026-06-22T21:02:39Z"
+      - finishedAt: "2026-06-22T21:02:49Z"
+        message: 'reflect: slice index out of range'
+        phase: Error
+        startedAt: "2026-06-22T21:02:49Z"
+      - finishedAt: "2026-06-22T21:02:59Z"
+        message: 'reflect: slice index out of range'
+        phase: Error
+        startedAt: "2026-06-22T21:02:59Z"
+      - finishedAt: "2026-06-22T21:03:09Z"
+        message: 'reflect: slice index out of range'
+        phase: Error
+        startedAt: "2026-06-22T21:03:09Z"
+      - finishedAt: "2026-06-22T21:03:19Z"
+        message: 'reflect: slice index out of range'
+        phase: Error
+        startedAt: "2026-06-22T21:03:19Z"
+      message: 'reflect: slice index out of range'
+      metadata:
+        ResolvedPrometheusQuery: |
+          sum(rate(app_errors_total[1m]))
+      name: error-rate
+      phase: Error
+    - consecutiveSuccess: 2
+      count: 2
+      measurements:
+      - finishedAt: "2026-06-22T21:02:39Z"
+        phase: Successful
+        startedAt: "2026-06-22T21:02:39Z"
+        value: '[1]'
+      - finishedAt: "2026-06-22T21:03:09Z"
+        phase: Successful
+        startedAt: "2026-06-22T21:03:09Z"
+        value: '[1]'
+      metadata:
+        ResolvedPrometheusQuery: |
+          sum(rate(http_requests_total{path!="/metrics",status=~"2.."}[1m]))
+          /
+          sum(rate(http_requests_total{path!="/metrics"}[1m]))
+      name: success-rate
+      phase: Successful
+      successful: 2
+    - consecutiveSuccess: 2
+      count: 2
+      measurements:
+      - finishedAt: "2026-06-22T21:02:39Z"
+        phase: Successful
+        startedAt: "2026-06-22T21:02:39Z"
+        value: '[9.5]'
+      - finishedAt: "2026-06-22T21:03:09Z"
+        phase: Successful
+        startedAt: "2026-06-22T21:03:09Z"
+        value: '[604.5233765455271]'
+      metadata:
+        ResolvedPrometheusQuery: |
+          histogram_quantile(0.95,
+            sum(rate(http_request_duration_ms_bucket{path!="/metrics"}[1m]))
+            by (le)
+          )
+      name: latency-p95
+      phase: Successful
+      successful: 2
+    phase: Error
+    runSummary:
+      count: 3
+      error: 1
+      successful: 2
+    startedAt: "2026-06-22T21:02:39Z"
+- apiVersion: argoproj.io/v1alpha1
+  kind: AnalysisRun
+  metadata:
+    annotations:
+      rollout.argoproj.io/revision: "6"
+    creationTimestamp: "2026-06-22T21:23:00Z"
+    generation: 6
+    labels:
+      app: tcc-api
+      rollout-type: PrePromotion
+      rollouts-pod-template-hash: 787bdcb856
+    name: tcc-api-bluegreen-787bdcb856-6-pre
+    namespace: app-tcc
+    ownerReferences:
+    - apiVersion: argoproj.io/v1alpha1
+      blockOwnerDeletion: true
+      controller: true
+      kind: Rollout
+      name: tcc-api-bluegreen
+      uid: 4d2667d5-e5d7-4e67-adf6-20c48933333b
+    resourceVersion: "10109702"
+    uid: 719e8f39-d2d5-4a19-9267-185311975cbb
+  spec:
+    metrics:
+    - count: 5
+      failureCondition: result[0] < 0.90
+      failureLimit: 2
+      interval: 30s
+      name: success-rate
+      provider:
+        prometheus:
+          address: http://prometheus-kube-prometheus-prometheus.monitoring.svc:9090
+          authentication:
+            oauth2: {}
+            sigv4: {}
+          query: |
+            sum(rate(http_requests_total{path!="/metrics",status=~"2.."}[1m]))
+            /
+            sum(rate(http_requests_total{path!="/metrics"}[1m]))
+      successCondition: result[0] >= 0.95
+    - count: 5
+      failureCondition: result[0] > 2000
+      failureLimit: 2
+      interval: 30s
+      name: latency-p95
+      provider:
+        prometheus:
+          address: http://prometheus-kube-prometheus-prometheus.monitoring.svc:9090
+          authentication:
+            oauth2: {}
+            sigv4: {}
+          query: |
+            histogram_quantile(0.95,
+              sum(rate(http_request_duration_ms_bucket{path!="/metrics"}[1m]))
+              by (le)
+            )
+      successCondition: result[0] <= 1000
+    - count: 5
+      failureCondition: result[0] > 0.10
+      failureLimit: 2
+      interval: 30s
+      name: error-rate
+      provider:
+        prometheus:
+          address: http://prometheus-kube-prometheus-prometheus.monitoring.svc:9090
+          authentication:
+            oauth2: {}
+            sigv4: {}
+          query: |
+            sum(rate(app_errors_total[1m]))
+      successCondition: result[0] <= 0.05
+  status:
+    completedAt: "2026-06-22T21:25:00Z"
+    dryRunSummary: {}
+    message: Metric "error-rate" assessed Failed due to failed (3) > failureLimit
+      (2)
+    metricResults:
+    - count: 5
+      failed: 3
+      measurements:
+      - finishedAt: "2026-06-22T21:23:00Z"
+        phase: Successful
+        startedAt: "2026-06-22T21:23:00Z"
+        value: '[0]'
+      - finishedAt: "2026-06-22T21:23:30Z"
+        phase: Successful
+        startedAt: "2026-06-22T21:23:30Z"
+        value: '[0]'
+      - finishedAt: "2026-06-22T21:24:00Z"
+        phase: Failed
+        startedAt: "2026-06-22T21:24:00Z"
+        value: '[0.15516669310582326]'
+      - finishedAt: "2026-06-22T21:24:30Z"
+        phase: Failed
+        startedAt: "2026-06-22T21:24:30Z"
+        value: '[0.35023266193953145]'
+      - finishedAt: "2026-06-22T21:25:00Z"
+        phase: Failed
+        startedAt: "2026-06-22T21:25:00Z"
+        value: '[0.8650321025740728]'
+      metadata:
+        ResolvedPrometheusQuery: |
+          sum(rate(app_errors_total[1m]))
+      name: error-rate
+      phase: Failed
+      successful: 2
+    - consecutiveSuccess: 5
+      count: 5
+      measurements:
+      - finishedAt: "2026-06-22T21:23:00Z"
+        phase: Successful
+        startedAt: "2026-06-22T21:23:00Z"
+        value: '[1]'
+      - finishedAt: "2026-06-22T21:23:30Z"
+        phase: Successful
+        startedAt: "2026-06-22T21:23:30Z"
+        value: '[1]'
+      - finishedAt: "2026-06-22T21:24:00Z"
+        phase: Successful
+        startedAt: "2026-06-22T21:24:00Z"
+        value: '[0.9969366038453774]'
+      - finishedAt: "2026-06-22T21:24:30Z"
+        phase: Successful
+        startedAt: "2026-06-22T21:24:30Z"
+        value: '[0.9971387199292541]'
+      - finishedAt: "2026-06-22T21:25:00Z"
+        phase: Successful
+        startedAt: "2026-06-22T21:25:00Z"
+        value: '[0.9958040522326802]'
+      metadata:
+        ResolvedPrometheusQuery: |
+          sum(rate(http_requests_total{path!="/metrics",status=~"2.."}[1m]))
+          /
+          sum(rate(http_requests_total{path!="/metrics"}[1m]))
+      name: success-rate
+      phase: Successful
+      successful: 5
+    - consecutiveSuccess: 5
+      count: 5
+      measurements:
+      - finishedAt: "2026-06-22T21:23:00Z"
+        phase: Successful
+        startedAt: "2026-06-22T21:23:00Z"
+        value: '[9.5]'
+      - finishedAt: "2026-06-22T21:23:30Z"
+        phase: Successful
+        startedAt: "2026-06-22T21:23:30Z"
+        value: '[754.5661134405534]'
+      - finishedAt: "2026-06-22T21:24:00Z"
+        phase: Successful
+        startedAt: "2026-06-22T21:24:00Z"
+        value: '[830.0643295879736]'
+      - finishedAt: "2026-06-22T21:24:30Z"
+        phase: Successful
+        startedAt: "2026-06-22T21:24:30Z"
+        value: '[847.3233052495497]'
+      - finishedAt: "2026-06-22T21:25:00Z"
+        phase: Successful
+        startedAt: "2026-06-22T21:25:00Z"
+        value: '[849.6362241294985]'
+      metadata:
+        ResolvedPrometheusQuery: |
+          histogram_quantile(0.95,
+            sum(rate(http_request_duration_ms_bucket{path!="/metrics"}[1m]))
+            by (le)
+          )
+      name: latency-p95
+      phase: Successful
+      successful: 5
+    phase: Failed
+    runSummary:
+      count: 3
+      failed: 1
+      successful: 2
+    startedAt: "2026-06-22T21:23:00Z"
+- apiVersion: argoproj.io/v1alpha1
+  kind: AnalysisRun
+  metadata:
+    annotations:
+      rollout.argoproj.io/revision: "8"
+    creationTimestamp: "2026-06-22T21:42:32Z"
+    generation: 7
+    labels:
+      app: tcc-api
+      rollout-type: PrePromotion
+      rollouts-pod-template-hash: 787bdcb856
+    name: tcc-api-bluegreen-787bdcb856-8-pre
+    namespace: app-tcc
+    ownerReferences:
+    - apiVersion: argoproj.io/v1alpha1
+      blockOwnerDeletion: true
+      controller: true
+      kind: Rollout
+      name: tcc-api-bluegreen
+      uid: 4d2667d5-e5d7-4e67-adf6-20c48933333b
+    resourceVersion: "10111572"
+    uid: 709a8ac7-8d03-4c84-bf12-01387bcaa5b6
+  spec:
+    metrics:
+    - count: 5
+      failureCondition: result[0] < 0.90
+      failureLimit: 2
+      interval: 30s
+      name: success-rate
+      provider:
+        prometheus:
+          address: http://prometheus-kube-prometheus-prometheus.monitoring.svc:9090
+          authentication:
+            oauth2: {}
+            sigv4: {}
+          query: |
+            sum(rate(http_requests_total{path!="/metrics",status=~"2.."}[1m]))
+            /
+            sum(rate(http_requests_total{path!="/metrics"}[1m]))
+      successCondition: result[0] >= 0.95
+    - count: 5
+      failureCondition: result[0] > 2000
+      failureLimit: 2
+      interval: 30s
+      name: latency-p95
+      provider:
+        prometheus:
+          address: http://prometheus-kube-prometheus-prometheus.monitoring.svc:9090
+          authentication:
+            oauth2: {}
+            sigv4: {}
+          query: |
+            histogram_quantile(0.95,
+              sum(rate(http_request_duration_ms_bucket{path!="/metrics"}[1m]))
+              by (le)
+            )
+      successCondition: result[0] <= 1000
+    - count: 5
+      failureCondition: result[0] > 0.10
+      failureLimit: 2
+      interval: 30s
+      name: error-rate
+      provider:
+        prometheus:
+          address: http://prometheus-kube-prometheus-prometheus.monitoring.svc:9090
+          authentication:
+            oauth2: {}
+            sigv4: {}
+          query: |
+            sum(rate(app_errors_total[1m]))
+      successCondition: result[0] <= 0.05
+  status:
+    completedAt: "2026-06-22T21:43:12Z"
+    dryRunSummary: {}
+    message: 'Metric "error-rate" assessed Error due to consecutiveErrors (5) > consecutiveErrorLimit
+      (4): "Error Message: reflect: slice index out of range"'
+    metricResults:
+    - consecutiveError: 5
+      error: 5
+      measurements:
+      - finishedAt: "2026-06-22T21:42:32Z"
+        message: 'reflect: slice index out of range'
+        phase: Error
+        startedAt: "2026-06-22T21:42:32Z"
+      - finishedAt: "2026-06-22T21:42:42Z"
+        message: 'reflect: slice index out of range'
+        phase: Error
+        startedAt: "2026-06-22T21:42:42Z"
+      - finishedAt: "2026-06-22T21:42:52Z"
+        message: 'reflect: slice index out of range'
+        phase: Error
+        startedAt: "2026-06-22T21:42:52Z"
+      - finishedAt: "2026-06-22T21:43:02Z"
+        message: 'reflect: slice index out of range'
+        phase: Error
+        startedAt: "2026-06-22T21:43:02Z"
+      - finishedAt: "2026-06-22T21:43:12Z"
+        message: 'reflect: slice index out of range'
+        phase: Error
+        startedAt: "2026-06-22T21:43:12Z"
+      message: 'reflect: slice index out of range'
+      metadata:
+        ResolvedPrometheusQuery: |
+          sum(rate(app_errors_total[1m]))
+      name: error-rate
+      phase: Error
+    - consecutiveSuccess: 2
+      count: 2
+      measurements:
+      - finishedAt: "2026-06-22T21:42:32Z"
+        phase: Successful
+        startedAt: "2026-06-22T21:42:32Z"
+        value: '[1]'
+      - finishedAt: "2026-06-22T21:43:02Z"
+        phase: Successful
+        startedAt: "2026-06-22T21:43:02Z"
+        value: '[1]'
+      metadata:
+        ResolvedPrometheusQuery: |
+          sum(rate(http_requests_total{path!="/metrics",status=~"2.."}[1m]))
+          /
+          sum(rate(http_requests_total{path!="/metrics"}[1m]))
+      name: success-rate
+      phase: Successful
+      successful: 2
+    - consecutiveSuccess: 2
+      count: 2
+      measurements:
+      - finishedAt: "2026-06-22T21:42:32Z"
+        phase: Successful
+        startedAt: "2026-06-22T21:42:32Z"
+        value: '[9.5]'
+      - finishedAt: "2026-06-22T21:43:02Z"
+        phase: Successful
+        startedAt: "2026-06-22T21:43:02Z"
+        value: '[9.94363180343335]'
+      metadata:
+        ResolvedPrometheusQuery: |
+          histogram_quantile(0.95,
+            sum(rate(http_request_duration_ms_bucket{path!="/metrics"}[1m]))
+            by (le)
+          )
+      name: latency-p95
+      phase: Successful
+      successful: 2
+    phase: Error
+    runSummary:
+      count: 3
+      error: 1
+      successful: 2
+    startedAt: "2026-06-22T21:42:32Z"
+- apiVersion: argoproj.io/v1alpha1
+  kind: AnalysisRun
+  metadata:
+    annotations:
+      rollout.argoproj.io/revision: "6"
+    creationTimestamp: "2026-06-21T00:08:56Z"
+    generation: 7
+    labels:
+      app: tcc-api
+      rollout-type: Step
+      rollouts-pod-template-hash: 776d9bb8df
+      step-index: "2"
+    name: tcc-api-canary-776d9bb8df-6-2
+    namespace: app-tcc
+    ownerReferences:
+    - apiVersion: argoproj.io/v1alpha1
+      blockOwnerDeletion: true
+      controller: true
+      kind: Rollout
+      name: tcc-api-canary
+      uid: d9e1b49e-89d3-42e8-a20f-50e9d85abcc4
+    resourceVersion: "9894968"
+    uid: 1181640d-7979-4105-bfd6-07108627a805
+  spec:
+    metrics:
+    - count: 5
+      failureCondition: result[0] < 0.90
+      failureLimit: 2
+      interval: 30s
+      name: success-rate
+      provider:
+        prometheus:
+          address: http://prometheus-kube-prometheus-prometheus.monitoring.svc:9090
+          authentication:
+            oauth2: {}
+            sigv4: {}
+          query: |
+            sum(rate(http_requests_total{path!="/metrics",status=~"2.."}[1m]))
+            /
+            sum(rate(http_requests_total{path!="/metrics"}[1m]))
+      successCondition: result[0] >= 0.95
+    - count: 5
+      failureCondition: result[0] > 2000
+      failureLimit: 2
+      interval: 30s
+      name: latency-p95
+      provider:
+        prometheus:
+          address: http://prometheus-kube-prometheus-prometheus.monitoring.svc:9090
+          authentication:
+            oauth2: {}
+            sigv4: {}
+          query: |
+            histogram_quantile(0.95,
+              sum(rate(http_request_duration_ms_bucket{path!="/metrics"}[1m]))
+              by (le)
+            )
+      successCondition: result[0] <= 1000
+    - count: 5
+      failureCondition: result[0] > 0.10
+      failureLimit: 2
+      interval: 30s
+      name: error-rate
+      provider:
+        prometheus:
+          address: http://prometheus-kube-prometheus-prometheus.monitoring.svc:9090
+          authentication:
+            oauth2: {}
+            sigv4: {}
+          query: |
+            sum(rate(app_errors_total[1m]))
+      successCondition: result[0] <= 0.05
+  status:
+    completedAt: "2026-06-21T00:09:36Z"
+    dryRunSummary: {}
+    message: 'Metric "error-rate" assessed Error due to consecutiveErrors (5) > consecutiveErrorLimit
+      (4): "Error Message: reflect: slice index out of range"'
+    metricResults:
+    - consecutiveError: 5
+      error: 5
+      measurements:
+      - finishedAt: "2026-06-21T00:08:56Z"
+        message: 'reflect: slice index out of range'
+        phase: Error
+        startedAt: "2026-06-21T00:08:56Z"
+      - finishedAt: "2026-06-21T00:09:06Z"
+        message: 'reflect: slice index out of range'
+        phase: Error
+        startedAt: "2026-06-21T00:09:06Z"
+      - finishedAt: "2026-06-21T00:09:16Z"
+        message: 'reflect: slice index out of range'
+        phase: Error
+        startedAt: "2026-06-21T00:09:16Z"
+      - finishedAt: "2026-06-21T00:09:26Z"
+        message: 'reflect: slice index out of range'
+        phase: Error
+        startedAt: "2026-06-21T00:09:26Z"
+      - finishedAt: "2026-06-21T00:09:36Z"
+        message: 'reflect: slice index out of range'
+        phase: Error
+        startedAt: "2026-06-21T00:09:36Z"
+      message: 'reflect: slice index out of range'
+      metadata:
+        ResolvedPrometheusQuery: |
+          sum(rate(app_errors_total[1m]))
+      name: error-rate
+      phase: Error
+    - consecutiveSuccess: 2
+      count: 2
+      measurements:
+      - finishedAt: "2026-06-21T00:08:56Z"
+        phase: Successful
+        startedAt: "2026-06-21T00:08:56Z"
+        value: '[1]'
+      - finishedAt: "2026-06-21T00:09:26Z"
+        phase: Successful
+        startedAt: "2026-06-21T00:09:26Z"
+        value: '[1]'
+      metadata:
+        ResolvedPrometheusQuery: |
+          sum(rate(http_requests_total{path!="/metrics",status=~"2.."}[1m]))
+          /
+          sum(rate(http_requests_total{path!="/metrics"}[1m]))
+      name: success-rate
+      phase: Successful
+      successful: 2
+    - consecutiveSuccess: 2
+      count: 2
+      measurements:
+      - finishedAt: "2026-06-21T00:08:56Z"
+        phase: Successful
+        startedAt: "2026-06-21T00:08:56Z"
+        value: '[590.2252810591976]'
+      - finishedAt: "2026-06-21T00:09:26Z"
+        phase: Successful
+        startedAt: "2026-06-21T00:09:26Z"
+        value: '[546.196577592292]'
+      metadata:
+        ResolvedPrometheusQuery: |
+          histogram_quantile(0.95,
+            sum(rate(http_request_duration_ms_bucket{path!="/metrics"}[1m]))
+            by (le)
+          )
+      name: latency-p95
+      phase: Successful
+      successful: 2
+    phase: Error
+    runSummary:
+      count: 3
+      error: 1
+      successful: 2
+    startedAt: "2026-06-21T00:08:56Z"
+- apiVersion: argoproj.io/v1alpha1
+  kind: AnalysisRun
+  metadata:
+    annotations:
+      rollout.argoproj.io/revision: "10"
+    creationTimestamp: "2026-06-22T21:15:23Z"
+    generation: 6
+    labels:
+      app: tcc-api
+      rollout-type: Step
+      rollouts-pod-template-hash: 787bdcb856
+      step-index: "2"
+    name: tcc-api-canary-787bdcb856-10-2
+    namespace: app-tcc
+    ownerReferences:
+    - apiVersion: argoproj.io/v1alpha1
+      blockOwnerDeletion: true
+      controller: true
+      kind: Rollout
+      name: tcc-api-canary
+      uid: d9e1b49e-89d3-42e8-a20f-50e9d85abcc4
+    resourceVersion: "10108744"
+    uid: f53ba265-ad73-49cd-bcaf-4ba99334be25
+  spec:
+    metrics:
+    - count: 5
+      failureCondition: result[0] < 0.90
+      failureLimit: 2
+      interval: 30s
+      name: success-rate
+      provider:
+        prometheus:
+          address: http://prometheus-kube-prometheus-prometheus.monitoring.svc:9090
+          authentication:
+            oauth2: {}
+            sigv4: {}
+          query: |
+            sum(rate(http_requests_total{path!="/metrics",status=~"2.."}[1m]))
+            /
+            sum(rate(http_requests_total{path!="/metrics"}[1m]))
+      successCondition: result[0] >= 0.95
+    - count: 5
+      failureCondition: result[0] > 2000
+      failureLimit: 2
+      interval: 30s
+      name: latency-p95
+      provider:
+        prometheus:
+          address: http://prometheus-kube-prometheus-prometheus.monitoring.svc:9090
+          authentication:
+            oauth2: {}
+            sigv4: {}
+          query: |
+            histogram_quantile(0.95,
+              sum(rate(http_request_duration_ms_bucket{path!="/metrics"}[1m]))
+              by (le)
+            )
+      successCondition: result[0] <= 1000
+    - count: 5
+      failureCondition: result[0] > 0.10
+      failureLimit: 2
+      interval: 30s
+      name: error-rate
+      provider:
+        prometheus:
+          address: http://prometheus-kube-prometheus-prometheus.monitoring.svc:9090
+          authentication:
+            oauth2: {}
+            sigv4: {}
+          query: |
+            sum(rate(app_errors_total[1m]))
+      successCondition: result[0] <= 0.05
+  status:
+    completedAt: "2026-06-22T21:15:53Z"
+    dryRunSummary: {}
+    message: Metric "error-rate" assessed Inconclusive due to inconclusive (1) > inconclusiveLimit
+      (0)
+    metricResults:
+    - count: 1
+      error: 3
+      inconclusive: 1
+      measurements:
+      - finishedAt: "2026-06-22T21:15:23Z"
+        message: 'reflect: slice index out of range'
+        phase: Error
+        startedAt: "2026-06-22T21:15:23Z"
+      - finishedAt: "2026-06-22T21:15:33Z"
+        message: 'reflect: slice index out of range'
+        phase: Error
+        startedAt: "2026-06-22T21:15:33Z"
+      - finishedAt: "2026-06-22T21:15:43Z"
+        message: 'reflect: slice index out of range'
+        phase: Error
+        startedAt: "2026-06-22T21:15:43Z"
+      - finishedAt: "2026-06-22T21:15:53Z"
+        phase: Inconclusive
+        startedAt: "2026-06-22T21:15:53Z"
+        value: '[0.05887111111111111]'
+      metadata:
+        ResolvedPrometheusQuery: |
+          sum(rate(app_errors_total[1m]))
+      name: error-rate
+      phase: Inconclusive
+    - consecutiveSuccess: 2
+      count: 2
+      measurements:
+      - finishedAt: "2026-06-22T21:15:23Z"
+        phase: Successful
+        startedAt: "2026-06-22T21:15:23Z"
+        value: '[1]'
+      - finishedAt: "2026-06-22T21:15:53Z"
+        phase: Successful
+        startedAt: "2026-06-22T21:15:53Z"
+        value: '[0.9993787304165087]'
+      metadata:
+        ResolvedPrometheusQuery: |
+          sum(rate(http_requests_total{path!="/metrics",status=~"2.."}[1m]))
+          /
+          sum(rate(http_requests_total{path!="/metrics"}[1m]))
+      name: success-rate
+      phase: Successful
+      successful: 2
+    - consecutiveSuccess: 2
+      count: 2
+      measurements:
+      - finishedAt: "2026-06-22T21:15:23Z"
+        phase: Successful
+        startedAt: "2026-06-22T21:15:23Z"
+        value: '[557.5690154650719]'
+      - finishedAt: "2026-06-22T21:15:53Z"
+        phase: Successful
+        startedAt: "2026-06-22T21:15:53Z"
+        value: '[562.3980921258524]'
+      metadata:
+        ResolvedPrometheusQuery: |
+          histogram_quantile(0.95,
+            sum(rate(http_request_duration_ms_bucket{path!="/metrics"}[1m]))
+            by (le)
+          )
+      name: latency-p95
+      phase: Successful
+      successful: 2
+    phase: Inconclusive
+    runSummary:
+      count: 3
+      inconclusive: 1
+      successful: 2
+    startedAt: "2026-06-22T21:15:23Z"
+- apiVersion: argoproj.io/v1alpha1
+  kind: AnalysisRun
+  metadata:
+    annotations:
+      rollout.argoproj.io/revision: "12"
+    creationTimestamp: "2026-06-22T21:33:09Z"
+    generation: 12
+    labels:
+      app: tcc-api
+      rollout-type: Step
+      rollouts-pod-template-hash: 787bdcb856
+      step-index: "2"
+    name: tcc-api-canary-787bdcb856-12-2
+    namespace: app-tcc
+    ownerReferences:
+    - apiVersion: argoproj.io/v1alpha1
+      blockOwnerDeletion: true
+      controller: true
+      kind: Rollout
+      name: tcc-api-canary
+      uid: d9e1b49e-89d3-42e8-a20f-50e9d85abcc4
+    resourceVersion: "10110756"
+    uid: ebe98072-4f91-4f74-a21d-241874c9a385
+  spec:
+    metrics:
+    - count: 5
+      failureCondition: result[0] < 0.90
+      failureLimit: 2
+      interval: 30s
+      name: success-rate
+      provider:
+        prometheus:
+          address: http://prometheus-kube-prometheus-prometheus.monitoring.svc:9090
+          authentication:
+            oauth2: {}
+            sigv4: {}
+          query: |
+            sum(rate(http_requests_total{path!="/metrics",status=~"2.."}[1m]))
+            /
+            sum(rate(http_requests_total{path!="/metrics"}[1m]))
+      successCondition: result[0] >= 0.95
+    - count: 5
+      failureCondition: result[0] > 2000
+      failureLimit: 2
+      interval: 30s
+      name: latency-p95
+      provider:
+        prometheus:
+          address: http://prometheus-kube-prometheus-prometheus.monitoring.svc:9090
+          authentication:
+            oauth2: {}
+            sigv4: {}
+          query: |
+            histogram_quantile(0.95,
+              sum(rate(http_request_duration_ms_bucket{path!="/metrics"}[1m]))
+              by (le)
+            )
+      successCondition: result[0] <= 1000
+    - count: 5
+      failureCondition: result[0] > 0.10
+      failureLimit: 2
+      interval: 30s
+      name: error-rate
+      provider:
+        prometheus:
+          address: http://prometheus-kube-prometheus-prometheus.monitoring.svc:9090
+          authentication:
+            oauth2: {}
+            sigv4: {}
+          query: |
+            sum(rate(app_errors_total[1m]))
+      successCondition: result[0] <= 0.05
+  status:
+    completedAt: "2026-06-22T21:35:29Z"
+    dryRunSummary: {}
+    message: Metric "error-rate" assessed Failed due to failed (3) > failureLimit
+      (2)
+    metricResults:
+    - count: 5
+      error: 2
+      failed: 3
+      measurements:
+      - finishedAt: "2026-06-22T21:33:09Z"
+        message: 'reflect: slice index out of range'
+        phase: Error
+        startedAt: "2026-06-22T21:33:09Z"
+      - finishedAt: "2026-06-22T21:33:19Z"
+        message: 'reflect: slice index out of range'
+        phase: Error
+        startedAt: "2026-06-22T21:33:19Z"
+      - finishedAt: "2026-06-22T21:33:29Z"
+        phase: Successful
+        startedAt: "2026-06-22T21:33:29Z"
+        value: '[0]'
+      - finishedAt: "2026-06-22T21:33:59Z"
+        phase: Successful
+        startedAt: "2026-06-22T21:33:59Z"
+        value: '[0]'
+      - finishedAt: "2026-06-22T21:34:29Z"
+        phase: Failed
+        startedAt: "2026-06-22T21:34:29Z"
+        value: '[0.11111111111111109]'
+      - finishedAt: "2026-06-22T21:34:59Z"
+        phase: Failed
+        startedAt: "2026-06-22T21:34:59Z"
+        value: '[0.3333481488066136]'
+      - finishedAt: "2026-06-22T21:35:29Z"
+        phase: Failed
+        startedAt: "2026-06-22T21:35:29Z"
+        value: '[0.37777777777777777]'
+      metadata:
+        ResolvedPrometheusQuery: |
+          sum(rate(app_errors_total[1m]))
+      name: error-rate
+      phase: Failed
+      successful: 2
+    - consecutiveSuccess: 5
+      count: 5
+      measurements:
+      - finishedAt: "2026-06-22T21:33:09Z"
+        phase: Successful
+        startedAt: "2026-06-22T21:33:09Z"
+        value: '[1]'
+      - finishedAt: "2026-06-22T21:33:39Z"
+        phase: Successful
+        startedAt: "2026-06-22T21:33:39Z"
+        value: '[1]'
+      - finishedAt: "2026-06-22T21:34:09Z"
+        phase: Successful
+        startedAt: "2026-06-22T21:34:09Z"
+        value: '[1]'
+      - finishedAt: "2026-06-22T21:34:39Z"
+        phase: Successful
+        startedAt: "2026-06-22T21:34:39Z"
+        value: '[0.9996905861154555]'
+      - finishedAt: "2026-06-22T21:35:09Z"
+        phase: Successful
+        startedAt: "2026-06-22T21:35:09Z"
+        value: '[0.9993595495765122]'
+      metadata:
+        ResolvedPrometheusQuery: |
+          sum(rate(http_requests_total{path!="/metrics",status=~"2.."}[1m]))
+          /
+          sum(rate(http_requests_total{path!="/metrics"}[1m]))
+      name: success-rate
+      phase: Successful
+      successful: 5
+    - consecutiveSuccess: 5
+      count: 5
+      measurements:
+      - finishedAt: "2026-06-22T21:33:09Z"
+        phase: Successful
+        startedAt: "2026-06-22T21:33:09Z"
+        value: '[535.0923145557206]'
+      - finishedAt: "2026-06-22T21:33:39Z"
+        phase: Successful
+        startedAt: "2026-06-22T21:33:39Z"
+        value: '[578.424307039716]'
+      - finishedAt: "2026-06-22T21:34:09Z"
+        phase: Successful
+        startedAt: "2026-06-22T21:34:09Z"
+        value: '[584.258426130311]'
+      - finishedAt: "2026-06-22T21:34:39Z"
+        phase: Successful
+        startedAt: "2026-06-22T21:34:39Z"
+        value: '[583.6607566132442]'
+      - finishedAt: "2026-06-22T21:35:09Z"
+        phase: Successful
+        startedAt: "2026-06-22T21:35:09Z"
+        value: '[566.2815821843458]'
+      metadata:
+        ResolvedPrometheusQuery: |
+          histogram_quantile(0.95,
+            sum(rate(http_request_duration_ms_bucket{path!="/metrics"}[1m]))
+            by (le)
+          )
+      name: latency-p95
+      phase: Successful
+      successful: 5
+    phase: Failed
+    runSummary:
+      count: 3
+      failed: 1
+      successful: 2
+    startedAt: "2026-06-22T21:33:09Z"
+- apiVersion: argoproj.io/v1alpha1
+  kind: AnalysisRun
+  metadata:
+    annotations:
+      rollout.argoproj.io/revision: "14"
+    creationTimestamp: "2026-06-22T22:20:40Z"
+    generation: 3
+    labels:
+      app: tcc-api
+      rollout-type: Step
+      rollouts-pod-template-hash: 787bdcb856
+      step-index: "2"
+    name: tcc-api-canary-787bdcb856-14-2
+    namespace: app-tcc
+    ownerReferences:
+    - apiVersion: argoproj.io/v1alpha1
+      blockOwnerDeletion: true
+      controller: true
+      kind: Rollout
+      name: tcc-api-canary
+      uid: d9e1b49e-89d3-42e8-a20f-50e9d85abcc4
+    resourceVersion: "10114877"
+    uid: 217663f6-c907-4583-971d-90f0e9ccc447
+  spec:
+    metrics:
+    - count: 5
+      failureCondition: result[0] < 0.90
+      failureLimit: 2
+      interval: 30s
+      name: success-rate
+      provider:
+        prometheus:
+          address: http://prometheus-kube-prometheus-prometheus.monitoring.svc:9090
+          authentication:
+            oauth2: {}
+            sigv4: {}
+          query: |
+            sum(rate(http_requests_total{path!="/metrics",status=~"2.."}[1m]))
+            /
+            sum(rate(http_requests_total{path!="/metrics"}[1m]))
+      successCondition: result[0] >= 0.95
+    - count: 5
+      failureCondition: result[0] > 2000
+      failureLimit: 2
+      interval: 30s
+      name: latency-p95
+      provider:
+        prometheus:
+          address: http://prometheus-kube-prometheus-prometheus.monitoring.svc:9090
+          authentication:
+            oauth2: {}
+            sigv4: {}
+          query: |
+            histogram_quantile(0.95,
+              sum(rate(http_request_duration_ms_bucket{path!="/metrics"}[1m]))
+              by (le)
+            )
+      successCondition: result[0] <= 1000
+    - count: 5
+      failureCondition: result[0] > 0.10
+      failureLimit: 2
+      interval: 30s
+      name: error-rate
+      provider:
+        prometheus:
+          address: http://prometheus-kube-prometheus-prometheus.monitoring.svc:9090
+          authentication:
+            oauth2: {}
+            sigv4: {}
+          query: |
+            sum(rate(app_errors_total[1m]))
+      successCondition: result[0] <= 0.05
+  status:
+    dryRunSummary: {}
+    metricResults:
+    - consecutiveError: 2
+      error: 2
+      measurements:
+      - finishedAt: "2026-06-22T22:20:40Z"
+        message: 'reflect: slice index out of range'
+        phase: Error
+        startedAt: "2026-06-22T22:20:40Z"
+      - finishedAt: "2026-06-22T22:20:50Z"
+        message: 'reflect: slice index out of range'
+        phase: Error
+        startedAt: "2026-06-22T22:20:50Z"
+      metadata:
+        ResolvedPrometheusQuery: |
+          sum(rate(app_errors_total[1m]))
+      name: error-rate
+      phase: Running
+    - consecutiveSuccess: 1
+      count: 1
+      measurements:
+      - finishedAt: "2026-06-22T22:20:40Z"
+        phase: Successful
+        startedAt: "2026-06-22T22:20:40Z"
+        value: '[1]'
+      metadata:
+        ResolvedPrometheusQuery: |
+          sum(rate(http_requests_total{path!="/metrics",status=~"2.."}[1m]))
+          /
+          sum(rate(http_requests_total{path!="/metrics"}[1m]))
+      name: success-rate
+      phase: Running
+      successful: 1
+    - consecutiveSuccess: 1
+      count: 1
+      measurements:
+      - finishedAt: "2026-06-22T22:20:40Z"
+        phase: Successful
+        startedAt: "2026-06-22T22:20:40Z"
+        value: '[9.960169976183296]'
+      metadata:
+        ResolvedPrometheusQuery: |
+          histogram_quantile(0.95,
+            sum(rate(http_request_duration_ms_bucket{path!="/metrics"}[1m]))
+            by (le)
+          )
+      name: latency-p95
+      phase: Running
+      successful: 1
+    phase: Running
+    runSummary:
+      count: 3
+    startedAt: "2026-06-22T22:20:40Z"
+- apiVersion: argoproj.io/v1alpha1
+  kind: AnalysisRun
+  metadata:
+    annotations:
+      rollout.argoproj.io/revision: "8"
+    creationTimestamp: "2026-06-22T20:55:37Z"
+    generation: 7
+    labels:
+      app: tcc-api
+      rollout-type: Step
+      rollouts-pod-template-hash: 787bdcb856
+      step-index: "2"
+    name: tcc-api-canary-787bdcb856-8-2
+    namespace: app-tcc
+    ownerReferences:
+    - apiVersion: argoproj.io/v1alpha1
+      blockOwnerDeletion: true
+      controller: true
+      kind: Rollout
+      name: tcc-api-canary
+      uid: d9e1b49e-89d3-42e8-a20f-50e9d85abcc4
+    resourceVersion: "10106795"
+    uid: a176c4c3-1e5b-4f62-af7f-f5d12084db16
+  spec:
+    metrics:
+    - count: 5
+      failureCondition: result[0] < 0.90
+      failureLimit: 2
+      interval: 30s
+      name: success-rate
+      provider:
+        prometheus:
+          address: http://prometheus-kube-prometheus-prometheus.monitoring.svc:9090
+          authentication:
+            oauth2: {}
+            sigv4: {}
+          query: |
+            sum(rate(http_requests_total{path!="/metrics",status=~"2.."}[1m]))
+            /
+            sum(rate(http_requests_total{path!="/metrics"}[1m]))
+      successCondition: result[0] >= 0.95
+    - count: 5
+      failureCondition: result[0] > 2000
+      failureLimit: 2
+      interval: 30s
+      name: latency-p95
+      provider:
+        prometheus:
+          address: http://prometheus-kube-prometheus-prometheus.monitoring.svc:9090
+          authentication:
+            oauth2: {}
+            sigv4: {}
+          query: |
+            histogram_quantile(0.95,
+              sum(rate(http_request_duration_ms_bucket{path!="/metrics"}[1m]))
+              by (le)
+            )
+      successCondition: result[0] <= 1000
+    - count: 5
+      failureCondition: result[0] > 0.10
+      failureLimit: 2
+      interval: 30s
+      name: error-rate
+      provider:
+        prometheus:
+          address: http://prometheus-kube-prometheus-prometheus.monitoring.svc:9090
+          authentication:
+            oauth2: {}
+            sigv4: {}
+          query: |
+            sum(rate(app_errors_total[1m]))
+      successCondition: result[0] <= 0.05
+  status:
+    completedAt: "2026-06-22T20:56:17Z"
+    dryRunSummary: {}
+    message: 'Metric "error-rate" assessed Error due to consecutiveErrors (5) > consecutiveErrorLimit
+      (4): "Error Message: reflect: slice index out of range"'
+    metricResults:
+    - consecutiveError: 5
+      error: 5
+      measurements:
+      - finishedAt: "2026-06-22T20:55:37Z"
+        message: 'reflect: slice index out of range'
+        phase: Error
+        startedAt: "2026-06-22T20:55:37Z"
+      - finishedAt: "2026-06-22T20:55:47Z"
+        message: 'reflect: slice index out of range'
+        phase: Error
+        startedAt: "2026-06-22T20:55:47Z"
+      - finishedAt: "2026-06-22T20:55:57Z"
+        message: 'reflect: slice index out of range'
+        phase: Error
+        startedAt: "2026-06-22T20:55:57Z"
+      - finishedAt: "2026-06-22T20:56:07Z"
+        message: 'reflect: slice index out of range'
+        phase: Error
+        startedAt: "2026-06-22T20:56:07Z"
+      - finishedAt: "2026-06-22T20:56:17Z"
+        message: 'reflect: slice index out of range'
+        phase: Error
+        startedAt: "2026-06-22T20:56:17Z"
+      message: 'reflect: slice index out of range'
+      metadata:
+        ResolvedPrometheusQuery: |
+          sum(rate(app_errors_total[1m]))
+      name: error-rate
+      phase: Error
+    - consecutiveSuccess: 2
+      count: 2
+      measurements:
+      - finishedAt: "2026-06-22T20:55:37Z"
+        phase: Successful
+        startedAt: "2026-06-22T20:55:37Z"
+        value: '[1]'
+      - finishedAt: "2026-06-22T20:56:07Z"
+        phase: Successful
+        startedAt: "2026-06-22T20:56:07Z"
+        value: '[1]'
+      metadata:
+        ResolvedPrometheusQuery: |
+          sum(rate(http_requests_total{path!="/metrics",status=~"2.."}[1m]))
+          /
+          sum(rate(http_requests_total{path!="/metrics"}[1m]))
+      name: success-rate
+      phase: Successful
+      successful: 2
+    - consecutiveSuccess: 2
+      count: 2
+      measurements:
+      - finishedAt: "2026-06-22T20:55:37Z"
+        phase: Successful
+        startedAt: "2026-06-22T20:55:37Z"
+        value: '[9.878043691701013]'
+      - finishedAt: "2026-06-22T20:56:07Z"
+        phase: Successful
+        startedAt: "2026-06-22T20:56:07Z"
+        value: '[569.3414934809471]'
+      metadata:
+        ResolvedPrometheusQuery: |
+          histogram_quantile(0.95,
+            sum(rate(http_request_duration_ms_bucket{path!="/metrics"}[1m]))
+            by (le)
+          )
+      name: latency-p95
+      phase: Successful
+      successful: 2
+    phase: Error
+    runSummary:
+      count: 3
+      error: 1
+      successful: 2
+    startedAt: "2026-06-22T20:55:37Z"
+- apiVersion: argoproj.io/v1alpha1
+  kind: AnalysisRun
+  metadata:
+    annotations:
+      rollout.argoproj.io/revision: "11"
+    creationTimestamp: "2026-06-22T21:23:34Z"
+    generation: 6
+    labels:
+      app: tcc-api
+      rollout-type: Step
+      rollouts-pod-template-hash: b669fbb57
+      step-index: "2"
+    name: tcc-api-canary-b669fbb57-11-2
+    namespace: app-tcc
+    ownerReferences:
+    - apiVersion: argoproj.io/v1alpha1
+      blockOwnerDeletion: true
+      controller: true
+      kind: Rollout
+      name: tcc-api-canary
+      uid: d9e1b49e-89d3-42e8-a20f-50e9d85abcc4
+    resourceVersion: "10109722"
+    uid: a9c71ff4-9189-4f96-8ce2-43899f567684
+  spec:
+    metrics:
+    - count: 5
+      failureCondition: result[0] < 0.90
+      failureLimit: 2
+      interval: 30s
+      name: success-rate
+      provider:
+        prometheus:
+          address: http://prometheus-kube-prometheus-prometheus.monitoring.svc:9090
+          authentication:
+            oauth2: {}
+            sigv4: {}
+          query: |
+            sum(rate(http_requests_total{path!="/metrics",status=~"2.."}[1m]))
+            /
+            sum(rate(http_requests_total{path!="/metrics"}[1m]))
+      successCondition: result[0] >= 0.95
+    - count: 5
+      failureCondition: result[0] > 2000
+      failureLimit: 2
+      interval: 30s
+      name: latency-p95
+      provider:
+        prometheus:
+          address: http://prometheus-kube-prometheus-prometheus.monitoring.svc:9090
+          authentication:
+            oauth2: {}
+            sigv4: {}
+          query: |
+            histogram_quantile(0.95,
+              sum(rate(http_request_duration_ms_bucket{path!="/metrics"}[1m]))
+              by (le)
+            )
+      successCondition: result[0] <= 1000
+    - count: 5
+      failureCondition: result[0] > 0.10
+      failureLimit: 2
+      interval: 30s
+      name: error-rate
+      provider:
+        prometheus:
+          address: http://prometheus-kube-prometheus-prometheus.monitoring.svc:9090
+          authentication:
+            oauth2: {}
+            sigv4: {}
+          query: |
+            sum(rate(app_errors_total[1m]))
+      successCondition: result[0] <= 0.05
+  status:
+    completedAt: "2026-06-22T21:25:04Z"
+    dryRunSummary: {}
+    message: Metric "error-rate" assessed Failed due to failed (3) > failureLimit
+      (2)
+    metricResults:
+    - count: 4
+      failed: 3
+      measurements:
+      - finishedAt: "2026-06-22T21:23:34Z"
+        phase: Successful
+        startedAt: "2026-06-22T21:23:34Z"
+        value: '[0]'
+      - finishedAt: "2026-06-22T21:24:04Z"
+        phase: Failed
+        startedAt: "2026-06-22T21:24:04Z"
+        value: '[0.18653047168344108]'
+      - finishedAt: "2026-06-22T21:24:34Z"
+        phase: Failed
+        startedAt: "2026-06-22T21:24:34Z"
+        value: '[0.3680059498751146]'
+      - finishedAt: "2026-06-22T21:25:04Z"
+        phase: Failed
+        startedAt: "2026-06-22T21:25:04Z"
+        value: '[1.0021956365322278]'
+      metadata:
+        ResolvedPrometheusQuery: |
+          sum(rate(app_errors_total[1m]))
+      name: error-rate
+      phase: Failed
+      successful: 1
+    - consecutiveSuccess: 4
+      count: 4
+      measurements:
+      - finishedAt: "2026-06-22T21:23:34Z"
+        phase: Successful
+        startedAt: "2026-06-22T21:23:34Z"
+        value: '[1]'
+      - finishedAt: "2026-06-22T21:24:04Z"
+        phase: Successful
+        startedAt: "2026-06-22T21:24:04Z"
+        value: '[0.9968469841048185]'
+      - finishedAt: "2026-06-22T21:24:34Z"
+        phase: Successful
+        startedAt: "2026-06-22T21:24:34Z"
+        value: '[0.9972491907445047]'
+      - finishedAt: "2026-06-22T21:25:04Z"
+        phase: Successful
+        startedAt: "2026-06-22T21:25:04Z"
+        value: '[0.9954256265597]'
+      metadata:
+        ResolvedPrometheusQuery: |
+          sum(rate(http_requests_total{path!="/metrics",status=~"2.."}[1m]))
+          /
+          sum(rate(http_requests_total{path!="/metrics"}[1m]))
+      name: success-rate
+      phase: Successful
+      successful: 4
+    - consecutiveSuccess: 4
+      count: 4
+      measurements:
+      - finishedAt: "2026-06-22T21:23:34Z"
+        phase: Successful
+        startedAt: "2026-06-22T21:23:34Z"
+        value: '[818.5409330089785]'
+      - finishedAt: "2026-06-22T21:24:04Z"
+        phase: Successful
+        startedAt: "2026-06-22T21:24:04Z"
+        value: '[838.4372210052377]'
+      - finishedAt: "2026-06-22T21:24:34Z"
+        phase: Successful
+        startedAt: "2026-06-22T21:24:34Z"
+        value: '[850.226002806038]'
+      - finishedAt: "2026-06-22T21:25:04Z"
+        phase: Successful
+        startedAt: "2026-06-22T21:25:04Z"
+        value: '[851.3509518332742]'
+      metadata:
+        ResolvedPrometheusQuery: |
+          histogram_quantile(0.95,
+            sum(rate(http_request_duration_ms_bucket{path!="/metrics"}[1m]))
+            by (le)
+          )
+      name: latency-p95
+      phase: Successful
+      successful: 4
+    phase: Failed
+    runSummary:
+      count: 3
+      failed: 1
+      successful: 2
+    startedAt: "2026-06-22T21:23:34Z"
+kind: List
+metadata:
+  resourceVersion: ""
