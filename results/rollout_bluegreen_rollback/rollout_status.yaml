@@ -1,0 +1,123 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Rollout
+metadata:
+  annotations:
+    argocd.argoproj.io/tracking-id: tcc-rollouts:argoproj.io/Rollout:app-tcc/tcc-api-bluegreen
+    kubectl.kubernetes.io/last-applied-configuration: |
+      {"apiVersion":"argoproj.io/v1alpha1","kind":"Rollout","metadata":{"annotations":{"argocd.argoproj.io/tracking-id":"tcc-rollouts:argoproj.io/Rollout:app-tcc/tcc-api-bluegreen"},"name":"tcc-api-bluegreen","namespace":"app-tcc"},"spec":{"replicas":4,"selector":{"matchLabels":{"app":"tcc-api"}},"strategy":{"blueGreen":{"activeService":"tcc-api-active","autoPromotionEnabled":false,"postPromotionAnalysis":{"templates":[{"templateName":"tcc-api-success-rate"}]},"prePromotionAnalysis":{"templates":[{"templateName":"tcc-api-success-rate"}]},"previewService":"tcc-api-preview","scaleDownDelaySeconds":30}},"template":{"metadata":{"labels":{"app":"tcc-api"}},"spec":{"containers":[{"env":[{"name":"APP_VERSION","value":"v2.0.0"},{"name":"APP_COLOR","value":"green"},{"name":"ERROR_RATE","value":"0.05"},{"name":"SLOW_MS","value":"800"}],"image":"gabrieldores/tcc-api:v1","livenessProbe":{"httpGet":{"path":"/health","port":3000},"initialDelaySeconds":10,"periodSeconds":15},"name":"tcc-api","ports":[{"containerPort":3000}],"readinessProbe":{"httpGet":{"path":"/ready","port":3000},"initialDelaySeconds":5,"periodSeconds":10},"resources":{"limits":{"cpu":"200m","memory":"128Mi"},"requests":{"cpu":"100m","memory":"64Mi"}}}]}}}}
+    rollout.argoproj.io/revision: "8"
+  creationTimestamp: "2026-06-16T00:42:11Z"
+  generation: 8
+  name: tcc-api-bluegreen
+  namespace: app-tcc
+  resourceVersion: "10111580"
+  uid: 4d2667d5-e5d7-4e67-adf6-20c48933333b
+spec:
+  replicas: 4
+  selector:
+    matchLabels:
+      app: tcc-api
+  strategy:
+    blueGreen:
+      activeService: tcc-api-active
+      autoPromotionEnabled: false
+      postPromotionAnalysis:
+        templates:
+        - templateName: tcc-api-success-rate
+      prePromotionAnalysis:
+        templates:
+        - templateName: tcc-api-success-rate
+      previewService: tcc-api-preview
+      scaleDownDelaySeconds: 30
+  template:
+    metadata:
+      labels:
+        app: tcc-api
+    spec:
+      containers:
+      - env:
+        - name: APP_VERSION
+          value: v2.0.0
+        - name: APP_COLOR
+          value: green
+        - name: ERROR_RATE
+          value: "0.05"
+        - name: SLOW_MS
+          value: "800"
+        image: gabrieldores/tcc-api:v1
+        livenessProbe:
+          httpGet:
+            path: /health
+            port: 3000
+          initialDelaySeconds: 10
+          periodSeconds: 15
+        name: tcc-api
+        ports:
+        - containerPort: 3000
+          protocol: TCP
+        readinessProbe:
+          httpGet:
+            path: /ready
+            port: 3000
+          initialDelaySeconds: 5
+          periodSeconds: 10
+        resources:
+          limits:
+            cpu: 200m
+            memory: 128Mi
+          requests:
+            cpu: 100m
+            memory: 64Mi
+status:
+  HPAReplicas: 4
+  abort: true
+  abortedAt: "2026-06-22T21:43:12Z"
+  availableReplicas: 4
+  blueGreen:
+    activeSelector: 86c5dc54d7
+    prePromotionAnalysisRunStatus:
+      message: 'Metric "error-rate" assessed Error due to consecutiveErrors (5) >
+        consecutiveErrorLimit (4): "Error Message: reflect: slice index out of range"'
+      name: tcc-api-bluegreen-787bdcb856-8-pre
+      status: Error
+    previewSelector: 787bdcb856
+  canary: {}
+  conditions:
+  - lastTransitionTime: "2026-06-22T21:15:18Z"
+    lastUpdateTime: "2026-06-22T21:15:18Z"
+    message: Rollout has minimum availability
+    reason: AvailableReason
+    status: "True"
+    type: Available
+  - lastTransitionTime: "2026-06-22T21:42:17Z"
+    lastUpdateTime: "2026-06-22T21:42:17Z"
+    message: Rollout is not healthy
+    reason: RolloutHealthy
+    status: "False"
+    type: Healthy
+  - lastTransitionTime: "2026-06-22T21:42:17Z"
+    lastUpdateTime: "2026-06-22T21:42:17Z"
+    message: RolloutCompleted
+    reason: RolloutCompleted
+    status: "False"
+    type: Completed
+  - lastTransitionTime: "2026-06-22T21:43:12Z"
+    lastUpdateTime: "2026-06-22T21:43:12Z"
+    message: 'Rollout aborted update to revision 8: Blue/green pre-promotion analysis
+      phase error/failed: Metric "error-rate" assessed Error due to consecutiveErrors
+      (5) > consecutiveErrorLimit (4): "Error Message: reflect: slice index out of
+      range"'
+    reason: RolloutAborted
+    status: "False"
+    type: Progressing
+  currentPodHash: 787bdcb856
+  message: 'RolloutAborted: Rollout aborted update to revision 8: Blue/green pre-promotion
+    analysis phase error/failed: Metric "error-rate" assessed Error due to consecutiveErrors
+    (5) > consecutiveErrorLimit (4): "Error Message: reflect: slice index out of range"'
+  observedGeneration: "8"
+  phase: Degraded
+  readyReplicas: 4
+  replicas: 8
+  selector: app=tcc-api,rollouts-pod-template-hash=86c5dc54d7
+  stableRS: 86c5dc54d7
+  updatedReplicas: 4

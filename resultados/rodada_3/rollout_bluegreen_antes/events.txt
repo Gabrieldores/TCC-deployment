@@ -1,0 +1,24 @@
+LAST SEEN   TYPE      REASON                 OBJECT                                      MESSAGE
+5m53s       Normal    Scheduled              pod/tcc-api-canary-787bdcb856-xdlmf         Successfully assigned app-tcc/tcc-api-canary-787bdcb856-xdlmf to vmi3069651
+5m54s       Normal    RolloutNotCompleted    rollout/tcc-api-canary                      Rollout not completed, started update to revision 8 (787bdcb856)
+5m54s       Normal    NewReplicaSetCreated   rollout/tcc-api-canary                      Created ReplicaSet tcc-api-canary-787bdcb856 (revision 8)
+5m54s       Normal    RolloutUpdated         rollout/tcc-api-canary                      Rollout updated to revision 8
+5m53s       Normal    SuccessfulCreate       replicaset/tcc-api-canary-787bdcb856        Created pod: tcc-api-canary-787bdcb856-xdlmf
+5m53s       Normal    ScalingReplicaSet      rollout/tcc-api-canary                      Scaled up ReplicaSet tcc-api-canary-787bdcb856 (revision 8) from 0 to 1
+5m52s       Normal    Pulled                 pod/tcc-api-canary-787bdcb856-xdlmf         Container image "gabrieldores/tcc-api:v1" already present on machine
+5m52s       Normal    Started                pod/tcc-api-canary-787bdcb856-xdlmf         Started container tcc-api
+5m52s       Normal    Created                pod/tcc-api-canary-787bdcb856-xdlmf         Created container: tcc-api
+5m39s       Normal    RolloutStepCompleted   rollout/tcc-api-canary                      Rollout step 1/6 completed (setWeight: 20)
+5m38s       Normal    RolloutPaused          rollout/tcc-api-canary                      Rollout is paused (CanaryPauseStep)
+5m8s        Normal    RolloutStepCompleted   rollout/tcc-api-canary                      Rollout step 2/6 completed (pause: 30s)
+5m8s        Normal    RolloutResumed         rollout/tcc-api-canary                      Rollout is resumed
+5m6s        Normal    AnalysisRunRunning     rollout/tcc-api-canary                      Step Analysis Run 'tcc-api-canary-787bdcb856-8-2' Status New: 'Running' Previous: ''
+4m27s       Warning   MetricError            analysisrun/tcc-api-canary-787bdcb856-8-2   Metric 'error-rate' Completed. Result: Error
+4m27s       Warning   AnalysisRunError       analysisrun/tcc-api-canary-787bdcb856-8-2   Analysis Completed. Result: Error
+4m27s       Normal    MetricSuccessful       analysisrun/tcc-api-canary-787bdcb856-8-2   Metric 'latency-p95' Completed. Result: Successful
+4m27s       Normal    MetricSuccessful       analysisrun/tcc-api-canary-787bdcb856-8-2   Metric 'success-rate' Completed. Result: Successful
+4m26s       Warning   AnalysisRunError       rollout/tcc-api-canary                      Step Analysis Run 'tcc-api-canary-787bdcb856-8-2' Status New: 'Error' Previous: 'Running'
+4m26s       Warning   RolloutAborted         rollout/tcc-api-canary                      Rollout aborted update to revision 8: Step-based analysis phase error/failed: Metric "error-rate" assessed Error due to consecutiveErrors (5) > consecutiveErrorLimit (4): "Error Message: reflect: slice index out of range"
+4m25s       Normal    SuccessfulDelete       replicaset/tcc-api-canary-787bdcb856        Deleted pod: tcc-api-canary-787bdcb856-xdlmf
+4m25s       Normal    Killing                pod/tcc-api-canary-787bdcb856-xdlmf         Stopping container tcc-api
+4m25s       Normal    ScalingReplicaSet      rollout/tcc-api-canary                      Scaled down ReplicaSet tcc-api-canary-787bdcb856 (revision 8) from 1 to 0

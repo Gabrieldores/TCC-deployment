@@ -1,0 +1,13 @@
+NAME                                 READY   STATUS    RESTARTS   AGE
+tcc-api-bluegreen-787bdcb856-5f5bc   1/1     Running   0          59s
+tcc-api-bluegreen-787bdcb856-d82k8   1/1     Running   0          59s
+tcc-api-bluegreen-787bdcb856-hln8h   1/1     Running   0          59s
+tcc-api-bluegreen-787bdcb856-sgpkv   1/1     Running   0          32s
+tcc-api-bluegreen-86c5dc54d7-ghhx6   1/1     Running   0          28m
+tcc-api-bluegreen-86c5dc54d7-ptgjg   1/1     Running   0          6d20h
+tcc-api-bluegreen-86c5dc54d7-pxhrf   1/1     Running   0          45h
+tcc-api-bluegreen-86c5dc54d7-sqkhn   1/1     Running   0          6d20h
+tcc-api-canary-86c5dc54d7-7s5rb      1/1     Running   0          40m
+tcc-api-canary-86c5dc54d7-bpr5p      1/1     Running   0          20m
+tcc-api-canary-86c5dc54d7-hhwnj      1/1     Running   0          45h
+tcc-api-canary-86c5dc54d7-qpjhd      1/1     Running   0          10m

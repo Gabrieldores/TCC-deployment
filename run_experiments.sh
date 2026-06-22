@@ -11,7 +11,7 @@ set -e
 BASE_URL="http://tcc-api.158.220.111.79.nip.io"
 RESULTS_DIR="./results"
 NAMESPACE="app-tcc"
-PROMETHEUS_URL="http://158.220.111.79:9090"
+PROMETHEUS_URL="http://10.43.28.62:9090"
 TIMESTAMP=$(date +"%Y%m%d_%H%M%S")
 
 # Cores para output
@@ -121,14 +121,6 @@ command -v k6      >/dev/null 2>&1 || { log_warn "k6 não encontrado"; exit 1; }
 command -v kubectl >/dev/null 2>&1 || { log_warn "kubectl não encontrado"; exit 1; }
 command -v curl    >/dev/null 2>&1 || { log_warn "curl não encontrado"; exit 1; }
 
-# Garante que port-forward do Prometheus está ativo
-log_info "Verificando acesso ao Prometheus..."
-if ! curl -s "$PROMETHEUS_URL/-/healthy" > /dev/null 2>&1; then
-  log_warn "Prometheus não acessível. Iniciando port-forward em background..."
-  ssh -f -N -L 9090:localhost:9090 root@158.220.111.79 \
-    "kubectl port-forward svc/prometheus-kube-prometheus-prometheus -n monitoring 9090:9090" &
-  pause 5 "aguardando port-forward"
-fi
 
 # Verifica API
 log_info "Verificando API..."

@@ -1,0 +1,109 @@
+Name:         tcc-api-bluegreen
+Namespace:    app-tcc
+Labels:       <none>
+Annotations:  argocd.argoproj.io/tracking-id: tcc-rollouts:argoproj.io/Rollout:app-tcc/tcc-api-bluegreen
+              rollout.argoproj.io/revision: 3
+API Version:  argoproj.io/v1alpha1
+Kind:         Rollout
+Metadata:
+  Creation Timestamp:  2026-06-16T00:42:11Z
+  Generation:          3
+  Resource Version:    10088866
+  UID:                 4d2667d5-e5d7-4e67-adf6-20c48933333b
+Spec:
+  Replicas:  4
+  Selector:
+    Match Labels:
+      App:  tcc-api
+  Strategy:
+    Blue Green:
+      Active Service:          tcc-api-active
+      Auto Promotion Enabled:  false
+      Post Promotion Analysis:
+        Templates:
+          Template Name:  tcc-api-success-rate
+      Pre Promotion Analysis:
+        Templates:
+          Template Name:         tcc-api-success-rate
+      Preview Service:           tcc-api-preview
+      Scale Down Delay Seconds:  30
+  Template:
+    Metadata:
+      Labels:
+        App:  tcc-api
+    Spec:
+      Containers:
+        Env:
+          Name:   APP_VERSION
+          Value:  v1.0.0
+          Name:   APP_COLOR
+          Value:  blue
+          Name:   ERROR_RATE
+          Value:  0
+          Name:   SLOW_MS
+          Value:  0
+        Image:    gabrieldores/tcc-api:v1
+        Liveness Probe:
+          Http Get:
+            Path:                 /health
+            Port:                 3000
+          Initial Delay Seconds:  10
+          Period Seconds:         15
+        Name:                     tcc-api
+        Ports:
+          Container Port:  3000
+          Protocol:        TCP
+        Readiness Probe:
+          Http Get:
+            Path:                 /ready
+            Port:                 3000
+          Initial Delay Seconds:  5
+          Period Seconds:         10
+        Resources:
+          Limits:
+            Cpu:     200m
+            Memory:  128Mi
+          Requests:
+            Cpu:     100m
+            Memory:  64Mi
+Status:
+  HPA Replicas:        4
+  Available Replicas:  4
+  Blue Green:
+    Active Selector:   86c5dc54d7
+    Preview Selector:  86c5dc54d7
+  Canary:
+  Conditions:
+    Last Transition Time:  2026-06-21T00:08:51Z
+    Last Update Time:      2026-06-21T00:08:51Z
+    Message:               Rollout has minimum availability
+    Reason:                AvailableReason
+    Status:                True
+    Type:                  Available
+    Last Transition Time:  2026-06-22T17:09:29Z
+    Last Update Time:      2026-06-22T17:09:29Z
+    Message:               RolloutCompleted
+    Reason:                RolloutCompleted
+    Status:                True
+    Type:                  Completed
+    Last Transition Time:  2026-06-22T17:09:29Z
+    Last Update Time:      2026-06-22T17:09:29Z
+    Message:               Rollout is healthy
+    Reason:                RolloutHealthy
+    Status:                True
+    Type:                  Healthy
+    Last Transition Time:  2026-06-22T17:09:29Z
+    Last Update Time:      2026-06-22T17:09:29Z
+    Message:               ReplicaSet "tcc-api-bluegreen-86c5dc54d7" has successfully progressed.
+    Reason:                NewReplicaSetAvailable
+    Status:                True
+    Type:                  Progressing
+  Current Pod Hash:        86c5dc54d7
+  Observed Generation:     3
+  Phase:                   Healthy
+  Ready Replicas:          4
+  Replicas:                4
+  Selector:                app=tcc-api,rollouts-pod-template-hash=86c5dc54d7
+  Stable RS:               86c5dc54d7
+  Updated Replicas:        4
+Events:                    <none>

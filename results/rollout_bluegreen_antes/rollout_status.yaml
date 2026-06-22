@@ -1,0 +1,110 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Rollout
+metadata:
+  annotations:
+    argocd.argoproj.io/tracking-id: tcc-rollouts:argoproj.io/Rollout:app-tcc/tcc-api-bluegreen
+    kubectl.kubernetes.io/last-applied-configuration: |
+      {"apiVersion":"argoproj.io/v1alpha1","kind":"Rollout","metadata":{"annotations":{"argocd.argoproj.io/tracking-id":"tcc-rollouts:argoproj.io/Rollout:app-tcc/tcc-api-bluegreen"},"name":"tcc-api-bluegreen","namespace":"app-tcc"},"spec":{"replicas":4,"selector":{"matchLabels":{"app":"tcc-api"}},"strategy":{"blueGreen":{"activeService":"tcc-api-active","autoPromotionEnabled":false,"postPromotionAnalysis":{"templates":[{"templateName":"tcc-api-success-rate"}]},"prePromotionAnalysis":{"templates":[{"templateName":"tcc-api-success-rate"}]},"previewService":"tcc-api-preview","scaleDownDelaySeconds":30}},"template":{"metadata":{"labels":{"app":"tcc-api"}},"spec":{"containers":[{"env":[{"name":"APP_VERSION","value":"v1.0.0"},{"name":"APP_COLOR","value":"blue"},{"name":"ERROR_RATE","value":"0"},{"name":"SLOW_MS","value":"0"}],"image":"gabrieldores/tcc-api:v1","livenessProbe":{"httpGet":{"path":"/health","port":3000},"initialDelaySeconds":10,"periodSeconds":15},"name":"tcc-api","ports":[{"containerPort":3000}],"readinessProbe":{"httpGet":{"path":"/ready","port":3000},"initialDelaySeconds":5,"periodSeconds":10},"resources":{"limits":{"cpu":"200m","memory":"128Mi"},"requests":{"cpu":"100m","memory":"64Mi"}}}]}}}}
+    rollout.argoproj.io/revision: "7"
+  creationTimestamp: "2026-06-16T00:42:11Z"
+  generation: 7
+  name: tcc-api-bluegreen
+  namespace: app-tcc
+  resourceVersion: "10110161"
+  uid: 4d2667d5-e5d7-4e67-adf6-20c48933333b
+spec:
+  replicas: 4
+  selector:
+    matchLabels:
+      app: tcc-api
+  strategy:
+    blueGreen:
+      activeService: tcc-api-active
+      autoPromotionEnabled: false
+      postPromotionAnalysis:
+        templates:
+        - templateName: tcc-api-success-rate
+      prePromotionAnalysis:
+        templates:
+        - templateName: tcc-api-success-rate
+      previewService: tcc-api-preview
+      scaleDownDelaySeconds: 30
+  template:
+    metadata:
+      labels:
+        app: tcc-api
+    spec:
+      containers:
+      - env:
+        - name: APP_VERSION
+          value: v1.0.0
+        - name: APP_COLOR
+          value: blue
+        - name: ERROR_RATE
+          value: "0"
+        - name: SLOW_MS
+          value: "0"
+        image: gabrieldores/tcc-api:v1
+        livenessProbe:
+          httpGet:
+            path: /health
+            port: 3000
+          initialDelaySeconds: 10
+          periodSeconds: 15
+        name: tcc-api
+        ports:
+        - containerPort: 3000
+          protocol: TCP
+        readinessProbe:
+          httpGet:
+            path: /ready
+            port: 3000
+          initialDelaySeconds: 5
+          periodSeconds: 10
+        resources:
+          limits:
+            cpu: 200m
+            memory: 128Mi
+          requests:
+            cpu: 100m
+            memory: 64Mi
+status:
+  HPAReplicas: 4
+  availableReplicas: 4
+  blueGreen:
+    activeSelector: 86c5dc54d7
+    previewSelector: 86c5dc54d7
+  canary: {}
+  conditions:
+  - lastTransitionTime: "2026-06-22T21:15:18Z"
+    lastUpdateTime: "2026-06-22T21:15:18Z"
+    message: Rollout has minimum availability
+    reason: AvailableReason
+    status: "True"
+    type: Available
+  - lastTransitionTime: "2026-06-22T21:29:22Z"
+    lastUpdateTime: "2026-06-22T21:29:22Z"
+    message: RolloutCompleted
+    reason: RolloutCompleted
+    status: "True"
+    type: Completed
+  - lastTransitionTime: "2026-06-22T21:29:23Z"
+    lastUpdateTime: "2026-06-22T21:29:23Z"
+    message: Rollout is healthy
+    reason: RolloutHealthy
+    status: "True"
+    type: Healthy
+  - lastTransitionTime: "2026-06-22T21:29:22Z"
+    lastUpdateTime: "2026-06-22T21:29:23Z"
+    message: ReplicaSet "tcc-api-bluegreen-86c5dc54d7" has successfully progressed.
+    reason: NewReplicaSetAvailable
+    status: "True"
+    type: Progressing
+  currentPodHash: 86c5dc54d7
+  observedGeneration: "7"
+  phase: Healthy
+  readyReplicas: 4
+  replicas: 4
+  selector: app=tcc-api,rollouts-pod-template-hash=86c5dc54d7
+  stableRS: 86c5dc54d7
+  updatedReplicas: 4

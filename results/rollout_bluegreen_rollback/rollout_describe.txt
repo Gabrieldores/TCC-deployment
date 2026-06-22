@@ -1,0 +1,143 @@
+Name:         tcc-api-bluegreen
+Namespace:    app-tcc
+Labels:       <none>
+Annotations:  argocd.argoproj.io/tracking-id: tcc-rollouts:argoproj.io/Rollout:app-tcc/tcc-api-bluegreen
+              rollout.argoproj.io/revision: 8
+API Version:  argoproj.io/v1alpha1
+Kind:         Rollout
+Metadata:
+  Creation Timestamp:  2026-06-16T00:42:11Z
+  Generation:          8
+  Resource Version:    10111580
+  UID:                 4d2667d5-e5d7-4e67-adf6-20c48933333b
+Spec:
+  Replicas:  4
+  Selector:
+    Match Labels:
+      App:  tcc-api
+  Strategy:
+    Blue Green:
+      Active Service:          tcc-api-active
+      Auto Promotion Enabled:  false
+      Post Promotion Analysis:
+        Templates:
+          Template Name:  tcc-api-success-rate
+      Pre Promotion Analysis:
+        Templates:
+          Template Name:         tcc-api-success-rate
+      Preview Service:           tcc-api-preview
+      Scale Down Delay Seconds:  30
+  Template:
+    Metadata:
+      Labels:
+        App:  tcc-api
+    Spec:
+      Containers:
+        Env:
+          Name:   APP_VERSION
+          Value:  v2.0.0
+          Name:   APP_COLOR
+          Value:  green
+          Name:   ERROR_RATE
+          Value:  0.05
+          Name:   SLOW_MS
+          Value:  800
+        Image:    gabrieldores/tcc-api:v1
+        Liveness Probe:
+          Http Get:
+            Path:                 /health
+            Port:                 3000
+          Initial Delay Seconds:  10
+          Period Seconds:         15
+        Name:                     tcc-api
+        Ports:
+          Container Port:  3000
+          Protocol:        TCP
+        Readiness Probe:
+          Http Get:
+            Path:                 /ready
+            Port:                 3000
+          Initial Delay Seconds:  5
+          Period Seconds:         10
+        Resources:
+          Limits:
+            Cpu:     200m
+            Memory:  128Mi
+          Requests:
+            Cpu:     100m
+            Memory:  64Mi
+Status:
+  HPA Replicas:        4
+  Abort:               true
+  Aborted At:          2026-06-22T21:43:12Z
+  Available Replicas:  4
+  Blue Green:
+    Active Selector:  86c5dc54d7
+    Pre Promotion Analysis Run Status:
+      Message:         Metric "error-rate" assessed Error due to consecutiveErrors (5) > consecutiveErrorLimit (4): "Error Message: reflect: slice index out of range"
+      Name:            tcc-api-bluegreen-787bdcb856-8-pre
+      Status:          Error
+    Preview Selector:  787bdcb856
+  Canary:
+  Conditions:
+    Last Transition Time:  2026-06-22T21:15:18Z
+    Last Update Time:      2026-06-22T21:15:18Z
+    Message:               Rollout has minimum availability
+    Reason:                AvailableReason
+    Status:                True
+    Type:                  Available
+    Last Transition Time:  2026-06-22T21:42:17Z
+    Last Update Time:      2026-06-22T21:42:17Z
+    Message:               Rollout is not healthy
+    Reason:                RolloutHealthy
+    Status:                False
+    Type:                  Healthy
+    Last Transition Time:  2026-06-22T21:42:17Z
+    Last Update Time:      2026-06-22T21:42:17Z
+    Message:               RolloutCompleted
+    Reason:                RolloutCompleted
+    Status:                False
+    Type:                  Completed
+    Last Transition Time:  2026-06-22T21:43:12Z
+    Last Update Time:      2026-06-22T21:43:12Z
+    Message:               Rollout aborted update to revision 8: Blue/green pre-promotion analysis phase error/failed: Metric "error-rate" assessed Error due to consecutiveErrors (5) > consecutiveErrorLimit (4): "Error Message: reflect: slice index out of range"
+    Reason:                RolloutAborted
+    Status:                False
+    Type:                  Progressing
+  Current Pod Hash:        787bdcb856
+  Message:                 RolloutAborted: Rollout aborted update to revision 8: Blue/green pre-promotion analysis phase error/failed: Metric "error-rate" assessed Error due to consecutiveErrors (5) > consecutiveErrorLimit (4): "Error Message: reflect: slice index out of range"
+  Observed Generation:     8
+  Phase:                   Degraded
+  Ready Replicas:          4
+  Replicas:                8
+  Selector:                app=tcc-api,rollouts-pod-template-hash=86c5dc54d7
+  Stable RS:               86c5dc54d7
+  Updated Replicas:        4
+Events:
+  Type     Reason                Age                From                 Message
+  ----     ------                ----               ----                 -------
+  Normal   NewReplicaSetCreated  40m                rollouts-controller  Created ReplicaSet tcc-api-bluegreen-787bdcb856 (revision 4)
+  Normal   RolloutUpdated        40m                rollouts-controller  Rollout updated to revision 4
+  Normal   RolloutNotCompleted   40m                rollouts-controller  Rollout not completed, started update to revision 4 (787bdcb856)
+  Normal   ScalingReplicaSet     40m                rollouts-controller  Scaled up ReplicaSet tcc-api-bluegreen-787bdcb856 (revision 4) from 0 to 4
+  Normal   AnalysisRunRunning    40m                rollouts-controller  PrePromotion Analysis Run 'tcc-api-bluegreen-787bdcb856-4-pre' Status New: 'Running' Previous: ''
+  Warning  AnalysisRunError      39m                rollouts-controller  PrePromotion Analysis Run 'tcc-api-bluegreen-787bdcb856-4-pre' Status New: 'Error' Previous: 'Running'
+  Warning  RolloutAborted        39m                rollouts-controller  Rollout aborted update to revision 4: Blue/green pre-promotion analysis phase error/failed: Metric "error-rate" assessed Error due to consecutiveErrors (5) > consecutiveErrorLimit (4): "Error Message: reflect: slice index out of range"
+  Normal   ScalingReplicaSet     39m                rollouts-controller  Scaled down ReplicaSet tcc-api-bluegreen-787bdcb856 (revision 4) from 4 to 0
+  Normal   RolloutUpdated        34m                rollouts-controller  Rollout updated to revision 5
+  Normal   RolloutNotCompleted   20m                rollouts-controller  Rollout not completed, started update to revision 6 (787bdcb856)
+  Normal   RolloutUpdated        20m                rollouts-controller  Rollout updated to revision 6
+  Normal   ScalingReplicaSet     20m                rollouts-controller  Scaled up ReplicaSet tcc-api-bluegreen-787bdcb856 (revision 6) from 0 to 4
+  Normal   AnalysisRunRunning    20m                rollouts-controller  PrePromotion Analysis Run 'tcc-api-bluegreen-787bdcb856-6-pre' Status New: 'Running' Previous: ''
+  Warning  AnalysisRunFailed     18m                rollouts-controller  PrePromotion Analysis Run 'tcc-api-bluegreen-787bdcb856-6-pre' Status New: 'Failed' Previous: 'Running'
+  Warning  RolloutAborted        18m                rollouts-controller  Rollout aborted update to revision 6: Blue/green pre-promotion analysis phase error/failed: Metric "error-rate" assessed Failed due to failed (3) > failureLimit (2)
+  Normal   ScalingReplicaSet     17m                rollouts-controller  Scaled down ReplicaSet tcc-api-bluegreen-787bdcb856 (revision 6) from 4 to 0
+  Normal   SwitchService         13m (x2 over 34m)  rollouts-controller  Switched selector for service 'tcc-api-preview' from '787bdcb856' to '86c5dc54d7'
+  Normal   RolloutUpdated        13m                rollouts-controller  Rollout updated to revision 7
+  Normal   SwitchService         59s (x3 over 40m)  rollouts-controller  Switched selector for service 'tcc-api-preview' from '86c5dc54d7' to '787bdcb856'
+  Normal   RolloutUpdated        59s                rollouts-controller  Rollout updated to revision 8
+  Normal   RolloutNotCompleted   59s                rollouts-controller  Rollout not completed, started update to revision 8 (787bdcb856)
+  Normal   ScalingReplicaSet     59s                rollouts-controller  Scaled up ReplicaSet tcc-api-bluegreen-787bdcb856 (revision 8) from 0 to 4
+  Normal   AnalysisRunRunning    43s                rollouts-controller  PrePromotion Analysis Run 'tcc-api-bluegreen-787bdcb856-8-pre' Status New: 'Running' Previous: ''
+  Warning  AnalysisRunError      4s                 rollouts-controller  PrePromotion Analysis Run 'tcc-api-bluegreen-787bdcb856-8-pre' Status New: 'Error' Previous: 'Running'
+  Warning  RolloutAborted        4s                 rollouts-controller  Rollout aborted update to revision 8: Blue/green pre-promotion analysis phase error/failed: Metric "error-rate" assessed Error due to consecutiveErrors (5) > consecutiveErrorLimit (4): "Error Message: reflect: slice index out of range"
