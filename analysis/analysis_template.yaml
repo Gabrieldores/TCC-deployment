@@ -7,9 +7,10 @@ spec:
   metrics:
     # ── Métrica 1: Taxa de sucesso de requisições ────────────────────────────
     - name: success-rate
-      interval: 30s
+      interval: 20s          # Reduzido de 30s para 20s: fail-fast! Puxa a tomada mais rápido.
       count: 5
-      failureLimit: 2
+      failureLimit: 2        # Duas métricas ruins = Rollback imediato
+      consecutiveErrorLimit: 4 # PARRUDO: Tolera até 4 engasgos/timeouts do Prometheus causados pelo StressChaos antes de panicar
       provider:
         prometheus:
           address: http://prometheus-kube-prometheus-prometheus.monitoring.svc:9090
@@ -17,14 +18,17 @@ spec:
             sum(rate(http_requests_total{path!="/metrics",status=~"2.."}[1m]))
             /
             sum(rate(http_requests_total{path!="/metrics"}[1m]))
-      successCondition: result[0] >= 0.95
-      failureCondition: result[0] < 0.90
- 
+      # Sucesso: Tem dados, NÃO é divisão por zero (NaN), e taxa >= 95%
+      successCondition: len(result) > 0 && !isNaN(result[0]) && result[0] >= 0.95
+      # Falha: Apagão de dados, divisão por zero (tráfego morreu) ou taxa < 90%
+      failureCondition: len(result) == 0 || isNaN(result[0]) || result[0] < 0.90
+
     # ── Métrica 2: Latência p95 ───────────────────────────────────────────────
     - name: latency-p95
-      interval: 30s
+      interval: 20s
       count: 5
       failureLimit: 2
+      consecutiveErrorLimit: 4
       provider:
         prometheus:
           address: http://prometheus-kube-prometheus-prometheus.monitoring.svc:9090
@@ -33,14 +37,15 @@ spec:
               sum(rate(http_request_duration_ms_bucket{path!="/metrics"}[1m]))
               by (le)
             )
-      successCondition: result[0] <= 1000
-      failureCondition: result[0] > 2000
- 
+      successCondition: len(result) > 0 && !isNaN(result[0]) && result[0] <= 1000
+      failureCondition: len(result) == 0 || isNaN(result[0]) || result[0] > 2000
+
     # ── Métrica 3: Taxa de erros ──────────────────────────────────────────────
     - name: error-rate
-      interval: 30s
+      interval: 20s
       count: 5
       failureLimit: 2
+      consecutiveErrorLimit: 4
       provider:
         prometheus:
           address: http://prometheus-kube-prometheus-prometheus.monitoring.svc:9090
@@ -48,5 +53,5 @@ spec:
             sum(rate(app_errors_total[1m]))
             /
             sum(rate(http_requests_total{path!="/metrics"}[1m]))
-      successCondition: result[0] <= 0.05
-      failureCondition: result[0] > 0.10
+      successCondition: len(result) > 0 && !isNaN(result[0]) && result[0] <= 0.05
+      failureCondition: len(result) == 0 || isNaN(result[0]) || result[0] > 0.10
