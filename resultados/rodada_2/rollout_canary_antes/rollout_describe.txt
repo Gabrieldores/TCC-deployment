@@ -1,0 +1,131 @@
+Name:         tcc-api-canary
+Namespace:    app-tcc
+Labels:       <none>
+Annotations:  argocd.argoproj.io/tracking-id: tcc-rollouts:argoproj.io/Rollout:app-tcc/tcc-api-canary
+              rollout.argoproj.io/revision: 17
+API Version:  argoproj.io/v1alpha1
+Kind:         Rollout
+Metadata:
+  Creation Timestamp:  2026-06-16T00:42:11Z
+  Generation:          18
+  Resource Version:    10122831
+  UID:                 d9e1b49e-89d3-42e8-a20f-50e9d85abcc4
+Spec:
+  Replicas:  4
+  Selector:
+    Match Labels:
+      App:  tcc-api
+  Strategy:
+    Canary:
+      Steps:
+        Set Weight:  20
+        Pause:
+          Duration:  30s
+        Analysis:
+          Templates:
+            Template Name:  tcc-api-success-rate
+        Set Weight:         50
+        Pause:
+          Duration:  30s
+        Set Weight:  100
+  Template:
+    Metadata:
+      Labels:
+        App:  tcc-api
+    Spec:
+      Containers:
+        Env:
+          Name:   APP_VERSION
+          Value:  v1.0.0
+          Name:   APP_COLOR
+          Value:  blue
+          Name:   ERROR_RATE
+          Value:  0
+          Name:   SLOW_MS
+          Value:  0
+        Image:    gabrieldores/tcc-api:v1
+        Liveness Probe:
+          Http Get:
+            Path:                 /health
+            Port:                 3000
+          Initial Delay Seconds:  10
+          Period Seconds:         15
+        Name:                     tcc-api
+        Ports:
+          Container Port:  3000
+          Protocol:        TCP
+        Readiness Probe:
+          Http Get:
+            Path:                 /ready
+            Port:                 3000
+          Initial Delay Seconds:  5
+          Period Seconds:         10
+        Resources:
+          Limits:
+            Cpu:     200m
+            Memory:  128Mi
+          Requests:
+            Cpu:     100m
+            Memory:  64Mi
+Status:
+  HPA Replicas:        4
+  Available Replicas:  4
+  Blue Green:
+  Canary:
+  Conditions:
+    Last Transition Time:  2026-06-22T23:49:15Z
+    Last Update Time:      2026-06-22T23:49:15Z
+    Message:               RolloutCompleted
+    Reason:                RolloutCompleted
+    Status:                True
+    Type:                  Completed
+    Last Transition Time:  2026-06-22T23:49:15Z
+    Last Update Time:      2026-06-22T23:49:15Z
+    Message:               Rollout is paused
+    Reason:                RolloutPaused
+    Status:                False
+    Type:                  Paused
+    Last Transition Time:  2026-06-22T23:49:56Z
+    Last Update Time:      2026-06-22T23:49:56Z
+    Message:               Rollout is healthy
+    Reason:                RolloutHealthy
+    Status:                True
+    Type:                  Healthy
+    Last Transition Time:  2026-06-22T23:49:15Z
+    Last Update Time:      2026-06-22T23:49:56Z
+    Message:               ReplicaSet "tcc-api-canary-86c5dc54d7" has successfully progressed.
+    Reason:                NewReplicaSetAvailable
+    Status:                True
+    Type:                  Progressing
+    Last Transition Time:  2026-06-22T23:49:56Z
+    Last Update Time:      2026-06-22T23:49:56Z
+    Message:               Rollout has minimum availability
+    Reason:                AvailableReason
+    Status:                True
+    Type:                  Available
+  Current Pod Hash:        86c5dc54d7
+  Current Step Hash:       799df774d7
+  Current Step Index:      6
+  Observed Generation:     18
+  Phase:                   Healthy
+  Ready Replicas:          4
+  Replicas:                4
+  Selector:                app=tcc-api
+  Stable RS:               86c5dc54d7
+  Updated Replicas:        4
+Events:
+  Type    Reason                   Age                    From                 Message
+  ----    ------                   ----                   ----                 -------
+  Normal  RolloutUpdated           16m                    rollouts-controller  Rollout updated to revision 16
+  Normal  RolloutNotCompleted      16m                    rollouts-controller  Rollout not completed, started update to revision 16 (787bdcb856)
+  Normal  ScalingReplicaSet        16m                    rollouts-controller  Scaled up ReplicaSet tcc-api-canary-787bdcb856 (revision 16) from 0 to 1
+  Normal  RolloutStepCompleted     15m (x7 over 47h)      rollouts-controller  Rollout step 1/6 completed (setWeight: 20)
+  Normal  RolloutPaused            15m (x7 over 47h)      rollouts-controller  Rollout is paused (CanaryPauseStep)
+  Normal  RolloutStepCompleted     15m (x7 over 47h)      rollouts-controller  Rollout step 2/6 completed (pause: 30s)
+  Normal  AnalysisRunRunning       15m                    rollouts-controller  Step Analysis Run 'tcc-api-canary-787bdcb856-16-2' Status New: 'Running' Previous: ''
+  Normal  RolloutPaused            14m (x2 over 162m)     rollouts-controller  Rollout is paused (InconclusiveAnalysisRun)
+  Normal  AnalysisRunInconclusive  14m                    rollouts-controller  Step Analysis Run 'tcc-api-canary-787bdcb856-16-2' Status New: 'Inconclusive' Previous: 'Running'
+  Normal  RolloutResumed           9m29s (x9 over 47h)    rollouts-controller  Rollout is resumed
+  Normal  SkipSteps                9m29s (x7 over 6d22h)  rollouts-controller  Rollback to stable ReplicaSets
+  Normal  RolloutUpdated           9m29s                  rollouts-controller  Rollout updated to revision 17
+  Normal  ScalingReplicaSet        9m28s                  rollouts-controller  Scaled down ReplicaSet tcc-api-canary-787bdcb856 (revision 16) from 1 to 0

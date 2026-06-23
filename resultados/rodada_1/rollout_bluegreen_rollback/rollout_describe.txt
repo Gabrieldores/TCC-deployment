@@ -1,0 +1,120 @@
+Name:         tcc-api-bluegreen
+Namespace:    app-tcc
+Labels:       <none>
+Annotations:  argocd.argoproj.io/tracking-id: tcc-rollouts:argoproj.io/Rollout:app-tcc/tcc-api-bluegreen
+              rollout.argoproj.io/revision: 12
+API Version:  argoproj.io/v1alpha1
+Kind:         Rollout
+Metadata:
+  Creation Timestamp:  2026-06-16T00:42:11Z
+  Generation:          12
+  Resource Version:    10122750
+  UID:                 4d2667d5-e5d7-4e67-adf6-20c48933333b
+Spec:
+  Replicas:  4
+  Selector:
+    Match Labels:
+      App:  tcc-api
+  Strategy:
+    Blue Green:
+      Active Service:          tcc-api-active
+      Auto Promotion Enabled:  false
+      Post Promotion Analysis:
+        Templates:
+          Template Name:  tcc-api-success-rate
+      Pre Promotion Analysis:
+        Templates:
+          Template Name:         tcc-api-success-rate
+      Preview Service:           tcc-api-preview
+      Scale Down Delay Seconds:  30
+  Template:
+    Metadata:
+      Labels:
+        App:  tcc-api
+    Spec:
+      Containers:
+        Env:
+          Name:   APP_VERSION
+          Value:  v2.0.0
+          Name:   APP_COLOR
+          Value:  green
+          Name:   ERROR_RATE
+          Value:  0.05
+          Name:   SLOW_MS
+          Value:  800
+        Image:    gabrieldores/tcc-api:v1
+        Liveness Probe:
+          Http Get:
+            Path:                 /health
+            Port:                 3000
+          Initial Delay Seconds:  10
+          Period Seconds:         15
+        Name:                     tcc-api
+        Ports:
+          Container Port:  3000
+          Protocol:        TCP
+        Readiness Probe:
+          Http Get:
+            Path:                 /ready
+            Port:                 3000
+          Initial Delay Seconds:  5
+          Period Seconds:         10
+        Resources:
+          Limits:
+            Cpu:     200m
+            Memory:  128Mi
+          Requests:
+            Cpu:     100m
+            Memory:  64Mi
+Status:
+  HPA Replicas:        4
+  Available Replicas:  4
+  Blue Green:
+    Active Selector:  86c5dc54d7
+    Pre Promotion Analysis Run Status:
+      Name:            tcc-api-bluegreen-787bdcb856-12-pre
+      Status:          Running
+    Preview Selector:  787bdcb856
+  Canary:
+  Conditions:
+    Last Transition Time:  2026-06-22T23:43:18Z
+    Last Update Time:      2026-06-22T23:43:18Z
+    Message:               Rollout has minimum availability
+    Reason:                AvailableReason
+    Status:                True
+    Type:                  Available
+    Last Transition Time:  2026-06-22T23:49:15Z
+    Last Update Time:      2026-06-22T23:49:15Z
+    Message:               Rollout is not healthy
+    Reason:                RolloutHealthy
+    Status:                False
+    Type:                  Healthy
+    Last Transition Time:  2026-06-22T23:49:15Z
+    Last Update Time:      2026-06-22T23:49:15Z
+    Message:               RolloutCompleted
+    Reason:                RolloutCompleted
+    Status:                False
+    Type:                  Completed
+    Last Transition Time:  2026-06-22T22:33:26Z
+    Last Update Time:      2026-06-22T23:49:16Z
+    Message:               ReplicaSet "tcc-api-bluegreen-787bdcb856" is progressing.
+    Reason:                ReplicaSetUpdated
+    Status:                True
+    Type:                  Progressing
+  Current Pod Hash:        787bdcb856
+  Message:                 active service cutover pending
+  Observed Generation:     12
+  Phase:                   Progressing
+  Ready Replicas:          4
+  Replicas:                8
+  Selector:                app=tcc-api,rollouts-pod-template-hash=86c5dc54d7
+  Stable RS:               86c5dc54d7
+  Updated Replicas:        4
+Events:
+  Type    Reason               Age                 From                 Message
+  ----    ------               ----                ----                 -------
+  Normal  SwitchService        59s (x5 over 167m)  rollouts-controller  Switched selector for service 'tcc-api-preview' from '86c5dc54d7' to '787bdcb856'
+  Normal  RolloutUpdated       59s                 rollouts-controller  Rollout updated to revision 12
+  Normal  RolloutNotCompleted  59s                 rollouts-controller  Rollout not completed, started update to revision 12 (787bdcb856)
+  Normal  ScalingReplicaSet    59s                 rollouts-controller  Scaled up ReplicaSet tcc-api-bluegreen-787bdcb856 (revision 12) from 0 to 4
+  Normal  AnalysisRunRunning   43s                 rollouts-controller  PrePromotion Analysis Run 'tcc-api-bluegreen-787bdcb856-12-pre' Status New: 'Running' Previous: ''

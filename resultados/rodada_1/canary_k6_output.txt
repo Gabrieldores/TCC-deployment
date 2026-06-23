@@ -1,0 +1,597 @@
+
+         /\      Grafana   /‾‾/  
+    /\  /  \     |\  __   /  /   
+   /  \/    \    | |/ /  /   ‾‾\ 
+  /          \   |   (  |  (‾)  |
+ / __________ \  |_|\_\  \_____/ 
+
+
+     execution: local
+        script: scripts/load-test.js
+        output: json (./results/canary_k6.json)
+
+     scenarios: (100.00%) 1 scenario, 100 max VUs, 3m30s max duration (incl. graceful stop):
+              * default: Up to 100 looping VUs for 3m0s over 4 stages (gracefulRampDown: 30s, gracefulStop: 30s)
+
+
+running (0m00.9s), 001/100 VUs, 2 complete and 0 interrupted iterations
+default   [   1% ] 001/100 VUs  0m00.9s/3m00.0s
+
+running (0m01.9s), 001/100 VUs, 4 complete and 0 interrupted iterations
+default   [   1% ] 001/100 VUs  0m01.9s/3m00.0s
+
+running (0m02.9s), 001/100 VUs, 6 complete and 0 interrupted iterations
+default   [   2% ] 001/100 VUs  0m02.9s/3m00.0s
+
+running (0m03.9s), 002/100 VUs, 9 complete and 0 interrupted iterations
+default   [   2% ] 002/100 VUs  0m03.9s/3m00.0s
+
+running (0m04.9s), 002/100 VUs, 13 complete and 0 interrupted iterations
+default   [   3% ] 002/100 VUs  0m04.9s/3m00.0s
+
+running (0m05.9s), 002/100 VUs, 16 complete and 0 interrupted iterations
+default   [   3% ] 002/100 VUs  0m05.9s/3m00.0s
+
+running (0m06.9s), 003/100 VUs, 22 complete and 0 interrupted iterations
+default   [   4% ] 003/100 VUs  0m06.9s/3m00.0s
+
+running (0m07.9s), 003/100 VUs, 30 complete and 0 interrupted iterations
+default   [   4% ] 003/100 VUs  0m07.9s/3m00.0s
+
+running (0m08.9s), 003/100 VUs, 37 complete and 0 interrupted iterations
+default   [   5% ] 003/100 VUs  0m08.9s/3m00.0s
+
+running (0m09.9s), 003/100 VUs, 44 complete and 0 interrupted iterations
+default   [   6% ] 003/100 VUs  0m09.9s/3m00.0s
+
+running (0m10.9s), 004/100 VUs, 53 complete and 0 interrupted iterations
+default   [   6% ] 004/100 VUs  0m10.9s/3m00.0s
+
+running (0m11.9s), 004/100 VUs, 63 complete and 0 interrupted iterations
+default   [   7% ] 004/100 VUs  0m11.9s/3m00.0s
+
+running (0m12.9s), 004/100 VUs, 75 complete and 0 interrupted iterations
+default   [   7% ] 004/100 VUs  0m12.9s/3m00.0s
+
+running (0m13.9s), 005/100 VUs, 85 complete and 0 interrupted iterations
+default   [   8% ] 005/100 VUs  0m13.9s/3m00.0s
+
+running (0m14.9s), 005/100 VUs, 94 complete and 0 interrupted iterations
+default   [   8% ] 005/100 VUs  0m14.9s/3m00.0s
+
+running (0m15.9s), 005/100 VUs, 108 complete and 0 interrupted iterations
+default   [   9% ] 005/100 VUs  0m15.9s/3m00.0s
+
+running (0m16.9s), 006/100 VUs, 116 complete and 0 interrupted iterations
+default   [   9% ] 006/100 VUs  0m16.9s/3m00.0s
+
+running (0m17.9s), 006/100 VUs, 128 complete and 0 interrupted iterations
+default   [  10% ] 006/100 VUs  0m17.9s/3m00.0s
+
+running (0m18.9s), 006/100 VUs, 138 complete and 0 interrupted iterations
+default   [  11% ] 006/100 VUs  0m18.9s/3m00.0s
+
+running (0m19.9s), 006/100 VUs, 153 complete and 0 interrupted iterations
+default   [  11% ] 006/100 VUs  0m19.9s/3m00.0s
+
+running (0m20.9s), 007/100 VUs, 164 complete and 0 interrupted iterations
+default   [  12% ] 007/100 VUs  0m20.9s/3m00.0s
+
+running (0m21.9s), 007/100 VUs, 183 complete and 0 interrupted iterations
+default   [  12% ] 007/100 VUs  0m21.9s/3m00.0s
+
+running (0m22.9s), 007/100 VUs, 201 complete and 0 interrupted iterations
+default   [  13% ] 007/100 VUs  0m22.9s/3m00.0s
+
+running (0m23.9s), 008/100 VUs, 225 complete and 0 interrupted iterations
+default   [  13% ] 008/100 VUs  0m23.9s/3m00.0s
+
+running (0m24.9s), 008/100 VUs, 244 complete and 0 interrupted iterations
+default   [  14% ] 008/100 VUs  0m24.9s/3m00.0s
+
+running (0m25.9s), 008/100 VUs, 260 complete and 0 interrupted iterations
+default   [  14% ] 008/100 VUs  0m25.9s/3m00.0s
+
+running (0m26.9s), 009/100 VUs, 285 complete and 0 interrupted iterations
+default   [  15% ] 009/100 VUs  0m26.9s/3m00.0s
+
+running (0m27.9s), 009/100 VUs, 303 complete and 0 interrupted iterations
+default   [  16% ] 009/100 VUs  0m27.9s/3m00.0s
+
+running (0m28.9s), 009/100 VUs, 325 complete and 0 interrupted iterations
+default   [  16% ] 009/100 VUs  0m28.9s/3m00.0s
+time="2026-06-23T01:43:20+02:00" level=info msg="ERRO [500] http://tcc-api.158.220.111.79.nip.io/unstable — 3.213414ms" source=console
+
+running (0m29.9s), 009/100 VUs, 351 complete and 0 interrupted iterations
+default   [  17% ] 009/100 VUs  0m29.9s/3m00.0s
+time="2026-06-23T01:43:21+02:00" level=info msg="ERRO [500] http://tcc-api.158.220.111.79.nip.io/products — 2.715927ms" source=console
+
+running (0m30.9s), 010/100 VUs, 372 complete and 0 interrupted iterations
+default   [  17% ] 010/100 VUs  0m30.9s/3m00.0s
+
+running (0m31.9s), 011/100 VUs, 399 complete and 0 interrupted iterations
+default   [  18% ] 011/100 VUs  0m31.9s/3m00.0s
+
+running (0m32.9s), 011/100 VUs, 427 complete and 0 interrupted iterations
+default   [  18% ] 011/100 VUs  0m32.9s/3m00.0s
+
+running (0m33.9s), 012/100 VUs, 453 complete and 0 interrupted iterations
+default   [  19% ] 012/100 VUs  0m33.9s/3m00.0s
+
+running (0m34.9s), 013/100 VUs, 485 complete and 0 interrupted iterations
+default   [  19% ] 013/100 VUs  0m34.9s/3m00.0s
+
+running (0m35.9s), 013/100 VUs, 515 complete and 0 interrupted iterations
+default   [  20% ] 013/100 VUs  0m35.9s/3m00.0s
+
+running (0m37.0s), 014/100 VUs, 548 complete and 0 interrupted iterations
+default   [  21% ] 014/100 VUs  0m37.0s/3m00.0s
+
+running (0m37.9s), 015/100 VUs, 577 complete and 0 interrupted iterations
+default   [  21% ] 015/100 VUs  0m37.9s/3m00.0s
+time="2026-06-23T01:43:29+02:00" level=info msg="ERRO [500] http://tcc-api.158.220.111.79.nip.io/products — 4.412717ms" source=console
+
+running (0m38.9s), 015/100 VUs, 617 complete and 0 interrupted iterations
+default   [  22% ] 015/100 VUs  0m38.9s/3m00.0s
+
+running (0m39.9s), 016/100 VUs, 651 complete and 0 interrupted iterations
+default   [  22% ] 016/100 VUs  0m39.9s/3m00.0s
+
+running (0m40.9s), 017/100 VUs, 691 complete and 0 interrupted iterations
+default   [  23% ] 017/100 VUs  0m40.9s/3m00.0s
+
+running (0m41.9s), 017/100 VUs, 729 complete and 0 interrupted iterations
+default   [  23% ] 017/100 VUs  0m41.9s/3m00.0s
+
+running (0m42.9s), 018/100 VUs, 771 complete and 0 interrupted iterations
+default   [  24% ] 018/100 VUs  0m42.9s/3m00.0s
+
+running (0m43.9s), 019/100 VUs, 818 complete and 0 interrupted iterations
+default   [  24% ] 019/100 VUs  0m43.9s/3m00.0s
+
+running (0m44.9s), 019/100 VUs, 859 complete and 0 interrupted iterations
+default   [  25% ] 019/100 VUs  0m44.9s/3m00.0s
+
+running (0m45.9s), 020/100 VUs, 902 complete and 0 interrupted iterations
+default   [  26% ] 020/100 VUs  0m45.9s/3m00.0s
+time="2026-06-23T01:43:36+02:00" level=info msg="ERRO [500] http://tcc-api.158.220.111.79.nip.io/products — 7.049076ms" source=console
+
+running (0m46.9s), 021/100 VUs, 952 complete and 0 interrupted iterations
+default   [  26% ] 021/100 VUs  0m46.9s/3m00.0s
+
+running (0m47.9s), 021/100 VUs, 998 complete and 0 interrupted iterations
+default   [  27% ] 021/100 VUs  0m47.9s/3m00.0s
+
+running (0m48.9s), 022/100 VUs, 1045 complete and 0 interrupted iterations
+default   [  27% ] 022/100 VUs  0m48.9s/3m00.0s
+
+running (0m49.9s), 023/100 VUs, 1097 complete and 0 interrupted iterations
+default   [  28% ] 023/100 VUs  0m49.9s/3m00.0s
+
+running (0m50.9s), 023/100 VUs, 1155 complete and 0 interrupted iterations
+default   [  28% ] 023/100 VUs  0m50.9s/3m00.0s
+
+running (0m51.9s), 024/100 VUs, 1212 complete and 0 interrupted iterations
+default   [  29% ] 024/100 VUs  0m51.9s/3m00.0s
+
+running (0m52.9s), 025/100 VUs, 1271 complete and 0 interrupted iterations
+default   [  29% ] 025/100 VUs  0m52.9s/3m00.0s
+
+running (0m53.9s), 025/100 VUs, 1321 complete and 0 interrupted iterations
+default   [  30% ] 025/100 VUs  0m53.9s/3m00.0s
+
+running (0m54.9s), 026/100 VUs, 1389 complete and 0 interrupted iterations
+default   [  31% ] 026/100 VUs  0m54.9s/3m00.0s
+
+running (0m55.9s), 027/100 VUs, 1452 complete and 0 interrupted iterations
+default   [  31% ] 027/100 VUs  0m55.9s/3m00.0s
+time="2026-06-23T01:43:46+02:00" level=info msg="ERRO [500] http://tcc-api.158.220.111.79.nip.io/unstable — 5.161842ms" source=console
+
+running (0m56.9s), 027/100 VUs, 1516 complete and 0 interrupted iterations
+default   [  32% ] 027/100 VUs  0m56.9s/3m00.0s
+
+running (0m57.9s), 028/100 VUs, 1585 complete and 0 interrupted iterations
+default   [  32% ] 028/100 VUs  0m57.9s/3m00.0s
+
+running (0m58.9s), 029/100 VUs, 1651 complete and 0 interrupted iterations
+default   [  33% ] 029/100 VUs  0m58.9s/3m00.0s
+
+running (0m59.9s), 029/100 VUs, 1726 complete and 0 interrupted iterations
+default   [  33% ] 029/100 VUs  0m59.9s/3m00.0s
+
+running (1m00.9s), 030/100 VUs, 1805 complete and 0 interrupted iterations
+default   [  34% ] 030/100 VUs  1m00.9s/3m00.0s
+
+running (1m01.9s), 031/100 VUs, 1880 complete and 0 interrupted iterations
+default   [  34% ] 031/100 VUs  1m01.9s/3m00.0s
+
+running (1m02.9s), 031/100 VUs, 1954 complete and 0 interrupted iterations
+default   [  35% ] 031/100 VUs  1m02.9s/3m00.0s
+
+running (1m03.9s), 032/100 VUs, 2030 complete and 0 interrupted iterations
+default   [  36% ] 032/100 VUs  1m03.9s/3m00.0s
+
+running (1m04.9s), 033/100 VUs, 2100 complete and 0 interrupted iterations
+default   [  36% ] 033/100 VUs  1m04.9s/3m00.0s
+time="2026-06-23T01:43:55+02:00" level=info msg="ERRO [500] http://tcc-api.158.220.111.79.nip.io/products — 2.644193ms" source=console
+
+running (1m05.9s), 033/100 VUs, 2184 complete and 0 interrupted iterations
+default   [  37% ] 033/100 VUs  1m05.9s/3m00.0s
+
+running (1m06.9s), 034/100 VUs, 2266 complete and 0 interrupted iterations
+default   [  37% ] 034/100 VUs  1m06.9s/3m00.0s
+
+running (1m07.9s), 035/100 VUs, 2345 complete and 0 interrupted iterations
+default   [  38% ] 035/100 VUs  1m07.9s/3m00.0s
+
+running (1m08.9s), 035/100 VUs, 2433 complete and 0 interrupted iterations
+default   [  38% ] 035/100 VUs  1m08.9s/3m00.0s
+
+running (1m09.9s), 036/100 VUs, 2530 complete and 0 interrupted iterations
+default   [  39% ] 036/100 VUs  1m09.9s/3m00.0s
+
+running (1m10.9s), 037/100 VUs, 2621 complete and 0 interrupted iterations
+default   [  39% ] 037/100 VUs  1m10.9s/3m00.0s
+
+running (1m11.9s), 037/100 VUs, 2724 complete and 0 interrupted iterations
+default   [  40% ] 037/100 VUs  1m11.9s/3m00.0s
+
+running (1m12.9s), 038/100 VUs, 2808 complete and 0 interrupted iterations
+default   [  41% ] 038/100 VUs  1m12.9s/3m00.0s
+
+running (1m13.9s), 039/100 VUs, 2899 complete and 0 interrupted iterations
+default   [  41% ] 039/100 VUs  1m13.9s/3m00.0s
+
+running (1m14.9s), 039/100 VUs, 3000 complete and 0 interrupted iterations
+default   [  42% ] 039/100 VUs  1m14.9s/3m00.0s
+
+running (1m15.9s), 040/100 VUs, 3099 complete and 0 interrupted iterations
+default   [  42% ] 040/100 VUs  1m15.9s/3m00.0s
+
+running (1m16.9s), 041/100 VUs, 3197 complete and 0 interrupted iterations
+default   [  43% ] 041/100 VUs  1m16.9s/3m00.0s
+time="2026-06-23T01:44:08+02:00" level=info msg="ERRO [500] http://tcc-api.158.220.111.79.nip.io/products — 4.315236ms" source=console
+
+running (1m17.9s), 041/100 VUs, 3296 complete and 0 interrupted iterations
+default   [  43% ] 041/100 VUs  1m17.9s/3m00.0s
+
+running (1m18.9s), 042/100 VUs, 3399 complete and 0 interrupted iterations
+default   [  44% ] 042/100 VUs  1m18.9s/3m00.0s
+
+running (1m19.9s), 043/100 VUs, 3498 complete and 0 interrupted iterations
+default   [  44% ] 043/100 VUs  1m19.9s/3m00.0s
+
+running (1m20.9s), 043/100 VUs, 3595 complete and 0 interrupted iterations
+default   [  45% ] 043/100 VUs  1m20.9s/3m00.0s
+
+running (1m21.9s), 044/100 VUs, 3707 complete and 0 interrupted iterations
+default   [  46% ] 044/100 VUs  1m21.9s/3m00.0s
+
+running (1m22.9s), 045/100 VUs, 3804 complete and 0 interrupted iterations
+default   [  46% ] 045/100 VUs  1m22.9s/3m00.0s
+
+running (1m23.9s), 045/100 VUs, 3910 complete and 0 interrupted iterations
+default   [  47% ] 045/100 VUs  1m23.9s/3m00.0s
+
+running (1m24.9s), 046/100 VUs, 4018 complete and 0 interrupted iterations
+default   [  47% ] 046/100 VUs  1m24.9s/3m00.0s
+
+running (1m25.9s), 047/100 VUs, 4134 complete and 0 interrupted iterations
+default   [  48% ] 047/100 VUs  1m25.9s/3m00.0s
+
+running (1m26.9s), 047/100 VUs, 4243 complete and 0 interrupted iterations
+default   [  48% ] 047/100 VUs  1m26.9s/3m00.0s
+
+running (1m27.9s), 048/100 VUs, 4359 complete and 0 interrupted iterations
+default   [  49% ] 048/100 VUs  1m27.9s/3m00.0s
+
+running (1m28.9s), 049/100 VUs, 4471 complete and 0 interrupted iterations
+default   [  49% ] 049/100 VUs  1m28.9s/3m00.0s
+time="2026-06-23T01:44:19+02:00" level=info msg="ERRO [500] http://tcc-api.158.220.111.79.nip.io/products — 1.873219ms" source=console
+
+running (1m29.9s), 049/100 VUs, 4586 complete and 0 interrupted iterations
+default   [  50% ] 049/100 VUs  1m29.9s/3m00.0s
+time="2026-06-23T01:44:20+02:00" level=info msg="ERRO [500] http://tcc-api.158.220.111.79.nip.io/products — 3.308521ms" source=console
+
+running (1m30.9s), 050/100 VUs, 4719 complete and 0 interrupted iterations
+default   [  51% ] 050/100 VUs  1m30.9s/3m00.0s
+
+running (1m31.9s), 051/100 VUs, 4847 complete and 0 interrupted iterations
+default   [  51% ] 051/100 VUs  1m31.9s/3m00.0s
+
+running (1m32.9s), 052/100 VUs, 4969 complete and 0 interrupted iterations
+default   [  52% ] 052/100 VUs  1m32.9s/3m00.0s
+
+running (1m33.9s), 053/100 VUs, 5083 complete and 0 interrupted iterations
+default   [  52% ] 053/100 VUs  1m33.9s/3m00.0s
+time="2026-06-23T01:44:25+02:00" level=info msg="ERRO [500] http://tcc-api.158.220.111.79.nip.io/unstable — 3.749653ms" source=console
+
+running (1m34.9s), 054/100 VUs, 5214 complete and 0 interrupted iterations
+default   [  53% ] 054/100 VUs  1m34.9s/3m00.0s
+
+running (1m35.9s), 054/100 VUs, 5339 complete and 0 interrupted iterations
+default   [  53% ] 054/100 VUs  1m35.9s/3m00.0s
+
+running (1m36.9s), 055/100 VUs, 5479 complete and 0 interrupted iterations
+default   [  54% ] 055/100 VUs  1m36.9s/3m00.0s
+time="2026-06-23T01:44:27+02:00" level=info msg="ERRO [500] http://tcc-api.158.220.111.79.nip.io/products — 5.886511ms" source=console
+
+running (1m37.9s), 056/100 VUs, 5598 complete and 0 interrupted iterations
+default   [  54% ] 056/100 VUs  1m37.9s/3m00.0s
+
+running (1m38.9s), 057/100 VUs, 5735 complete and 0 interrupted iterations
+default   [  55% ] 057/100 VUs  1m38.9s/3m00.0s
+
+running (1m39.9s), 058/100 VUs, 5872 complete and 0 interrupted iterations
+default   [  56% ] 058/100 VUs  1m39.9s/3m00.0s
+time="2026-06-23T01:44:31+02:00" level=info msg="ERRO [500] http://tcc-api.158.220.111.79.nip.io/products — 3.391666ms" source=console
+
+running (1m40.9s), 059/100 VUs, 6001 complete and 0 interrupted iterations
+default   [  56% ] 059/100 VUs  1m40.9s/3m00.0s
+
+running (1m41.9s), 059/100 VUs, 6132 complete and 0 interrupted iterations
+default   [  57% ] 059/100 VUs  1m41.9s/3m00.0s
+
+running (1m42.9s), 060/100 VUs, 6270 complete and 0 interrupted iterations
+default   [  57% ] 060/100 VUs  1m42.9s/3m00.0s
+
+running (1m43.9s), 061/100 VUs, 6404 complete and 0 interrupted iterations
+default   [  58% ] 061/100 VUs  1m43.9s/3m00.0s
+
+running (1m44.9s), 062/100 VUs, 6550 complete and 0 interrupted iterations
+default   [  58% ] 062/100 VUs  1m44.9s/3m00.0s
+time="2026-06-23T01:44:36+02:00" level=info msg="ERRO [500] http://tcc-api.158.220.111.79.nip.io/products — 2.979117ms" source=console
+time="2026-06-23T01:44:36+02:00" level=info msg="ERRO [500] http://tcc-api.158.220.111.79.nip.io/products — 3.047394ms" source=console
+
+running (1m45.9s), 063/100 VUs, 6695 complete and 0 interrupted iterations
+default   [  59% ] 063/100 VUs  1m45.9s/3m00.0s
+
+running (1m46.9s), 064/100 VUs, 6848 complete and 0 interrupted iterations
+default   [  59% ] 064/100 VUs  1m46.9s/3m00.0s
+
+running (1m47.9s), 064/100 VUs, 7002 complete and 0 interrupted iterations
+default   [  60% ] 064/100 VUs  1m47.9s/3m00.0s
+
+running (1m48.9s), 065/100 VUs, 7167 complete and 0 interrupted iterations
+default   [  61% ] 065/100 VUs  1m48.9s/3m00.0s
+
+running (1m49.9s), 066/100 VUs, 7315 complete and 0 interrupted iterations
+default   [  61% ] 066/100 VUs  1m49.9s/3m00.0s
+
+running (1m50.9s), 067/100 VUs, 7474 complete and 0 interrupted iterations
+default   [  62% ] 067/100 VUs  1m50.9s/3m00.0s
+time="2026-06-23T01:44:42+02:00" level=info msg="ERRO [500] http://tcc-api.158.220.111.79.nip.io/products — 4.041236ms" source=console
+
+running (1m51.9s), 068/100 VUs, 7633 complete and 0 interrupted iterations
+default   [  62% ] 068/100 VUs  1m51.9s/3m00.0s
+time="2026-06-23T01:44:42+02:00" level=info msg="ERRO [500] http://tcc-api.158.220.111.79.nip.io/unstable — 3.285879ms" source=console
+
+running (1m52.9s), 069/100 VUs, 7800 complete and 0 interrupted iterations
+default   [  63% ] 069/100 VUs  1m52.9s/3m00.0s
+
+running (1m53.9s), 069/100 VUs, 7969 complete and 0 interrupted iterations
+default   [  63% ] 069/100 VUs  1m53.9s/3m00.0s
+
+running (1m54.9s), 070/100 VUs, 8151 complete and 0 interrupted iterations
+default   [  64% ] 070/100 VUs  1m54.9s/3m00.0s
+
+running (1m55.9s), 071/100 VUs, 8318 complete and 0 interrupted iterations
+default   [  64% ] 071/100 VUs  1m55.9s/3m00.0s
+
+running (1m56.9s), 072/100 VUs, 8484 complete and 0 interrupted iterations
+default   [  65% ] 072/100 VUs  1m56.9s/3m00.0s
+
+running (1m58.0s), 073/100 VUs, 8664 complete and 0 interrupted iterations
+default   [  66% ] 073/100 VUs  1m58.0s/3m00.0s
+time="2026-06-23T01:44:48+02:00" level=info msg="ERRO [500] http://tcc-api.158.220.111.79.nip.io/unstable — 54.924782ms" source=console
+
+running (1m58.9s), 074/100 VUs, 8837 complete and 0 interrupted iterations
+default   [  66% ] 074/100 VUs  1m58.9s/3m00.0s
+
+running (1m59.9s), 074/100 VUs, 9007 complete and 0 interrupted iterations
+default   [  67% ] 074/100 VUs  1m59.9s/3m00.0s
+
+running (2m00.9s), 075/100 VUs, 9201 complete and 0 interrupted iterations
+default   [  67% ] 075/100 VUs  2m00.9s/3m00.0s
+
+running (2m01.9s), 076/100 VUs, 9375 complete and 0 interrupted iterations
+default   [  68% ] 076/100 VUs  2m01.9s/3m00.0s
+
+running (2m03.0s), 077/100 VUs, 9572 complete and 0 interrupted iterations
+default   [  68% ] 077/100 VUs  2m03.0s/3m00.0s
+
+running (2m04.0s), 078/100 VUs, 9758 complete and 0 interrupted iterations
+default   [  69% ] 078/100 VUs  2m04.0s/3m00.0s
+
+running (2m04.9s), 079/100 VUs, 9924 complete and 0 interrupted iterations
+default   [  69% ] 079/100 VUs  2m04.9s/3m00.0s
+
+running (2m05.9s), 079/100 VUs, 10120 complete and 0 interrupted iterations
+default   [  70% ] 079/100 VUs  2m05.9s/3m00.0s
+
+running (2m06.9s), 080/100 VUs, 10316 complete and 0 interrupted iterations
+default   [  71% ] 080/100 VUs  2m06.9s/3m00.0s
+
+running (2m07.9s), 081/100 VUs, 10506 complete and 0 interrupted iterations
+default   [  71% ] 081/100 VUs  2m07.9s/3m00.0s
+time="2026-06-23T01:44:59+02:00" level=info msg="ERRO [500] http://tcc-api.158.220.111.79.nip.io/products — 3.443632ms" source=console
+
+running (2m08.9s), 082/100 VUs, 10717 complete and 0 interrupted iterations
+default   [  72% ] 082/100 VUs  2m08.9s/3m00.0s
+
+running (2m09.9s), 083/100 VUs, 10931 complete and 0 interrupted iterations
+default   [  72% ] 083/100 VUs  2m09.9s/3m00.0s
+
+running (2m10.9s), 084/100 VUs, 11144 complete and 0 interrupted iterations
+default   [  73% ] 084/100 VUs  2m10.9s/3m00.0s
+
+running (2m11.9s), 084/100 VUs, 11345 complete and 0 interrupted iterations
+default   [  73% ] 084/100 VUs  2m11.9s/3m00.0s
+
+running (2m12.9s), 085/100 VUs, 11552 complete and 0 interrupted iterations
+default   [  74% ] 085/100 VUs  2m12.9s/3m00.0s
+
+running (2m13.9s), 086/100 VUs, 11756 complete and 0 interrupted iterations
+default   [  74% ] 086/100 VUs  2m13.9s/3m00.0s
+time="2026-06-23T01:45:05+02:00" level=info msg="ERRO [500] http://tcc-api.158.220.111.79.nip.io/unstable — 3.149326ms" source=console
+
+running (2m14.9s), 087/100 VUs, 11973 complete and 0 interrupted iterations
+default   [  75% ] 087/100 VUs  2m14.9s/3m00.0s
+
+running (2m15.9s), 088/100 VUs, 12182 complete and 0 interrupted iterations
+default   [  76% ] 088/100 VUs  2m15.9s/3m00.0s
+
+running (2m16.9s), 089/100 VUs, 12400 complete and 0 interrupted iterations
+default   [  76% ] 089/100 VUs  2m16.9s/3m00.0s
+time="2026-06-23T01:45:08+02:00" level=info msg="ERRO [500] http://tcc-api.158.220.111.79.nip.io/products — 9.97143ms" source=console
+
+running (2m17.9s), 089/100 VUs, 12605 complete and 0 interrupted iterations
+default   [  77% ] 089/100 VUs  2m17.9s/3m00.0s
+
+running (2m18.9s), 090/100 VUs, 12821 complete and 0 interrupted iterations
+default   [  77% ] 090/100 VUs  2m18.9s/3m00.0s
+time="2026-06-23T01:45:10+02:00" level=info msg="ERRO [500] http://tcc-api.158.220.111.79.nip.io/products — 2.649754ms" source=console
+
+running (2m19.9s), 091/100 VUs, 13029 complete and 0 interrupted iterations
+default   [  78% ] 091/100 VUs  2m19.9s/3m00.0s
+
+running (2m20.9s), 092/100 VUs, 13247 complete and 0 interrupted iterations
+default   [  78% ] 092/100 VUs  2m20.9s/3m00.0s
+
+running (2m21.9s), 093/100 VUs, 13471 complete and 0 interrupted iterations
+default   [  79% ] 093/100 VUs  2m21.9s/3m00.0s
+
+running (2m22.9s), 094/100 VUs, 13664 complete and 0 interrupted iterations
+default   [  79% ] 094/100 VUs  2m22.9s/3m00.0s
+time="2026-06-23T01:45:14+02:00" level=info msg="ERRO [500] http://tcc-api.158.220.111.79.nip.io/unstable — 2.747807ms" source=console
+
+running (2m23.9s), 094/100 VUs, 13891 complete and 0 interrupted iterations
+default   [  80% ] 094/100 VUs  2m23.9s/3m00.0s
+time="2026-06-23T01:45:15+02:00" level=info msg="ERRO [500] http://tcc-api.158.220.111.79.nip.io/products — 2.498592ms" source=console
+
+running (2m24.9s), 095/100 VUs, 14120 complete and 0 interrupted iterations
+default   [  81% ] 095/100 VUs  2m24.9s/3m00.0s
+
+running (2m25.9s), 096/100 VUs, 14356 complete and 0 interrupted iterations
+default   [  81% ] 096/100 VUs  2m25.9s/3m00.0s
+time="2026-06-23T01:45:16+02:00" level=info msg="ERRO [500] http://tcc-api.158.220.111.79.nip.io/products — 6.571989ms" source=console
+time="2026-06-23T01:45:17+02:00" level=info msg="ERRO [500] http://tcc-api.158.220.111.79.nip.io/products — 2.943191ms" source=console
+
+running (2m26.9s), 097/100 VUs, 14581 complete and 0 interrupted iterations
+default   [  82% ] 097/100 VUs  2m26.9s/3m00.0s
+
+running (2m27.9s), 098/100 VUs, 14823 complete and 0 interrupted iterations
+default   [  82% ] 098/100 VUs  2m27.9s/3m00.0s
+time="2026-06-23T01:45:19+02:00" level=info msg="ERRO [500] http://tcc-api.158.220.111.79.nip.io/products — 5.71368ms" source=console
+
+running (2m28.9s), 099/100 VUs, 15052 complete and 0 interrupted iterations
+default   [  83% ] 099/100 VUs  2m28.9s/3m00.0s
+
+running (2m29.9s), 099/100 VUs, 15287 complete and 0 interrupted iterations
+default   [  83% ] 099/100 VUs  2m29.9s/3m00.0s
+time="2026-06-23T01:45:21+02:00" level=info msg="ERRO [500] http://tcc-api.158.220.111.79.nip.io/unstable — 3.175383ms" source=console
+
+running (2m30.9s), 099/100 VUs, 15513 complete and 0 interrupted iterations
+default   [  84% ] 099/100 VUs  2m30.9s/3m00.0s
+time="2026-06-23T01:45:21+02:00" level=info msg="ERRO [500] http://tcc-api.158.220.111.79.nip.io/products — 3.373892ms" source=console
+
+running (2m31.9s), 094/100 VUs, 15749 complete and 0 interrupted iterations
+default   [  84% ] 094/100 VUs  2m31.9s/3m00.0s
+
+running (2m32.9s), 092/100 VUs, 15974 complete and 0 interrupted iterations
+default   [  85% ] 092/100 VUs  2m32.9s/3m00.0s
+
+running (2m33.9s), 088/100 VUs, 16190 complete and 0 interrupted iterations
+default   [  86% ] 088/100 VUs  2m33.9s/3m00.0s
+
+running (2m34.9s), 085/100 VUs, 16399 complete and 0 interrupted iterations
+default   [  86% ] 085/100 VUs  2m34.9s/3m00.0s
+
+running (2m35.9s), 081/100 VUs, 16603 complete and 0 interrupted iterations
+default   [  87% ] 081/100 VUs  2m35.9s/3m00.0s
+
+running (2m36.9s), 078/100 VUs, 16785 complete and 0 interrupted iterations
+default   [  87% ] 078/100 VUs  2m36.9s/3m00.0s
+
+running (2m37.9s), 075/100 VUs, 16965 complete and 0 interrupted iterations
+default   [  88% ] 075/100 VUs  2m37.9s/3m00.0s
+time="2026-06-23T01:45:29+02:00" level=info msg="ERRO [500] http://tcc-api.158.220.111.79.nip.io/products — 3.735136ms" source=console
+
+running (2m38.9s), 072/100 VUs, 17142 complete and 0 interrupted iterations
+default   [  88% ] 072/100 VUs  2m38.9s/3m00.0s
+time="2026-06-23T01:45:30+02:00" level=info msg="ERRO [500] http://tcc-api.158.220.111.79.nip.io/unstable — 2.984448ms" source=console
+
+running (2m39.9s), 068/100 VUs, 17315 complete and 0 interrupted iterations
+default   [  89% ] 068/100 VUs  2m39.9s/3m00.0s
+
+running (2m40.9s), 065/100 VUs, 17478 complete and 0 interrupted iterations
+default   [  89% ] 065/100 VUs  2m40.9s/3m00.0s
+
+running (2m41.9s), 062/100 VUs, 17627 complete and 0 interrupted iterations
+default   [  90% ] 062/100 VUs  2m41.9s/3m00.0s
+
+running (2m42.9s), 058/100 VUs, 17762 complete and 0 interrupted iterations
+default   [  91% ] 058/100 VUs  2m42.9s/3m00.0s
+
+running (2m43.9s), 055/100 VUs, 17904 complete and 0 interrupted iterations
+default   [  91% ] 055/100 VUs  2m43.9s/3m00.0s
+
+running (2m44.9s), 052/100 VUs, 18036 complete and 0 interrupted iterations
+default   [  92% ] 052/100 VUs  2m44.9s/3m00.0s
+
+running (2m45.9s), 048/100 VUs, 18151 complete and 0 interrupted iterations
+default   [  92% ] 048/100 VUs  2m45.9s/3m00.0s
+
+running (2m46.9s), 045/100 VUs, 18256 complete and 0 interrupted iterations
+default   [  93% ] 045/100 VUs  2m46.9s/3m00.0s
+time="2026-06-23T01:45:37+02:00" level=info msg="ERRO [500] http://tcc-api.158.220.111.79.nip.io/products — 3.433284ms" source=console
+
+running (2m47.9s), 041/100 VUs, 18370 complete and 0 interrupted iterations
+default   [  93% ] 041/100 VUs  2m47.9s/3m00.0s
+time="2026-06-23T01:45:39+02:00" level=info msg="ERRO [500] http://tcc-api.158.220.111.79.nip.io/unstable — 3.958922ms" source=console
+
+running (2m48.9s), 039/100 VUs, 18466 complete and 0 interrupted iterations
+default   [  94% ] 039/100 VUs  2m48.9s/3m00.0s
+
+running (2m49.9s), 035/100 VUs, 18558 complete and 0 interrupted iterations
+default   [  94% ] 035/100 VUs  2m49.9s/3m00.0s
+
+running (2m50.9s), 033/100 VUs, 18642 complete and 0 interrupted iterations
+default   [  95% ] 033/100 VUs  2m50.9s/3m00.0s
+
+running (2m51.9s), 028/100 VUs, 18714 complete and 0 interrupted iterations
+default   [  96% ] 028/100 VUs  2m51.9s/3m00.0s
+time="2026-06-23T01:45:43+02:00" level=info msg="ERRO [500] http://tcc-api.158.220.111.79.nip.io/products — 2.890082ms" source=console
+
+running (2m52.9s), 026/100 VUs, 18780 complete and 0 interrupted iterations
+default   [  96% ] 026/100 VUs  2m52.9s/3m00.0s
+
+running (2m53.9s), 021/100 VUs, 18840 complete and 0 interrupted iterations
+default   [  97% ] 021/100 VUs  2m53.9s/3m00.0s
+
+running (2m54.9s), 018/100 VUs, 18885 complete and 0 interrupted iterations
+default   [  97% ] 018/100 VUs  2m54.9s/3m00.0s
+time="2026-06-23T01:45:45+02:00" level=info msg="ERRO [500] http://tcc-api.158.220.111.79.nip.io/unstable — 2.441216ms" source=console
+
+running (2m55.9s), 016/100 VUs, 18926 complete and 0 interrupted iterations
+default   [  98% ] 016/100 VUs  2m55.9s/3m00.0s
+
+running (2m56.9s), 013/100 VUs, 18961 complete and 0 interrupted iterations
+default   [  98% ] 013/100 VUs  2m56.9s/3m00.0s
+
+running (2m57.9s), 008/100 VUs, 18989 complete and 0 interrupted iterations
+default   [  99% ] 008/100 VUs  2m57.9s/3m00.0s
+
+running (2m58.9s), 005/100 VUs, 19001 complete and 0 interrupted iterations
+default   [  99% ] 005/100 VUs  2m58.9s/3m00.0s
+
+running (2m59.9s), 001/100 VUs, 19010 complete and 0 interrupted iterations
+default   [ 100% ] 001/100 VUs  2m59.9s/3m00.0s
+{
+  "success_rate": 0.998211561727421,
+  "p95_ms": 520.3006225,
+  "errors_total": 34,
+  "requests_total": 19011
+}
+running (3m00.2s), 000/100 VUs, 19011 complete and 0 interrupted iterations
+default ✓ [ 100% ] 000/100 VUs  3m0s
