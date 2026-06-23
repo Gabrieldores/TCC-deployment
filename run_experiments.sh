@@ -213,7 +213,15 @@ collect_prometheus "canary_apos_rollback"
 wait $K6_PID 2>/dev/null || true
 
 log_info "Removendo experimentos de caos..."
-kubectl delete -f chaos/Experiments.yaml 2>/dev/null || true
+if ! kubectl delete -f chaos/Experiments.yaml --timeout=45s 2>/dev/null; then
+  log_warn "O Chaos Mesh engasgou (Timeout). Forçando a remoção dos finalizadores..."
+  for i in $(kubectl get podchaos,networkchaos,httpchaos,stresschaos -n chaos-testing -o name 2>/dev/null); do
+    kubectl patch $i -n chaos-testing -p '{"metadata":{"finalizers":[]}}' --type=merge 2>/dev/null || true
+  done
+fi
+
+log_info "Recriando pods da API para esterilizar o ambiente..."
+kubectl delete pods --all -n "$NAMESPACE" --force --grace-period=0 2>/dev/null || true
 
 log_success "Experimento Canary concluído"
 
@@ -283,7 +291,15 @@ collect_prometheus "bluegreen_apos_rollback"
 wait $K6_PID 2>/dev/null || true
 
 log_info "Removendo experimentos de caos..."
-kubectl delete -f chaos/Experiments.yaml 2>/dev/null || true
+if ! kubectl delete -f chaos/Experiments.yaml --timeout=45s 2>/dev/null; then
+  log_warn "O Chaos Mesh engasgou (Timeout). Forçando a remoção dos finalizadores..."
+  for i in $(kubectl get podchaos,networkchaos,httpchaos,stresschaos -n chaos-testing -o name 2>/dev/null); do
+    kubectl patch $i -n chaos-testing -p '{"metadata":{"finalizers":[]}}' --type=merge 2>/dev/null || true
+  done
+fi
+
+log_info "Recriando pods da API para esterilizar o ambiente..."
+kubectl delete pods --all -n "$NAMESPACE" --force --grace-period=0 2>/dev/null || true
 
 log_success "Experimento Blue-Green concluído"
 
