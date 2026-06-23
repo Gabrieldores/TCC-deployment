@@ -19,7 +19,7 @@ spec:
             sum(rate(http_requests_total{path!="/metrics"}[1m]))
       successCondition: result[0] >= 0.95
       failureCondition: result[0] < 0.90
-
+ 
     # ── Métrica 2: Latência p95 ───────────────────────────────────────────────
     - name: latency-p95
       interval: 30s
@@ -35,7 +35,7 @@ spec:
             )
       successCondition: result[0] <= 1000
       failureCondition: result[0] > 2000
-
+ 
     # ── Métrica 3: Taxa de erros ──────────────────────────────────────────────
     - name: error-rate
       interval: 30s
@@ -46,5 +46,7 @@ spec:
           address: http://prometheus-kube-prometheus-prometheus.monitoring.svc:9090
           query: |
             sum(rate(app_errors_total[1m]))
+            /
+            sum(rate(http_requests_total{path!="/metrics"}[1m]))
       successCondition: result[0] <= 0.05
       failureCondition: result[0] > 0.10
