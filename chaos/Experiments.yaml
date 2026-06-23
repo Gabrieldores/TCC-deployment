@@ -14,7 +14,7 @@ spec:
       - app-tcc
     labelSelectors:
       app: tcc-api
-  duration: "60s"
+  duration: "180s"
 
 ---
 # ============================================================
@@ -37,11 +37,11 @@ spec:
     latency: "500ms"
     correlation: "25"
     jitter: "100ms"
-  duration: "60s"
+  duration: "180s"
 
 ---
 # ============================================================
-# HTTPChaos — Transforma respostas 200 em 500
+# HTTPChaos — Transforma respostas em erro 500
 # ============================================================
 apiVersion: chaos-mesh.org/v1alpha1
 kind: HTTPChaos
@@ -57,11 +57,11 @@ spec:
       app: tcc-api
   target: Response
   port: 3000
-  path: "/unstable"
+  path: "*"
   abort: false
   replace:
     code: 500
-  duration: "60s"
+  duration: "180s"
 
 ---
 # ============================================================
@@ -86,4 +86,4 @@ spec:
     memory:
       workers: 2
       size: "256MB"
-  duration: "60s"
+  duration: "180s"
