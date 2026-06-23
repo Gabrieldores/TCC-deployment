@@ -1,0 +1,20 @@
+LAST SEEN   TYPE     REASON                 OBJECT                                    MESSAGE
+31s         Normal   Scheduled              pod/tcc-api-bluegreen-86c5dc54d7-7r79g    Successfully assigned app-tcc/tcc-api-bluegreen-86c5dc54d7-7r79g to vmi3069651
+58s         Normal   Scheduled              pod/tcc-api-canary-787bdcb856-b2zkj       Successfully assigned app-tcc/tcc-api-canary-787bdcb856-b2zkj to vmi3069651
+60s         Normal   RolloutNotCompleted    rollout/tcc-api-canary                    Rollout not completed, started update to revision 16 (787bdcb856)
+60s         Normal   RolloutUpdated         rollout/tcc-api-canary                    Rollout updated to revision 16
+59s         Normal   ScalingReplicaSet      rollout/tcc-api-canary                    Scaled up ReplicaSet tcc-api-canary-787bdcb856 (revision 16) from 0 to 1
+58s         Normal   SuccessfulCreate       replicaset/tcc-api-canary-787bdcb856      Created pod: tcc-api-canary-787bdcb856-b2zkj
+57s         Normal   Pulled                 pod/tcc-api-canary-787bdcb856-b2zkj       Container image "gabrieldores/tcc-api:v1" already present on machine
+57s         Normal   Created                pod/tcc-api-canary-787bdcb856-b2zkj       Created container: tcc-api
+56s         Normal   Started                pod/tcc-api-canary-787bdcb856-b2zkj       Started container tcc-api
+42s         Normal   RolloutStepCompleted   rollout/tcc-api-canary                    Rollout step 1/6 completed (setWeight: 20)
+41s         Normal   RolloutPaused          rollout/tcc-api-canary                    Rollout is paused (CanaryPauseStep)
+31s         Normal   SuccessfulCreate       replicaset/tcc-api-bluegreen-86c5dc54d7   Created pod: tcc-api-bluegreen-86c5dc54d7-7r79g
+31s         Normal   Killing                pod/tcc-api-bluegreen-86c5dc54d7-cxxlc    Stopping container tcc-api
+30s         Normal   Started                pod/tcc-api-bluegreen-86c5dc54d7-7r79g    Started container tcc-api
+30s         Normal   Created                pod/tcc-api-bluegreen-86c5dc54d7-7r79g    Created container: tcc-api
+30s         Normal   Pulled                 pod/tcc-api-bluegreen-86c5dc54d7-7r79g    Container image "gabrieldores/tcc-api:v1" already present on machine
+10s         Normal   RolloutStepCompleted   rollout/tcc-api-canary                    Rollout step 2/6 completed (pause: 30s)
+10s         Normal   RolloutResumed         rollout/tcc-api-canary                    Rollout is resumed
+6s          Normal   AnalysisRunRunning     rollout/tcc-api-canary                    Step Analysis Run 'tcc-api-canary-787bdcb856-16-2' Status New: 'Running' Previous: ''
