@@ -24,7 +24,7 @@ spec:
             - name: APP_COLOR
               value: "blue"
             - name: ERROR_RATE
-              value: "0.00"
+              value: "0"
             - name: SLOW_MS
               value: "0"
           readinessProbe:
