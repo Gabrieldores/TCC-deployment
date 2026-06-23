@@ -36,7 +36,7 @@ spec:
       successCondition: result[0] <= 1000
       failureCondition: result[0] > 2000
  
-    # ── Métrica 3: Taxa de erros ──────────────────────────────────────────────
+    # ── Métrica 3: Taxa de erros (corrigida) ─────────────────────────────────
     - name: error-rate
       interval: 30s
       count: 5
@@ -45,7 +45,7 @@ spec:
         prometheus:
           address: http://prometheus-kube-prometheus-prometheus.monitoring.svc:9090
           query: |
-            sum(rate(app_errors_total[1m]))
+            sum(rate(http_requests_total{status=~"5..", path!="/metrics"}[1m]))
             /
             sum(rate(http_requests_total{path!="/metrics"}[1m]))
       successCondition: result[0] <= 0.05
