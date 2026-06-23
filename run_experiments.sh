@@ -123,6 +123,29 @@ wait_for_analysisrun() {
   log_warn "AnalysisRun não iniciou em ${max_wait}s — injetando caos mesmo assim"
 }
 
+# ── Aguarda Tráfego do Canary ─────────────────────────────────
+wait_for_canary_weight() {
+  local rollout_name=$1
+  local target_weight=$2
+  local max_wait=120
+  local elapsed=0
+  log_info "Aguardando Canary ($rollout_name) atingir ${target_weight}% de tráfego..."
+  
+  while [ $elapsed -lt $max_wait ]; do
+    WEIGHT=$(kubectl argo rollouts get rollout "$rollout_name" -n "$NAMESPACE" 2>/dev/null | grep "Weight:" | awk '{print $2}' | tr -d '%' || true)
+    
+    if [ "$WEIGHT" == "$target_weight" ]; then
+      log_success "Tráfego redirecionado! Canary bateu ${target_weight}% exatos."
+      return 0
+    fi
+    
+    sleep 5
+    elapsed=$((elapsed + 5))
+    echo -e "${YELLOW}  ... monitorando roteamento (${elapsed}s/${max_wait}s) - Atual: ${WEIGHT:-0}%${NC}"
+  done
+  log_warn "Timeout aguardando 20%. Injetando caos mesmo assim..."
+}
+
 # ── Inicialização ─────────────────────────────────────────────
 log_phase "INICIANDO EXPERIMENTOS TCC — $TIMESTAMP"
 
@@ -175,16 +198,11 @@ echo "  SLOW_MS: 800"
 echo ""
 read -p "Pressione ENTER após fazer o git push..."
 
-pause 20 "aguardando ArgoCD sincronizar"
+pause 10 "aguardando ArgoCD reconhecer o commit"
 
 log_info "Forçando sincronização do ArgoCD..."
 kubectl annotate application tcc-rollouts -n argocd \
   argocd.argoproj.io/refresh=hard --overwrite
-
-pause 60 "aguardando AnalysisRun do Canary iniciar"
-
-log_info "Verificando início do rollout Canary..."
-kubectl argo rollouts get rollout tcc-api-canary -n "$NAMESPACE"
 
 log_info "Iniciando k6 em background durante o experimento Canary..."
 k6 run \
@@ -194,11 +212,11 @@ k6 run \
   scripts/load-test.js 2>&1 | tee "$RESULTS_DIR/canary_k6_output.txt" &
 K6_PID=$!
 
-# Aguarda AnalysisRun iniciar antes de injetar o caos
-wait_for_analysisrun "tcc-api-canary"
+# Aguarda EXATAMENTE bater 20% do tráfego antes de injetar o Caos!
+wait_for_canary_weight "tcc-api-canary" "20"
 collect_prometheus "canary_antes_caos"
 
-log_info "Injetando caos via Chaos Mesh..."
+log_info "Injetando caos via Chaos Mesh (durante roteamento de 20%)..."
 kubectl apply -f chaos/Experiments.yaml
 log_success "Chaos Mesh ativado — PodChaos + NetworkChaos + HTTPChaos + StressChaos"
 
@@ -254,15 +272,10 @@ echo "  SLOW_MS: 800"
 echo ""
 read -p "Pressione ENTER após fazer o git push..."
 
-pause 20 "aguardando ArgoCD sincronizar"
+pause 10 "aguardando ArgoCD reconhecer o commit"
 
 kubectl annotate application tcc-rollouts -n argocd \
   argocd.argoproj.io/refresh=hard --overwrite
-
-pause 60 "aguardando AnalysisRun do Blue-Green iniciar"
-
-log_info "Verificando início do rollout Blue-Green..."
-kubectl argo rollouts get rollout tcc-api-bluegreen -n "$NAMESPACE"
 
 log_info "Iniciando k6 em background durante o experimento Blue-Green..."
 k6 run \
@@ -272,7 +285,7 @@ k6 run \
   scripts/load-test.js 2>&1 | tee "$RESULTS_DIR/bluegreen_k6_output.txt" &
 K6_PID=$!
 
-# Aguarda AnalysisRun iniciar antes de injetar o caos
+# Aguarda AnalysisRun iniciar antes de injetar o caos no Blue-Green (pois o BG usa Preview pre-promotion)
 wait_for_analysisrun "tcc-api-bluegreen"
 collect_prometheus "bluegreen_antes_caos"
 
